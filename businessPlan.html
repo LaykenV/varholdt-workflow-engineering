@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Varholdt AI — Founding Document (v5)</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --bg-elev: #161b22;
+    --bg-card: #1c222c;
+    --border: #2a313c;
+    --border-soft: #232932;
+    --text: #e6edf3;
+    --text-dim: #9da7b3;
+    --text-mute: #6b7380;
+    --accent: #4f9eff;
+    --accent-soft: #1e3a5f;
+    --success: #3fb950;
+    --warn: #f0b429;
+    --danger: #f85149;
+    --purple: #a371f7;
+    --teal: #2dd4bf;
+    --code-bg: #0b0e13;
+    --shadow: 0 4px 24px rgba(0,0,0,0.4);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---- Sidebar ---- */
+  aside.toc {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--bg-elev);
+    border-right: 1px solid var(--border);
+    padding: 28px 20px;
+    font-size: 13.5px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+  .brand-mark {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-weight: 700; font-size: 14px;
+  }
+  .brand-name { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+  .brand-sub { color: var(--text-mute); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 24px; }
+
+  .toc h3 {
+    color: var(--text-mute);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 24px 0 10px;
+    font-weight: 600;
+  }
+  .toc a {
+    display: block;
+    color: var(--text-dim);
+    text-decoration: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    margin: 2px 0;
+    border-left: 2px solid transparent;
+    transition: all 0.15s ease;
+  }
+  .toc a:hover {
+    color: var(--text);
+    background: var(--bg-card);
+    border-left-color: var(--accent);
+  }
+  .toc .num {
+    color: var(--text-mute);
+    font-variant-numeric: tabular-nums;
+    margin-right: 8px;
+    font-size: 12px;
+  }
+
+  /* ---- Main ---- */
+  main {
+    padding: 56px 64px 120px;
+    max-width: 920px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  header.doc-header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 32px;
+    margin-bottom: 48px;
+  }
+  .doc-header h1 {
+    font-size: 38px;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 30%, #9da7b3);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .doc-header .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .pill.accent { background: var(--accent-soft); color: #cfe1ff; border-color: #2d4d80; }
+  .pill.success { background: #0f3a1e; color: #7ee695; border-color: #1d5e35; }
+  .pill.warn { background: #3a2c0f; color: #f0c97a; border-color: #5e4d1d; }
+
+  h2.section {
+    font-size: 28px;
+    margin: 64px 0 8px;
+    letter-spacing: -0.015em;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2.section .part-num {
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--accent-soft);
+    padding: 4px 10px;
+    border-radius: 6px;
+    align-self: center;
+  }
+  .section-tag {
+    color: var(--text-mute);
+    font-size: 13px;
+    margin-bottom: 24px;
+    margin-top: -4px;
+  }
+
+  h3 {
+    font-size: 20px;
+    margin: 32px 0 12px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  h4 {
+    font-size: 15px;
+    margin: 20px 0 8px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  p { margin: 12px 0; color: var(--text); }
+  p.lead { font-size: 18px; color: var(--text-dim); }
+
+  ul, ol { padding-left: 22px; }
+  li { margin: 6px 0; }
+  li::marker { color: var(--text-mute); }
+
+  strong { color: #fff; font-weight: 600; }
+  em { color: var(--text-dim); }
+
+  blockquote {
+    border-left: 3px solid var(--accent);
+    background: var(--bg-elev);
+    margin: 16px 0;
+    padding: 14px 20px;
+    border-radius: 0 8px 8px 0;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  blockquote p { margin: 6px 0; }
+
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    color: #c8d3ff;
+    border: 1px solid var(--border-soft);
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+  }
+  .card.highlight { border-left: 4px solid var(--accent); }
+  .card.warn { border-left: 4px solid var(--warn); }
+  .card.danger { border-left: 4px solid var(--danger); }
+  .card.success { border-left: 4px solid var(--success); }
+  .card.purple { border-left: 4px solid var(--purple); }
+
+  .card h3:first-child, .card h4:first-child { margin-top: 0; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  .card-title { font-size: 18px; font-weight: 600; margin: 0; color: #fff; }
+  .price-tag {
+    font-family: "SF Mono", monospace;
+    color: var(--success);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .stat {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .stat-value {
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 4px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    margin: 24px 0;
+    padding-left: 28px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 8px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+  .timeline-item h4 {
+    margin: 0 0 4px;
+    color: var(--accent);
+    font-size: 13px;
+  }
+  .timeline-item h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+  }
+
+  /* Tier table */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .tier {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+  }
+  .tier-name { font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .tier-sub { font-size: 12px; color: var(--text-mute); margin-bottom: 12px; }
+
+  /* Two-column for offers */
+  .offers {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  /* Callout */
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    border-left: 4px solid;
+    font-size: 14.5px;
+  }
+  .callout.info { background: rgba(79, 158, 255, 0.08); border-color: var(--accent); }
+  .callout.warn { background: rgba(240, 180, 41, 0.08); border-color: var(--warn); }
+  .callout.danger { background: rgba(248, 81, 73, 0.08); border-color: var(--danger); }
+  .callout.success { background: rgba(63, 185, 80, 0.08); border-color: var(--success); }
+  .callout strong:first-child { color: #fff; }
+
+  .callout-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .callout-icon {
+    width: 18px; height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: var(--bg-elev);
+    color: var(--text-dim);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* Tag list */
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 12px 0;
+  }
+  .tag {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    color: var(--text-dim);
+  }
+
+  /* No-list */
+  .no-list { list-style: none; padding-left: 0; }
+  .no-list li {
+    padding: 8px 12px;
+    background: var(--bg-elev);
+    border-radius: 6px;
+    margin: 6px 0;
+    border-left: 3px solid var(--danger);
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .yes-list li { border-left-color: var(--success); }
+
+  /* Check/Cross icons via pseudo */
+  .check::before { content: "✓ "; color: var(--success); font-weight: 700; }
+  .cross::before { content: "✗ "; color: var(--danger); font-weight: 700; }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .layout { grid-template-columns: 1fr; }
+    aside.toc {
+      position: static;
+      height: auto;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    main { padding: 32px 24px 80px; }
+    .doc-header h1 { font-size: 30px; }
+    .tier-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Subtle anchor scroll offset */
+  section[id] { scroll-margin-top: 20px; }
+
+  /* Footnote-style mini text */
+  .mini { font-size: 13px; color: var(--text-mute); }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <!-- ============= SIDEBAR TOC ============= -->
+  <aside class="toc">
+    <div class="brand">
+      <div class="brand-mark">V</div>
+      <div>
+        <div class="brand-name">Varholdt AI</div>
+        <div class="brand-sub">Founding Doc · v5</div>
+      </div>
+    </div>
+
+    <h3>Quick Nav</h3>
+    <a href="#overview"><span class="num">—</span>Overview</a>
+    <a href="#whats-new"><span class="num">—</span>What's New in v5</a>
+
+    <h3>Parts</h3>
+    <a href="#part-1"><span class="num">01</span>The Business</a>
+    <a href="#part-2"><span class="num">02</span>Operator Context</a>
+    <a href="#part-3"><span class="num">03</span>Offer Stack</a>
+    <a href="#part-4"><span class="num">04</span>ICP &amp; Niche</a>
+    <a href="#part-5"><span class="num">05</span>30-Day Plan</a>
+    <a href="#part-6"><span class="num">06</span>Sales Assets</a>
+    <a href="#part-7"><span class="num">07</span>The Sprint</a>
+    <a href="#part-8"><span class="num">08</span>Operations</a>
+    <a href="#part-9"><span class="num">09</span>Outreach Channels</a>
+    <a href="#part-10"><span class="num">10</span>Case Studies</a>
+    <a href="#part-11"><span class="num">11</span>Risks</a>
+    <a href="#part-12"><span class="num">12</span>Milestones</a>
+    <a href="#part-13"><span class="num">13</span>Anti-Pivot Rule</a>
+  </aside>
+
+  <!-- ============= MAIN CONTENT ============= -->
+  <main>
+
+    <header class="doc-header">
+      <h1>Varholdt AI — Founding Document</h1>
+      <p class="lead">The complete operating plan. Built to be picked up and executed without re-deliberation.</p>
+      <div class="meta">
+        <span class="pill accent">Version 5</span>
+        <span class="pill">Dated 2026-05-20</span>
+        <span class="pill">Supersedes v4</span>
+        <span class="pill warn">Anti-Pivot: This is the last rewrite</span>
+      </div>
+    </header>
+
+    <section id="overview">
+      <div class="callout info">
+        <div class="callout-title"><span class="callout-icon">📌</span>What this doc is</div>
+        The complete operating plan for Varholdt AI. Designed to be handed off to another agent — or picked up by Layken in two weeks — and executed without re-deliberation. <strong>If a question isn't answered here, the default is: stop writing, send the next outreach message, and let real buyer conversations resolve it.</strong>
+      </div>
+    </section>
+
+    <section id="whats-new">
+      <h2 class="section">What Changed from v4</h2>
+      <div class="card">
+        <ul>
+          <li><strong>Repositioned</strong> from "AI Workflow Engineering" to <strong>Fractional AI Department</strong> for document-heavy businesses. Buyers understand "department."</li>
+          <li><strong>Sprint + retainer</strong> replaces Teardown + Build + Launch Support as the primary offer. Custom builds remain on the menu but are no longer the main pitch.</li>
+          <li><strong>ICP widened</strong> from "GovCon primary" to document-heavy broadly (GovCon, proposal consultants, staffing, insurance, CPA, construction back office).</li>
+          <li><strong>Week 1 reduced</strong> to four assets and an outreach list. LLC/EIN/insurance push to Week 2.</li>
+          <li><strong>Founding sprint price</strong>: $5,000 credited toward a 6-month retainer if signed within 14 days.</li>
+          <li><strong>No SaaS for 90 days.</strong> OmniBid stays as a demo asset only.</li>
+          <li><strong>CUI/CMMC deployment tier framework</strong> retained — credibility moat in GovCon discovery.</li>
+          <li><strong>Anti-pivot rule added</strong>: this is the last rewrite before a buyer conversation happens.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============= PART 1 ============= -->
+    <section id="part-1">
+      <h2 class="section"><span class="part-num">Part 1</span>The One-Sentence Business</h2>
+
+      <div class="card highlight">
+        <p style="font-size: 22px; line-height: 1.4; margin: 0; color: #fff;">
+          <strong>Varholdt AI is a Fractional AI Department for document-heavy small and mid-sized businesses.</strong>
+        </p>
+      </div>
+
+      <h3>Landing page version</h3>
+      <blockquote>
+        <p>We install a practical AI department inside document-heavy businesses — without you hiring a full AI team. We find the workflows worth automating, build them, train your team, and keep them running.</p>
+      </blockquote>
+
+      <h3>Discovery call version</h3>
+      <blockquote>
+        <p>Most businesses your size know AI matters but do not know which tools to trust, which workflows are worth automating, or who to hire. Hiring a full-time AI engineer is a $180K+ commitment with no guarantee of ROI.</p>
+        <p>We are the alternative: a senior AI operator who shows up part-time for 6 months, finds the bottlenecks, builds the tools, trains your team, and keeps it running. When the engagement ends, you own working systems and your team knows how to use them.</p>
+      </blockquote>
+    </section>
+
+    <!-- ============= PART 2 ============= -->
+    <section id="part-2">
+      <h2 class="section"><span class="part-num">Part 2</span>Operator Context</h2>
+
+      <div class="grid">
+        <div class="stat">
+          <div class="stat-label">Operator</div>
+          <div class="stat-value">Layken Varholdt</div>
+          <div class="stat-sub">Youngsville, LA · Family of 5</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Military</div>
+          <div class="stat-value">Air Force, 4 yrs</div>
+          <div class="stat-sub">MOS 2W0X1 Munitions · VA service-connected</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Day Job Income</div>
+          <div class="stat-value">~$80K/yr</div>
+          <div class="stat-sub">DOL federal contract (full-stack engineering)</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Bandwidth</div>
+          <div class="stat-value">15–20 hrs/wk</div>
+          <div class="stat-sub">For Varholdt AI launch work</div>
+        </div>
+      </div>
+
+      <h3>Goal</h3>
+      <p>Replace DOL income within 12 months. Surpass meaningfully thereafter.</p>
+
+      <h3>Other ventures (during this launch)</h3>
+      <div class="card">
+        <p><strong>Acadiana Web Design</strong> — Inbound-only. No new sales effort. Existing pipeline harvests anything that comes in.</p>
+        <p><strong>OmniBid</strong> — Shelved as SaaS. Lives on as a demo artifact and sales asset only. Not revived as a product for at least 90 days.</p>
+      </div>
+
+      <h3>Proof Stack</h3>
+      <div class="card success">
+        <ul>
+          <li><strong>8 production systems</strong> on laykenvarholdt.com — Atlas Outbound, Mesh Mind, OmniBid, Civicly, TeachMagic, AWD, FoodTruckFlow, Agency Template</li>
+          <li><strong>First place</strong>, Convex Modern Stack Hackathon ($10K prize)</li>
+          <li><strong>Active federal contracting work</strong> (DOL)</li>
+          <li><strong>Document intelligence depth</strong> via OmniBid (SAM.gov ingestion, RFP parsing, requirement extraction with citations) and Civicly (federal legislative RAG)</li>
+        </ul>
+        <h4>Stack</h4>
+        <div class="tag-list">
+          <span class="tag">Convex</span><span class="tag">TanStack Start</span><span class="tag">Next.js</span><span class="tag">React</span>
+          <span class="tag">TypeScript</span><span class="tag">Tailwind</span><span class="tag">Vercel AI SDK</span><span class="tag">Gemini</span>
+          <span class="tag">Claude</span><span class="tag">OpenAI</span><span class="tag">Vapi</span><span class="tag">Stripe</span>
+          <span class="tag">Clerk</span><span class="tag">Resend</span><span class="tag">Supabase</span><span class="tag">Drizzle</span>
+        </div>
+      </div>
+
+      <h3>Honest Weaknesses</h3>
+      <div class="card warn">
+        <ul>
+          <li><strong>No prior consulting experience.</strong> First-time seller of high-ticket services. Never run a discovery call as the consultant. Never scoped a $25K+ engagement under client pressure.</li>
+          <li><strong>Limited business-side network.</strong> Most contacts are engineers.</li>
+          <li><strong>No paid client case studies.</strong> Portfolio proves "can ship," not "produces client ROI."</li>
+          <li><strong>Solo bandwidth.</strong> DOL + family of five + launch work = ~15–20 hours/week.</li>
+          <li><strong>Sales discomfort.</strong> Biggest behavioral risk: retreating into building or doc rewrites instead of getting buyer conversations.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============= PART 3 ============= -->
+    <section id="part-3">
+      <h2 class="section"><span class="part-num">Part 3</span>The Offer Stack</h2>
+      <p class="section-tag">Three offers. One front door, one main offer, one exception.</p>
+
+      <div class="offers">
+
+        <!-- Offer 1 -->
+        <div class="card highlight">
+          <div class="card-header">
+            <h3 class="card-title">Offer 1 — AI Workflow Sprint <span style="color: var(--text-mute); font-weight: 400; font-size: 14px;">(front door)</span></h3>
+            <span class="price-tag">$5,000 flat</span>
+          </div>
+          <p><strong>Duration:</strong> 10 business days · One-time · 100% credited toward 6-month retainer if signed within 14 days</p>
+
+          <h4>Deliverables</h4>
+          <ol>
+            <li>Current-state map of <strong>one</strong> document-heavy workflow</li>
+            <li>Working prototype of the highest-leverage slice (live, demo-able)</li>
+            <li>90-day implementation roadmap</li>
+            <li>Recommendation memo: buy / build / integrate + ROI assumptions</li>
+            <li>Live walkthrough / leadership training (~60 min, recorded)</li>
+          </ol>
+
+          <div class="callout info">
+            <div class="callout-title">Why it exists</div>
+            Buyers won't commit $36K–$60K to a fractional AI engagement based on a portfolio. The sprint lets them feel the work, see a working artifact, and decide on month 2+ from evidence rather than faith.
+          </div>
+        </div>
+
+        <!-- Offer 2 -->
+        <div class="card success">
+          <div class="card-header">
+            <h3 class="card-title">Offer 2 — Fractional AI Department <span style="color: var(--text-mute); font-weight: 400; font-size: 14px;">(main offer)</span></h3>
+            <span class="price-tag">$6K/mo founding</span>
+          </div>
+
+          <div class="grid">
+            <div class="stat">
+              <div class="stat-label">Founding (first 2 clients)</div>
+              <div class="stat-value">$6,000/mo</div>
+              <div class="stat-sub">6-month min · ~$36K total over 6 mo</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Standard (post case studies)</div>
+              <div class="stat-value">$10,000/mo</div>
+              <div class="stat-sub">6-month min · ~$60K total over 6 mo</div>
+            </div>
+          </div>
+
+          <h4>What ships in 6 months</h4>
+          <ul>
+            <li>1 core workflow system shipped and tuned to production</li>
+            <li>1–2 supporting automations or integrations</li>
+            <li>Monthly team training (live or recorded)</li>
+            <li>Monthly ROI / usage report</li>
+            <li>Quarterly roadmap review</li>
+            <li>Ongoing support, tuning, prompt iteration on shipped work</li>
+          </ul>
+
+          <h4>Time allocation (lives in SOW, not outreach)</h4>
+          <ul>
+            <li><strong>~10 hrs/mo</strong> senior AI strategy — calls, architecture, vendor selection, roadmap</li>
+            <li><strong>~20 hrs/mo</strong> implementation — builds, integrations, prompt engineering, deployment</li>
+          </ul>
+
+          <h4>Operating constraints</h4>
+          <ul>
+            <li>Async support via Slack/email (same-business-day response, no nights/weekends/SLA)</li>
+            <li>One active workflow build at a time (no parallel scope creep)</li>
+            <li>Hosting, infrastructure, AI tokens included up to monthly cap; pass-through above</li>
+            <li>Buy/build/integrate guidance (no obligation to build custom)</li>
+            <li>Human-review guardrails on every deployed workflow</li>
+          </ul>
+
+          <h4 style="color: var(--danger);">Excluded</h4>
+          <ul class="no-list">
+            <li>24/7 on-call</li>
+            <li>Uptime SLAs</li>
+            <li>CMMC vendor-flowdown certification work</li>
+            <li>Highly sensitive / classified data handling</li>
+            <li>Strategic decisions the client should be making</li>
+          </ul>
+          <p class="mini"><em>Exclusions also apply to the Continuing Operations tier — see Part 8.</em></p>
+        </div>
+
+        <!-- Offer 3 -->
+        <div class="card warn">
+          <div class="card-header">
+            <h3 class="card-title">Offer 3 — Build-Only Project <span style="color: var(--text-mute); font-weight: 400; font-size: 14px;">(exception, not main pitch)</span></h3>
+            <span class="price-tag">$20K–$60K flat</span>
+          </div>
+          <p><strong>When to offer:</strong> Only when a prospect knows exactly what they want, has been through a similar build, and scope is provably narrow. Buyers who want a defined deliverable, not a relationship.</p>
+          <p><strong>Why de-emphasized:</strong> Retainer model produces better client outcomes (workflows need tuning post-deploy) and better business outcomes (predictable revenue, compounding case studies, less scope-creep risk).</p>
+        </div>
+
+      </div>
+
+      <h3>Pricing Posture</h3>
+      <ul>
+        <li>Founding prices exist to buy proof. Two founding clients, then prices step up.</li>
+        <li>No further discounting below founding price.</li>
+        <li>If a prospect can't afford $6K/month for a 30-person business with real document pain, they aren't the ICP.</li>
+        <li>Sprint paid up front. Retainer paid monthly, first month due at kickoff.</li>
+      </ul>
+    </section>
+
+    <!-- ============= PART 4 ============= -->
+    <section id="part-4">
+      <h2 class="section"><span class="part-num">Part 4</span>ICP &amp; Niche</h2>
+      <p class="section-tag">Document-heavy small to mid-sized businesses. Looking for any business where humans repeatedly read, extract, route, draft, or verify documents.</p>
+
+      <h3>Target Profile</h3>
+      <div class="grid">
+        <div class="stat"><div class="stat-label">Headcount</div><div class="stat-value">20–250</div><div class="stat-sub">employees</div></div>
+        <div class="stat"><div class="stat-label">Revenue</div><div class="stat-value">$3M–$75M</div><div class="stat-sub">annual</div></div>
+        <div class="stat"><div class="stat-label">Authority</div><div class="stat-value">Sign $5K in 30d</div><div class="stat-sub">decision-maker access</div></div>
+        <div class="stat"><div class="stat-label">Volume</div><div class="stat-value">Recurring</div><div class="stat-sub">not one-off projects</div></div>
+      </div>
+
+      <h3>Sub-segments — First 50 Weighting</h3>
+      <table>
+        <thead>
+          <tr><th>Segment</th><th>Count</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>GovCon contractors</strong></td><td>25</td><td>Highest credential match. Veteran + federal contractor + OmniBid demo. RFPs, SOWs, compliance matrices, capability statements.</td></tr>
+          <tr><td><strong>Proposal / capture consultants</strong></td><td>10</td><td>Same workflows at scale. May become referral channel.</td></tr>
+          <tr><td><strong>Staffing / recruiting</strong></td><td>10</td><td>Resume intake, candidate-job matching, compliance packets.</td></tr>
+          <tr><td><strong>Regional insurance</strong></td><td>5</td><td>Claims intake, document extraction, renewal prep. Strong Lafayette/Acadiana density.</td></tr>
+          <tr><td><strong>CPA / accounting</strong></td><td>warm only</td><td>Document intake, source doc extraction, working papers.</td></tr>
+          <tr><td><strong>Construction back office</strong></td><td>warm only</td><td>Submittals, RFIs, change orders, vendor docs.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <div class="callout-title">ICP Narrowing Rule</div>
+        After the first 50 outreach attempts (weeks 1–3), the segment with the highest reply rate and most qualified discovery calls becomes the primary cold-outbound target. Other segments stay open through warm intros only.
+      </div>
+
+      <h3>Anti-ICP — Hard No's</h3>
+      <ul class="no-list">
+        <li><span class="cross"></span>Pre-product startups looking for a CTO</li>
+        <li><span class="cross"></span>Companies under 20 employees with no real workflow volume</li>
+        <li><span class="cross"></span>Large enterprises with formal procurement and 6-month vendor onboarding</li>
+        <li><span class="cross"></span>Buyers whose first question is whether the sprint price is negotiable below $5K</li>
+        <li><span class="cross"></span>Companies expecting AI to replace human judgment on high-stakes decisions</li>
+        <li><span class="cross"></span>Engagements requiring formal CMMC vendor-flowdown certification</li>
+        <li><span class="cross"></span>Classified or ITAR-restricted workflows</li>
+        <li><span class="cross"></span>Any buyer who can't identify the workflow owner in the first call</li>
+        <li><span class="cross"></span>Any buyer who can't provide sample documents or process access in the sprint</li>
+        <li><span class="cross"></span>Buying decisions that can't close inside 30 days</li>
+      </ul>
+
+      <h3>Discovery Call Qualifying Questions</h3>
+      <div class="card">
+        <p class="mini"><em>Ask in order. If 3+ are uncertain, this is not a founding engagement candidate.</em></p>
+        <ol>
+          <li>What document-heavy workflow slows your team down every week?</li>
+          <li>Who owns that workflow today?</li>
+          <li>How many times per week or month does it happen?</li>
+          <li>What systems and documents are involved?</li>
+          <li>What have you tried to solve it?</li>
+          <li>What would make a solution obviously worth $6K/month to you?</li>
+          <li>Would you rather pay monthly for an ongoing partner, or fixed price for a defined project? <em>(After 5 calls, rebalance offer if 3+ lean fixed-price.)</em></li>
+          <li>Who else needs to be in the room to make this decision?</li>
+          <li>What's your timeline for deciding?</li>
+          <li><strong>(GovCon only)</strong> Do any documents contain CUI, or material covered by DFARS 252.204-7012, ITAR, or your prime's CMMC flowdown? <em>(Routes to deployment tier — see Part 8.)</em></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============= PART 5 ============= -->
+    <section id="part-5">
+      <h2 class="section"><span class="part-num">Part 5</span>The 30-Day Execution Plan</h2>
+
+      <div class="callout warn">
+        <div class="callout-title"><span class="callout-icon">⚠</span>Operating Principle</div>
+        Week 1 is for assets and outreach. <strong>Nothing else.</strong> If Week 1 ends with a polished site and an LLC filing but zero outreach attempts, Week 1 failed.
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <h4>WEEK 1 · May 20–26</h4>
+          <h3>Assets and outreach launch</h3>
+          <p>Five gating items, done by Sunday May 26:</p>
+          <ol>
+            <li><strong>Buy domain.</strong> <code>varholdt.ai</code> (preferred) or <code>varholdtai.com</code>. Today.</li>
+            <li><strong>Build one-page PDF.</strong> "Fractional AI Department for Document-Heavy Teams." Designed in a single afternoon.</li>
+            <li><strong>Record 2-minute Loom.</strong> Walk through OmniBid live: SAM.gov → RFP parse → extraction → compliance matrix. Single highest-leverage proof piece.</li>
+            <li><strong>Build single landing page.</strong> One screen. Hero, three sentences, offer, Loom, Calendly. Not a multi-section site yet.</li>
+            <li><strong>Build target list of 50 contacts.</strong> Use Part 4 weighting. Spreadsheet with name, company, role, segment, trigger, channel, status.</li>
+          </ol>
+          <div class="callout info">
+            <strong>Outreach starts Wednesday of Week 1, not Monday of Week 2.</strong> Five warm conversation attempts by Sunday. Convex warm-intro email sent Wednesday.
+          </div>
+          <p class="mini"><em>Deferred to Week 2:</em> LLC filing, EIN, Google Workspace, E&amp;O insurance quotes, SOW/MSA templates, Stripe. None of these gate the first conversation.</p>
+        </div>
+
+        <div class="timeline-item">
+          <h4>WEEK 2 · May 27–June 2</h4>
+          <h3>First conversations &amp; logistics in parallel</h3>
+          <ul>
+            <li>15–25 outreach attempts (warm + cold combined)</li>
+            <li>Target: 3–5 discovery calls scheduled</li>
+            <li>File Louisiana single-member LLC</li>
+            <li>Apply for EIN</li>
+            <li>Set up Google Workspace (<code>layken@varholdt.ai</code>)</li>
+            <li>Get 3 E&amp;O insurance quotes ($1M minimum)</li>
+            <li>Draft Sprint SOW, Retainer SOW, mutual NDA templates (attorney review required)</li>
+            <li>Set up Stripe and Mercury business checking</li>
+          </ul>
+          <div class="callout warn">
+            <strong>Tiebreaker rule:</strong> If by end of Week 2 there is zero serious interest, do not pivot the doc. The fix is <strong>more outreach volume and better discovery calls</strong>, not a different offer.
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <h4>WEEK 3 · June 3–9</h4>
+          <h3>First sprint sold</h3>
+          <ul>
+            <li>Continue outreach (10–15/week)</li>
+            <li>Target: 1 founding sprint sold and kickoff scheduled</li>
+            <li>Refine PDF and landing page based on conversations</li>
+            <li>First case study planning conversation with sprint client</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>WEEK 4 · June 10–16</h4>
+          <h3>First sprint delivered</h3>
+          <ul>
+            <li>Deliver first founding sprint (10 business days, fits inside Week 4)</li>
+            <li>Produce case study draft (before/after workflow, prototype demo, ROI estimate)</li>
+            <li>6-month retainer proposal delivered to sprint client</li>
+            <li>Continue outreach for second founding sprint</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <h3>Day 30 Checkpoint — June 19</h3>
+      <div class="card success">
+        <h4>Success indicators</h4>
+        <ul>
+          <li>1 paid sprint delivered (or in delivery)</li>
+          <li>1 retainer proposal sent (or about to be)</li>
+          <li>2–3 active discovery conversations</li>
+          <li>LLC and EIN active</li>
+          <li>Landing page live, PDF v1 deployed, Loom recorded</li>
+          <li>50+ outreach attempts made</li>
+        </ul>
+      </div>
+
+      <div class="callout danger">
+        <div class="callout-title"><span class="callout-icon">🚨</span>Failure Signal</div>
+        Zero discovery calls after 30 outreach attempts. Diagnosis order: <strong>(1) target list quality, (2) outreach message, (3) offer.</strong> Do not skip to (3). Re-examine (1) and (2) first.
+      </div>
+    </section>
+
+    <!-- ============= PART 6 ============= -->
+    <section id="part-6">
+      <h2 class="section"><span class="part-num">Part 6</span>Sales Assets</h2>
+      <p class="section-tag">Four assets. Built in Week 1. Iterated based on what conversations reveal.</p>
+
+      <div class="card">
+        <h3>Asset 1 — The One-Page PDF</h3>
+        <p><strong>Title:</strong> <em>Fractional AI Department for Document-Heavy Teams</em></p>
+        <h4>Sections (one page total)</h4>
+        <ol>
+          <li><strong>Top:</strong> Logo / Varholdt AI / hero sentence</li>
+          <li><strong>What this is:</strong> "A senior AI operator inside your business for 6 months. We find the workflows worth automating, build them, train your team, and keep them running. You don't hire a full AI team."</li>
+          <li><strong>Who it's for:</strong> GovCon, proposal consultants, staffing, insurance, accounting, construction back office. Teams of 20–250.</li>
+          <li><strong>What we build:</strong> RFP shred and compliance matrix, document intake and extraction, internal knowledge search, drafting workbenches, missing-info detection.</li>
+          <li><strong>The engagement:</strong> Month 1 — $5K sprint. Months 2–6 — $6K/month founding rate. First two clients only.</li>
+          <li><strong>Proof:</strong> Convex Hackathon 1st place. Active DOL contractor. 8 production systems including OmniBid.</li>
+          <li><strong>CTA:</strong> 20-minute call. Calendly link. Email. Phone.</li>
+        </ol>
+      </div>
+
+      <div class="card purple">
+        <h3>Asset 2 — The 2-Minute Loom</h3>
+        <p class="mini">Re-record until tight. Three takes minimum. Single most-watched asset in the business for the next 90 days.</p>
+        <table>
+          <thead><tr><th>Time</th><th>Content</th></tr></thead>
+          <tbody>
+            <tr><td>0:00–0:15</td><td>Who I am: Layken, veteran, federal contractor, AI engineer</td></tr>
+            <tr><td>0:15–0:30</td><td>What Varholdt AI does, in one sentence</td></tr>
+            <tr><td>0:30–1:30</td><td><strong>OmniBid walkthrough.</strong> Pull a real public RFP from SAM.gov, run it through the parser, show requirement extraction, show compliance matrix. <em>Moment of proof.</em></td></tr>
+            <tr><td>1:30–1:50</td><td>"This is one workflow. We build versions for proposals, intake, claims, resumes, internal knowledge."</td></tr>
+            <tr><td>1:50–2:00</td><td>"If your team is drowning in documents, book a 20-minute call."</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>Asset 3 — The Landing Page</h3>
+        <p><strong>URL:</strong> <code>varholdt.ai</code></p>
+        <h4>Above the fold</h4>
+        <ul>
+          <li><strong>Hero:</strong> <em>Install practical AI workflows without hiring an AI team.</em></li>
+          <li><strong>Subhead:</strong> Varholdt AI is a Fractional AI Department for document-heavy teams. We find the bottlenecks, build the tools, train your staff, and keep the systems running.</li>
+          <li>Loom embed</li>
+          <li>Calendly button: "Book a 20-minute workflow call"</li>
+        </ul>
+        <h4>Below the fold (one scroll)</h4>
+        <ul>
+          <li>What we build (5 workflow examples with one-line descriptions)</li>
+          <li>Who it's for (segments)</li>
+          <li>How it works (sprint → retainer)</li>
+          <li>Proof: Convex hackathon, DOL contract, OmniBid screenshot</li>
+          <li>Founder bio (3 sentences)</li>
+          <li>Footer: email, LinkedIn</li>
+        </ul>
+        <p class="mini"><em>No multi-page nav. No blog. No Services page. No About page. One page.</em></p>
+      </div>
+
+      <div class="card">
+        <h3>Asset 4 — Outreach Templates</h3>
+
+        <h4>Warm intro / referral ask (to network)</h4>
+        <blockquote>
+          <p>Hey [Name] — I'm launching Varholdt AI, a Fractional AI Department for document-heavy businesses (GovCon, insurance, staffing, accounting). Opening 2 founding spots at a reduced rate.</p>
+          <p>The idea: I work with one document-heavy team for 6 months — find the bottlenecks, build the AI workflows, train the team, keep them running. First month is a $5K paid sprint that delivers a working prototype and roadmap. They can stop after month 1 if not obviously useful.</p>
+          <p>Do you know anyone running a 30–150 person business where people are still manually reading PDFs, copying info into spreadsheets, or drafting the same kinds of documents over and over? Happy to hop on a quick call.</p>
+          <p>— Layken</p>
+        </blockquote>
+
+        <h4>Cold outbound (to a specific prospect with a trigger)</h4>
+        <blockquote>
+          <p>Hi [Name] — saw [specific trigger: proposal manager opening / recent contract award / new compliance hire / visible RFP volume]. Usually when a team is [hiring proposal managers / scaling capture / adding claims staff], the document workflow behind it gets messy fast — manual PDF reads, copy-paste into spreadsheets, repetitive drafting.</p>
+          <p>I run Varholdt AI, a Fractional AI Department for document-heavy teams. We turn that manual work into AI-assisted internal tools with human review.</p>
+          <p>I'm opening 2 founding sprint spots: $5K, 10 business days — one workflow mapped, one working prototype, one 90-day roadmap. If useful, turns into a 6-month engagement; if not, you keep the prototype and roadmap.</p>
+          <p>Worth a 20-minute call? Here's a 2-min walkthrough of a federal RFP parser I built: [Loom link]</p>
+          <p>— Layken</p>
+        </blockquote>
+
+        <h4>Cold subject lines</h4>
+        <ul>
+          <li>"Saw the [role] opening at [Company]"</li>
+          <li>"[Trigger] — workflow idea for [Company]"</li>
+          <li>"Quick thought on your [proposal/compliance/intake] workflow"</li>
+          <li>"20 minutes — AI workflow idea for [Company]"</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============= PART 7 ============= -->
+    <section id="part-7">
+      <h2 class="section"><span class="part-num">Part 7</span>Delivery: The Sprint</h2>
+      <p class="section-tag">10 business days. Fixed scope. Fixed price. Fixed deliverables.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>DAY 1</h4>
+          <h3>Kickoff (90 minutes)</h3>
+          <p>Confirm in writing:</p>
+          <ul>
+            <li>Workflow in scope (one, not three)</li>
+            <li>Decision-maker name</li>
+            <li>Workflow owner name</li>
+            <li>2–4 stakeholders for interviews</li>
+            <li>Sample documents access (sanitized, public, or approved)</li>
+            <li>Success criteria</li>
+            <li>Deployment tier for prototype (Part 8)</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAYS 2–4</h4>
+          <h3>Discovery</h3>
+          <ul>
+            <li>2–4 stakeholder interviews / screenshares</li>
+            <li>Observe the actual work being done (not what they say they do — what they do)</li>
+            <li>Map current state: triggers, systems, handoffs, documents, people, time per cycle, error rates, exceptions</li>
+            <li>Identify the highest-leverage slice (20% that produces 80% of pain)</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAYS 4–7</h4>
+          <h3>Prototype</h3>
+          <ul>
+            <li>Build working prototype of highest-leverage slice</li>
+            <li>Sanitized, public, or approved sample documents only</li>
+            <li>Demo-able: upload → process → review → export</li>
+            <li>Source citations and confidence scores where applicable</li>
+            <li>Audit log</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 8</h4>
+          <h3>Internal review &amp; ROI model</h3>
+          <ul>
+            <li>Write buy/build/integrate recommendation</li>
+            <li>Build ROI estimate with explicit assumptions</li>
+            <li>Draft 90-day roadmap</li>
+            <li>Draft 6-month retainer proposal</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 9</h4>
+          <h3>Training session</h3>
+          <ul>
+            <li>60-minute leadership training, recorded</li>
+            <li>Topics: what AI is good at, what it isn't, how the prototype works, what month 2+ looks like, what to expect from a 6-month engagement</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 10</h4>
+          <h3>Delivery</h3>
+          <ul>
+            <li>PDF deliverable (workflow map, prototype link, ROI, roadmap, recommendation)</li>
+            <li>Live demo to decision-maker and workflow owner</li>
+            <li>Retainer proposal handed over with 14-day credit window</li>
+            <li>Case study permission requested in SOW</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= PART 8 ============= -->
+    <section id="part-8">
+      <h2 class="section"><span class="part-num">Part 8</span>Operations, Pricing Mechanics &amp; Compliance</h2>
+
+      <h3>Infrastructure &amp; Usage Caps</h3>
+      <div class="card">
+        <p>Most Tier 1/2 clients don't have an internal team to host or operate workflows. <strong>Default model: you host on Varholdt AI accounts; their domain points at your hosting; you operate the system.</strong> API keys live on your accounts. Hosting + tokens bundled into retainer up to a cap, pass-through above.</p>
+        <p class="mini"><em>Tier 3 (CUI / GovCloud) is the exception — they own the hosting boundary by regulatory necessity, so usage runs on their accounts with no pass-through.</em></p>
+      </div>
+
+      <h4>Initial Assumption — single document-extraction workflow, ~50 docs/day</h4>
+      <table>
+        <thead><tr><th>Line item</th><th>Estimate</th></tr></thead>
+        <tbody>
+          <tr><td>Extraction (Gemini Flash, ~10K in / ~1K out per doc)</td><td>$50–100/mo</td></tr>
+          <tr><td>Review/drafting (Claude Sonnet, half the docs)</td><td>$300–600/mo</td></tr>
+          <tr><td>Hosting (Convex / Vercel / storage)</td><td>$50–200/mo</td></tr>
+          <tr><td>Buffer (retries, embeddings, edge cases)</td><td>20–30%</td></tr>
+          <tr><td><strong>Expected total</strong></td><td><strong>$450–$1,100/mo</strong></td></tr>
+        </tbody>
+      </table>
+
+      <h4>Plan Caps</h4>
+      <ul>
+        <li><strong>Sprint prototype:</strong> hosting and tokens included within reason</li>
+        <li><strong>Fractional AI Dept (Tier 1/2):</strong> hosting + tokens included up to $1,500/mo combined cap. Above cap = pass-through at cost. Explicit in SOW.</li>
+        <li><strong>Fractional AI Dept (Tier 3):</strong> client owns hosting and API accounts; usage runs on their infrastructure</li>
+      </ul>
+
+      <h3>Deployment Tiers <span class="mini">(GovCon discovery routes here)</span></h3>
+      <div class="tier-grid">
+        <div class="tier">
+          <div class="tier-name" style="color: var(--success);">Tier 1</div>
+          <div class="tier-sub">No CUI exposure</div>
+          <p>Most workflows. Default managed hosting on my stack. SOW explicitly limits scope to non-CUI documents. <strong>Standard pricing.</strong></p>
+        </div>
+        <div class="tier">
+          <div class="tier-name" style="color: var(--warn);">Tier 2</div>
+          <div class="tier-sub">CUI exposure, no GovCloud</div>
+          <p>Deploy to client-owned commercial infrastructure with CUI exclusion in SOW, OR scope to non-CUI portions. <strong>Pricing reflects added setup.</strong></p>
+        </div>
+        <div class="tier">
+          <div class="tier-name" style="color: var(--danger);">Tier 3</div>
+          <div class="tier-sub">CUI handled compliantly</div>
+          <p>Deploy to client-owned GovCloud or Azure Government. Higher implementation cost. Only when client owns their compliance boundary. <strong>Screen aggressively.</strong></p>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title">Out of scope (year 1)</div>
+        Formal CMMC vendor-flowdown certification work where I'm a vendor inside the client's compliance boundary (SSP, POA&amp;M, audit trail, personnel screening, secure development practice attestation).
+      </div>
+
+      <h3>Continuing Operations (Post-Retainer)</h3>
+      <p>The 6-month retainer ends with the workflow shipped and the team trained — but most Tier 1/2 clients have no internal team to keep it running. Continuing Operations lets them keep using the workflow without hiring an in-house operator.</p>
+
+      <div class="grid">
+        <div class="card success">
+          <div class="card-header">
+            <h3 class="card-title">Tier 1 / Tier 2 — Varholdt AI hosts</h3>
+            <span class="price-tag">$2,000/mo</span>
+          </div>
+          <p class="mini">Month-to-month · 30-day cancellation</p>
+          <ul>
+            <li>Hosting on Varholdt AI accounts (client domain points here)</li>
+            <li>API tokens up to defined cap; pass-through above</li>
+            <li>Light monitoring &amp; incident triage during business hours</li>
+            <li>Bug fixes on shipped workflows</li>
+            <li>Prompt tuning &amp; minor adjustments</li>
+            <li>Model-version migrations on deprecation</li>
+            <li>Quarterly review with workflow owner</li>
+          </ul>
+        </div>
+        <div class="card warn">
+          <div class="card-header">
+            <h3 class="card-title">Tier 3 — Client hosts</h3>
+            <span class="price-tag">$1,500–$2,000/mo</span>
+          </div>
+          <p class="mini">Month-to-month · 30-day cancellation · No hosting component</p>
+          <p>Same scope as Tier 1/2: advisory, prompt tuning, bug fixes, model migrations, quarterly review. Client owns GovCloud / compliance boundary.</p>
+        </div>
+      </div>
+
+      <h4 style="color: var(--danger);">Excluded from Continuing Ops</h4>
+      <ul class="no-list">
+        <li>24/7 on-call or uptime SLA</li>
+        <li>New workflows or features (quoted separately)</li>
+        <li>Strategic decisions the client should be making</li>
+        <li>All retainer-level exclusions still apply (Part 3)</li>
+      </ul>
+
+      <h4>Clean-handoff terms (when client cancels)</h4>
+      <ul>
+        <li>Source code transferred to a repo the client owns</li>
+        <li>Runbook documenting how the system runs and what it costs</li>
+        <li>30 days of transition support — help migrate to SaaS or hand off to another consultant</li>
+        <li><strong>No promise the system continues unsupervised after handoff.</strong> Client is releasing the operator, not buying a perpetual-motion machine.</li>
+      </ul>
+
+      <div class="callout info">
+        <div class="callout-title">Sales discipline</div>
+        Continuing Ops is discussed at <strong>month 5</strong> of the retainer, not earlier. Premature talk creates exit-anxiety. Default assumption for Tier 1/2: they take it, because there is no internal team to receive a handoff.
+      </div>
+
+      <h3>IP &amp; Data Ownership</h3>
+      <div class="grid">
+        <div class="card success">
+          <h4 style="color: var(--success);">Client owns</h4>
+          <ul>
+            <li>Their documents and data</li>
+            <li>Extracted outputs, generated outputs</li>
+            <li>Workflow-specific configuration and business rules they provide</li>
+          </ul>
+        </div>
+        <div class="card highlight">
+          <h4 style="color: var(--accent);">Varholdt AI owns</h4>
+          <ul>
+            <li>Reusable framework and code modules</li>
+            <li>Generalized prompts and templates</li>
+            <li>Implementation patterns and internal kit</li>
+          </ul>
+        </div>
+      </div>
+      <p class="mini"><em>Client receives the right to use the delivered system per the agreement. Full source-code transfer requires separate scoped pricing.</em></p>
+
+      <h3>Reusable Kit Rule</h3>
+      <div class="callout danger">
+        <strong>No standalone product in first 90 days.</strong> Reusable code modules (auth, upload, extraction jobs, review UI, audit log) are allowed only when they directly serve a paid client deliverable. The kit hardens from real client work, not from speculative product building. Revisit productization after 90 days — not before.
+      </div>
+
+      <h3>Entity &amp; Legal</h3>
+      <div class="card">
+        <ul>
+          <li><strong>Entity:</strong> Varholdt AI LLC (Louisiana single-member, disregarded entity for tax). File Week 2.</li>
+          <li><strong>EIN:</strong> Apply Week 2.</li>
+          <li><strong>Banking:</strong> Mercury or Relay business checking. Stripe for invoices. 30% of revenue to tax savings.</li>
+          <li><strong>Bookkeeping:</strong> Wave initially.</li>
+          <li><strong>Insurance:</strong> E&amp;O / professional liability $1M minimum. Cyber liability when handling sensitive docs.</li>
+        </ul>
+        <h4>Legal templates needed (Week 2, attorney review before first paid engagement)</h4>
+        <ul>
+          <li>Mutual NDA</li>
+          <li>Sprint SOW</li>
+          <li>Fractional AI Department Retainer SOW</li>
+          <li>Build Project SOW (exception case template)</li>
+          <li>Independent contractor agreement (future subcontractors)</li>
+        </ul>
+      </div>
+
+      <h3>Support Boundaries (in every retainer SOW)</h3>
+      <ul>
+        <li>Business hours support, same-business-day response</li>
+        <li>No 24/7, no SLA, no uptime guarantee unless separately priced</li>
+        <li>Hosting + AI tokens included up to monthly cap; pass-through above</li>
+        <li>Bugs fixed inside retainer; new features quoted separately</li>
+        <li>Human-review required for all deployed workflows</li>
+        <li>Liability cap at contract value</li>
+        <li>30-day notice for cancellation, no refund of paid months</li>
+        <li>Continuing Operations tier discussed at month 5; not committed in advance</li>
+      </ul>
+    </section>
+
+    <!-- ============= PART 9 ============= -->
+    <section id="part-9">
+      <h2 class="section"><span class="part-num">Part 9</span>Outreach Channels</h2>
+      <p class="section-tag">Priority order. Spend the first 90 days here.</p>
+
+      <div class="card highlight">
+        <h3>Channel 1 — Warm-intro hunting <span class="mini" style="font-weight: 400;">(single highest-leverage, starts Week 1)</span></h3>
+        <h4>Sources</h4>
+        <ul>
+          <li>D. Wille alumni now in GovCon or document-heavy ops</li>
+          <li>Veteran founder networks</li>
+          <li>Convex / hackathon network</li>
+          <li>LinkedIn second-degree connections at target companies</li>
+          <li>Local Lafayette/Acadiana professional network</li>
+          <li>GovCon-adjacent: proposal consultants, capture consultants, fractional CFOs, GovCon attorneys, accountants</li>
+        </ul>
+        <p><strong>Goal:</strong> 5–10 warm intros in first 90 days.</p>
+      </div>
+
+      <div class="card purple">
+        <h3>Channel 2 — Convex / Platform Partner</h3>
+        <p>The Convex hackathon win is the warmest non-network channel.</p>
+        <h4>First email (send Wednesday Week 1)</h4>
+        <blockquote>
+          <p><strong>Subject:</strong> Hackathon followup + production AI implementation</p>
+          <p>Hey [Name] — Layken Varholdt, winner of the Modern Stack Hackathon with Atlas Outbound.</p>
+          <p>I'm launching Varholdt AI, a Fractional AI Department for document-heavy businesses. Most of the stack runs on Convex, and OmniBid (federal RFP parser) is already built on it.</p>
+          <p>Two reasons for the email: (1) curious what implementation gaps you're seeing from customers trying to ship production AI on Convex, and (2) happy to write up a technical case study on Atlas, OmniBid, or a future client implementation if useful.</p>
+          <p>30 minutes this week or next?</p>
+          <p>— Layken</p>
+        </blockquote>
+        <p class="mini"><strong>Backup platforms (same pattern):</strong> Vapi, Vercel, Clerk, Supabase, Resend.</p>
+      </div>
+
+      <div class="card">
+        <h3>Channel 3 — Trigger-based Cold Outbound</h3>
+        <p><strong>Quality over volume. 10–15 high-fit sends per week max.</strong></p>
+        <h4>Triggers to look for</h4>
+        <ul>
+          <li>Proposal manager / capture manager / BD role openings</li>
+          <li>Recent contract award announcements</li>
+          <li>Hiring for compliance, contract specialist, admin roles</li>
+          <li>Visible RFP volume (SAM.gov subaward history)</li>
+          <li>Set-aside designation growth</li>
+          <li>Claims volume signals (insurance)</li>
+          <li>Hiring surges suggesting document-volume growth</li>
+        </ul>
+        <p><strong>Format:</strong> Email + LinkedIn message. Reference the trigger. Short. Loom link.</p>
+      </div>
+
+      <div class="card warn">
+        <h3>Channel 4 — Partner / Referral <span class="mini" style="font-weight: 400;">(after first case study)</span></h3>
+        <p><strong>Targets:</strong> Proposal consultants, capture consultants, fractional BD leaders, GovCon accountants/attorneys/CPAs, regional CRM implementers, veteran business networks.</p>
+        <p><strong>Offer:</strong> 10% of first project for closed referral, or reciprocal content/case study partnership.</p>
+      </div>
+
+      <div class="card">
+        <h3>Channel 5 — LinkedIn Content <span class="mini" style="font-weight: 400;">(starts Week 3)</span></h3>
+        <p>3 posts/week. Topics:</p>
+        <ul>
+          <li>"Here's how I'd rebuild [specific workflow] for a [segment] team"</li>
+          <li>Lessons from OmniBid, Atlas, Civicly (honest build studies, not fake client stories)</li>
+          <li>Buy vs build vs integrate examples</li>
+          <li>Human-reviewed AI as a positioning argument</li>
+          <li>Why fractional beats either DIY or hiring</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============= PART 10 ============= -->
+    <section id="part-10">
+      <h2 class="section"><span class="part-num">Part 10</span>Case Study Discipline</h2>
+      <p class="section-tag">Non-negotiable. The temptation to fluff is the fastest way to destroy this business.</p>
+
+      <h3>Three Categories of Credibility Content</h3>
+      <div class="grid">
+        <div class="card highlight">
+          <h4 style="color: var(--accent);">1. Build studies</h4>
+          <p>OmniBid, Atlas, Civicly, Mesh Mind, TeachMagic. Framed honestly as "systems I designed and built to demonstrate [capability]. <strong>Not paid client engagements.</strong> Architecture maps to client workflows like [example]."</p>
+        </div>
+        <div class="card success">
+          <h4 style="color: var(--success);">2. Founding engagement case studies</h4>
+          <p>First 2–3 paid sprints. Real workflow, real before/after, real metrics or grounded estimates, real testimonial if earned, real limitations stated.</p>
+        </div>
+        <div class="card purple">
+          <h4 style="color: var(--purple);">3. Paid case studies</h4>
+          <p>Every Sprint and Retainer SOW includes case study permission language with anonymization option.</p>
+        </div>
+      </div>
+
+      <h3>Targets</h3>
+      <div class="grid">
+        <div class="stat"><div class="stat-label">By Month 6</div><div class="stat-value">3–4</div><div class="stat-sub">credible case studies</div></div>
+        <div class="stat"><div class="stat-label">By Month 12</div><div class="stat-value">6–10</div><div class="stat-sub">credible case studies</div></div>
+      </div>
+
+      <h3 style="color: var(--danger);">Will Never Do</h3>
+      <ul class="no-list">
+        <li><span class="cross"></span>Invent client names</li>
+        <li><span class="cross"></span>Attribute outcomes to companies not worked with</li>
+        <li><span class="cross"></span>Inflate metrics</li>
+        <li><span class="cross"></span>Imply self-built demos were paid engagements</li>
+        <li><span class="cross"></span>Use stock-photo "client" representations</li>
+        <li><span class="cross"></span>Reference the DOL contract as a public case study</li>
+      </ul>
+    </section>
+
+    <!-- ============= PART 11 ============= -->
+    <section id="part-11">
+      <h2 class="section"><span class="part-num">Part 11</span>Risks &amp; How They're Handled</h2>
+
+      <div class="card danger">
+        <h3>1. Doc-rewriting addiction <span class="mini" style="font-weight:400;">(biggest risk)</span></h3>
+        <p>The pattern of rewriting the founding doc instead of executing it has already happened five times. <strong>Rule: this is the last rewrite before a buyer conversation.</strong> Subsequent revisions only after 50 outreach attempts have been made.</p>
+      </div>
+
+      <div class="card warn">
+        <h3>2. No conversations after 30 outreach attempts</h3>
+        <p>Diagnosis order: (1) target list quality, (2) outreach message, (3) offer. <strong>Do not jump to (3).</strong> Re-examine (1) and (2) first with a specific friend or advisor.</p>
+      </div>
+
+      <div class="card">
+        <h3>3. First sprint client provides no access</h3>
+        <p><strong>Mitigation:</strong> SOW requires sample docs and 2–4 stakeholder interviews. If client cannot provide these in Day 1 kickoff, the sprint pauses.</p>
+      </div>
+
+      <div class="card">
+        <h3>4. Scope creep</h3>
+        <p>One workflow per sprint. Fixed SOW. New requests = bugs (fix), change requests (out of scope), or new SOWs (quote separately). <strong>No exceptions, including for friends.</strong></p>
+      </div>
+
+      <div class="card">
+        <h3>5. AI cost surprises</h3>
+        <p>Pass-through above cap. Monitor weekly. Recalculate caps after sprint #1 against real workflow data.</p>
+      </div>
+
+      <div class="card">
+        <h3>6. FDEs from AI labs</h3>
+        <p>Not a near-term threat for the ICP. Anthropic and OpenAI FDEs target Fortune 500. The 40-person SDVOSB and the 80-person regional insurance agency are not their customers and won't be for years.</p>
+      </div>
+
+      <div class="card">
+        <h3>7. SaaS commoditization of generic workflows</h3>
+        <p><strong>Mitigation:</strong> Buy/build/integrate stays a core principle. Recommend SaaS when SaaS fits. Win where workflows are specific, cross-system, human-reviewed, and poorly served by generic tools.</p>
+      </div>
+
+      <div class="card">
+        <h3>8. Solo bandwidth crush</h3>
+        <p>Hard cap at one active sprint OR one active retainer build at a time until delivery process is proven. <strong>Do not sign retainer #2 until retainer #1 is past month 2 and stable.</strong></p>
+      </div>
+
+      <div class="card">
+        <h3>9. Income volatility</h3>
+        <p>Keep DOL job until <strong>6 months of family expenses in cash AND meaningful recurring revenue</strong> (retainer revenue ≥ $10K/mo with at least one renewed client).</p>
+      </div>
+
+      <div class="card">
+        <h3>10. Liability event</h3>
+        <p><strong>Mitigation:</strong> human-in-the-loop on every deployed workflow, audit logs, decision-support framing (never autonomous high-stakes decisions), E&amp;O coverage, contract liability caps.</p>
+      </div>
+    </section>
+
+    <!-- ============= PART 12 ============= -->
+    <section id="part-12">
+      <h2 class="section"><span class="part-num">Part 12</span>Success Milestones</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <h4>DAY 30 · June 19</h4>
+          <h3>First sprint delivered</h3>
+          <ul>
+            <li>1 paid sprint sold (delivered or in delivery)</li>
+            <li>1 retainer proposal sent</li>
+            <li>50+ outreach attempts</li>
+            <li>LLC and EIN active</li>
+            <li>Landing page, PDF, Loom live</li>
+          </ul>
+          <p class="mini" style="color: var(--danger);"><strong>Failure signal:</strong> Zero discovery calls. Diagnose target list and outreach copy.</p>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 60 · July 19</h4>
+          <h3>First retainer or second sprint</h3>
+          <ul>
+            <li>1 retainer signed OR 2 sprints sold</li>
+            <li>1 case study published (anonymized if needed)</li>
+            <li>5+ active prospects in pipeline</li>
+            <li>Convex relationship has produced at least one conversation</li>
+          </ul>
+          <p class="mini" style="color: var(--danger);"><strong>Failure signal:</strong> Sprints sell but retainers don't convert. Diagnose offer or sprint quality.</p>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 90 · August 18</h4>
+          <h3>Recurring revenue established</h3>
+          <ul>
+            <li>1 active retainer + 1 sprint sold OR 2 active retainers</li>
+            <li>2 credible case studies</li>
+            <li><strong>$6K–$12K MRR</strong></li>
+            <li>Clear evidence on which segment pulls hardest</li>
+          </ul>
+          <p class="mini" style="color: var(--danger);"><strong>Failure signal:</strong> Under $6K MRR. Hard re-examine ICP, offer, and sales execution. <em>Doc rewrite is permitted at this checkpoint, not before.</em></p>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 180 · November 16</h4>
+          <h3>Two retainers, process documented</h3>
+          <ul>
+            <li>2 active retainers</li>
+            <li>3–4 case studies</li>
+            <li><strong>$12K–$20K MRR</strong></li>
+            <li>Repeatable delivery process documented from real engagements</li>
+            <li>Decision point: subcontractor needed? Productize a repeated workflow?</li>
+          </ul>
+        </div>
+
+        <div class="timeline-item">
+          <h4>DAY 365 · May 20, 2027</h4>
+          <h3>Income replaced</h3>
+          <div class="grid">
+            <div class="stat">
+              <div class="stat-label">Success</div>
+              <div class="stat-value">$20–25K MRR</div>
+              <div class="stat-sub">matches DOL income</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Excellent</div>
+              <div class="stat-value">$35K+ MRR</div>
+              <div class="stat-sub">surpasses meaningfully</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label">Exceptional</div>
+              <div class="stat-value">$50K+ MRR</div>
+              <div class="stat-sub">requires subcontractor / employee</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= PART 13 ============= -->
+    <section id="part-13">
+      <h2 class="section"><span class="part-num">Part 13</span>The Anti-Pivot Rule</h2>
+
+      <div class="card danger">
+        <p style="font-size: 17px;">This document is <strong>v5</strong>. v1 through v4 were written without a single buyer conversation having taken place. <strong>v5 is the last rewrite</strong> until one of the following is true:</p>
+        <ol>
+          <li><strong>50 outreach attempts have been made and produced zero discovery calls</strong> → then revise the outreach copy and target list, not the offer.</li>
+          <li><strong>10 discovery calls have been completed and produced zero sprint sales</strong> → then revise the offer.</li>
+          <li><strong>2 sprints have been delivered and produced zero retainer conversions</strong> → then revise the retainer structure.</li>
+        </ol>
+      </div>
+
+      <div class="callout warn">
+        <div class="callout-title"><span class="callout-icon">⛔</span>Not on the list</div>
+        <ul style="margin: 6px 0;">
+          <li>Reading a Twitter screenshot</li>
+          <li>Reading another agent's reply</li>
+          <li>Having a worry on a Tuesday night</li>
+        </ul>
+        <p style="margin-top: 12px;"><strong>The doc is good enough. Execute it.</strong></p>
+      </div>
+
+      <div class="card highlight" style="text-align: center; padding: 32px;">
+        <p style="font-size: 20px; line-height: 1.4; margin: 0; color: #fff;">
+          The first milestone is not a better doc. The first milestone is a <strong style="color: var(--accent);">20-minute discovery call with a real prospective buyer</strong> about a real workflow before <strong>June 3</strong>.
+        </p>
+        <p style="margin-top: 20px; color: var(--text-mute); font-size: 15px;">Everything else is logistics.</p>
+      </div>
+    </section>
+
+    <hr>
+    <p class="mini" style="text-align: center; color: var(--text-mute);">
+      Varholdt AI · Founding Document v5 · Last updated 2026-05-20
+    </p>
+
+  </main>
+</div>
+</body>
+</html>

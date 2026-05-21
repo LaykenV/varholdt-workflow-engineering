@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Varholdt AI — Fractional AI Department for Document-Heavy Teams</title>
+<style>
+  :root {
+    --ink:    #0f1a2b;
+    --ink-2:  #2a3650;
+    --muted:  #5a6479;
+    --rule:   #c9ced9;
+    --paper:  #fbfaf6;
+    --accent: #8a6a1e;
+    --accent-soft: #f3ecd9;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #e8e6df;
+    color: var(--ink);
+    font-family: "Georgia", "Iowan Old Style", "Charter", serif;
+    font-size: 10.5pt;
+    line-height: 1.4;
+  }
+
+  .ui {
+    max-width: 8.5in;
+    margin: 16px auto 0;
+    padding: 10px 18px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    color: #444;
+    background: #fff8d6;
+    border: 1px solid #e0d68a;
+    border-radius: 6px;
+  }
+  .ui b { color: #222; }
+
+  .page {
+    width: 8.5in;
+    min-height: 11in;
+    margin: 16px auto;
+    background: var(--paper);
+    padding: 0.55in 0.6in 0.5in;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ----- Header ----- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1.5px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .brand {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    font-size: 12.5pt;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .brand .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    margin-right: 8px;
+    transform: translateY(-1px);
+  }
+  .brand small {
+    display: block;
+    font-weight: 400;
+    font-size: 8pt;
+    letter-spacing: 0.22em;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .meta {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 8.5pt;
+    color: var(--muted);
+    text-align: right;
+    letter-spacing: 0.04em;
+  }
+  .meta b { color: var(--ink); font-weight: 600; }
+
+  /* ----- Hero ----- */
+  .hero {
+    padding: 18px 0 14px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero h1 {
+    font-family: "Georgia", serif;
+    font-weight: 400;
+    font-size: 22pt;
+    line-height: 1.15;
+    margin: 0 0 10px;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .hero p {
+    margin: 0;
+    font-size: 10.5pt;
+    color: var(--ink-2);
+    max-width: 6.6in;
+    line-height: 1.5;
+  }
+
+  /* ----- Body grid ----- */
+  .body {
+    display: grid;
+    grid-template-columns: 1.35fr 1fr;
+    gap: 22px;
+    padding: 14px 0 0;
+    flex: 1;
+  }
+
+  h2 {
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: var(--accent);
+    margin: 0 0 6px;
+  }
+
+  section { margin-bottom: 14px; }
+  section p { margin: 0 0 6px; }
+
+  /* What we build */
+  .builds {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+  .builds li {
+    display: grid;
+    grid-template-columns: 1.4in 1fr;
+    gap: 10px;
+    font-size: 10pt;
+    align-items: baseline;
+    padding: 4px 0;
+    border-bottom: 1px dotted var(--rule);
+  }
+  .builds li:last-child { border-bottom: none; }
+  .builds b {
+    font-family: -apple-system, sans-serif;
+    font-size: 9pt;
+    font-weight: 600;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .builds span { color: var(--ink-2); }
+
+  /* Who it's for */
+  .who {
+    font-size: 10pt;
+    color: var(--ink-2);
+  }
+  .who .segs {
+    margin-top: 4px;
+    font-family: -apple-system, sans-serif;
+    font-size: 8.5pt;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+  .who .segs span {
+    display: inline-block;
+    border: 1px solid var(--rule);
+    padding: 2px 8px;
+    margin: 0 4px 4px 0;
+    background: #fff;
+  }
+  .who .size {
+    margin-top: 6px;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 9.5pt;
+  }
+
+  /* Engagement box */
+  .engagement {
+    border: 1px solid var(--ink);
+    background: #fff;
+    padding: 12px 14px;
+  }
+  .engagement .row {
+    display: grid;
+    grid-template-columns: 0.85in 1fr;
+    gap: 10px;
+    padding: 6px 0;
+    border-top: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .engagement .row:first-of-type { border-top: none; }
+  .engagement .tag {
+    font-family: -apple-system, sans-serif;
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+  }
+  .engagement .price {
+    font-family: "Georgia", serif;
+    font-size: 12pt;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .engagement .desc {
+    font-size: 9.5pt;
+    color: var(--ink-2);
+    line-height: 1.45;
+  }
+  .engagement .footnote {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--rule);
+    font-size: 8.5pt;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Proof */
+  .proof {
+    background: var(--accent-soft);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin-top: 4px;
+  }
+  .proof ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 9.5pt;
+    color: var(--ink);
+  }
+  .proof li {
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(138, 106, 30, 0.18);
+  }
+  .proof li:last-child { border-bottom: none; }
+  .proof b { font-family: -apple-system, sans-serif; font-weight: 600; }
+
+  /* ----- CTA footer ----- */
+  .cta {
+    margin-top: auto;
+    border-top: 1.5px solid var(--ink);
+    padding-top: 12px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 18px;
+    align-items: center;
+  }
+  .cta .pitch {
+    font-family: "Georgia", serif;
+    font-size: 13pt;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+  .cta .pitch em {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .cta .contact {
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 9.5pt;
+    color: var(--ink-2);
+    text-align: right;
+    line-height: 1.55;
+  }
+  .cta .contact b {
+    display: block;
+    font-size: 8.5pt;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin-bottom: 2px;
+    font-weight: 700;
+  }
+  .cta .contact a {
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ----- Print rules ----- */
+  @page {
+    size: Letter;
+    margin: 0;
+  }
+  @media print {
+    html, body { background: #fff; }
+    .ui { display: none !important; }
+    .page {
+      margin: 0;
+      box-shadow: none;
+      width: 8.5in;
+      min-height: 11in;
+      padding: 0.55in 0.6in 0.5in;
+      page-break-after: avoid;
+    }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ui">
+  <b>Export to PDF:</b> Press <b>Cmd+P</b> (Mac) or <b>Ctrl+P</b> (Windows) → set destination to
+  <b>Save as PDF</b> → <b>Margins: None</b> → <b>Background graphics: On</b>. This box won't appear in the PDF.
+</div>
+
+<article class="page">
+
+  <header>
+    <div class="brand">
+      <span class="dot"></span>Varholdt&nbsp;AI
+      <small>Fractional AI Department</small>
+    </div>
+    <div class="meta">
+      <b>One-pager · v1</b><br />
+      varholdt.ai
+    </div>
+  </header>
+
+  <div class="hero">
+    <h1>Install practical AI workflows<br /><em>without hiring an AI team.</em></h1>
+    <p>
+      A senior AI operator inside your business for six months. We find the workflows worth
+      automating, build them, train your team, and keep them running. You don't hire a full
+      AI department &mdash; you rent one.
+    </p>
+  </div>
+
+  <div class="body">
+
+    <div class="col-left">
+
+      <section>
+        <h2>What we build</h2>
+        <ul class="builds">
+          <li><b>RFP Shred</b><span>Parse RFPs, extract requirements, generate compliance matrices with citations.</span></li>
+          <li><b>Document Intake</b><span>Ingest PDFs, forms, and email attachments &mdash; extract structured data with confidence scores.</span></li>
+          <li><b>Knowledge Search</b><span>Internal RAG over policies, past work, and SOPs &mdash; cited answers, no hallucinated ones.</span></li>
+          <li><b>Drafting Workbench</b><span>Human-reviewed first drafts of proposals, responses, claims notes, and client updates.</span></li>
+          <li><b>Missing-Info Detection</b><span>Flag what a packet is missing before it goes out the door &mdash; not after.</span></li>
+        </ul>
+      </section>
+
+      <section class="who">
+        <h2>Who it's for</h2>
+        <div class="segs">
+          <span>GovCon</span>
+          <span>Proposal &amp; Capture</span>
+          <span>Staffing</span>
+          <span>Regional Insurance</span>
+          <span>CPA / Accounting</span>
+          <span>Construction Back-Office</span>
+        </div>
+        <div class="size">Teams of 20–250 with recurring document, form, and email volume.</div>
+      </section>
+
+    </div>
+
+    <div class="col-right">
+
+      <section>
+        <h2>The engagement</h2>
+        <div class="engagement">
+          <div class="row">
+            <div class="tag">Month 1</div>
+            <div>
+              <div class="price">$5,000 · AI Workflow Sprint</div>
+              <div class="desc">Ten business days. One workflow mapped, one working prototype, one 90-day roadmap, one leadership training session.</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="tag">Months 2–6</div>
+            <div>
+              <div class="price">$6,000 / month · Fractional AI Department</div>
+              <div class="desc">Senior AI strategy plus implementation. One core workflow shipped to production, supporting automations, team training, monthly ROI reporting.</div>
+            </div>
+          </div>
+          <div class="footnote">
+            Founding rate &mdash; first two clients only. Sprint credits 100% toward retainer if signed within 14 days.
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Proof</h2>
+        <div class="proof">
+          <ul>
+            <li><b>1st place</b> &middot; Convex Modern Stack Hackathon ($10K)</li>
+            <li><b>Active federal contractor</b> &middot; U.S. Department of Labor</li>
+            <li><b>Air Force veteran</b> &middot; Munitions Systems (2W0X1)</li>
+            <li><b>8 production systems</b> &middot; including OmniBid (federal RFP parser) and Civicly (legislative RAG)</li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="cta">
+    <div class="pitch">
+      If your team is drowning in documents, <em>let's spend twenty minutes on the one workflow that costs you the most hours.</em>
+    </div>
+    <div class="contact">
+      <b>Book a call</b>
+      <a href="https://calendly.com/varholdt-ai">calendly.com/varholdt-ai</a><br />
+      <a href="mailto:layken@varholdt.ai">layken@varholdt.ai</a><br />
+      Youngsville, LA
+    </div>
+  </div>
+
+</article>
+
+</body>
+</html>

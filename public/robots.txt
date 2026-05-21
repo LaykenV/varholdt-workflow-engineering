@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://varholdt.ai/sitemap-index.xml

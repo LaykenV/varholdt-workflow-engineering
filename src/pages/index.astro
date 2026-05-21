@@ -1,0 +1,52 @@
+---
+import SiteLayout from "@/layouts/SiteLayout.astro";
+import { marketingPage } from "@/data/marketing";
+import "@/styles/global.css";
+
+const calendlyUrl =
+  import.meta.env.PUBLIC_CALENDLY_URL ?? "https://calendly.com/layken-varholdt/20min";
+const loomUrl = import.meta.env.PUBLIC_LOOM_URL;
+const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? "layken@varholdt.ai";
+---
+
+<SiteLayout title={marketingPage.title} description={marketingPage.description}>
+  <main class="page-shell">
+    <section class="placeholder-hero" aria-labelledby="page-title">
+      <p class="eyebrow">{marketingPage.eyebrow}</p>
+      <h1 id="page-title">{marketingPage.headline}</h1>
+      <p class="subheadline">{marketingPage.subheadline}</p>
+      <p>{marketingPage.body}</p>
+
+      <div class="actions" aria-label="Primary actions">
+        <a class="button" href={calendlyUrl}>Book a 20-minute call</a>
+        <a class="button secondary" href={`mailto:${contactEmail}`}>Email Layken</a>
+        {
+          loomUrl ? (
+            <a class="button secondary" href={loomUrl}>Watch the 2-minute demo</a>
+          ) : null
+        }
+      </div>
+    </section>
+
+    <section class="placeholder-grid" aria-label="Launch content placeholders">
+      <article>
+        <h2>Offer</h2>
+        <p>{marketingPage.offer}</p>
+      </article>
+
+      <article>
+        <h2>What We Build</h2>
+        <ul>
+          {marketingPage.examples.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+
+      <article>
+        <h2>Proof</h2>
+        <ul>
+          {marketingPage.proof.map((item) => <li>{item}</li>)}
+        </ul>
+      </article>
+    </section>
+  </main>
+</SiteLayout>
