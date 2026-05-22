@@ -61,8 +61,18 @@ const builds = [
 ];
 
 const integrationChips = [
-  "Outlook", "Gmail", "Slack", "Teams", "SharePoint", "Drive",
-  "Excel / Sheets", "HubSpot", "Salesforce", "ATS", "SAM.gov", "Word",
+  { name: "Slack", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/slack.svg" },
+  { name: "Teams", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftteams.svg" },
+  { name: "Outlook", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftoutlook.svg" },
+  { name: "Gmail", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/gmail.svg" },
+  { name: "SharePoint", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftsharepoint.svg" },
+  { name: "Google Drive", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googledrive.svg" },
+  { name: "Excel", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftexcel.svg" },
+  { name: "Sheets", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googlesheets.svg" },
+  { name: "HubSpot", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/hubspot.svg" },
+  { name: "Salesforce", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/salesforce.svg" },
+  { name: "Greenhouse / ATS", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/greenhouse.svg" },
+  { name: "Word", icon: "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftword.svg" },
 ];
 
 const segments = [
@@ -132,7 +142,6 @@ const heroChips = [
   <header class="nav" id="site-nav">
     <div class="container nav-row">
       <a href="#top" class="brand">
-        <span class="brand-mark">V</span>
         <span>Varholdt AI</span>
       </a>
       <nav class="nav-links">
@@ -490,7 +499,10 @@ const heroChips = [
 
         <div class="integration-chips reveal">
           {integrationChips.map((t) => (
-            <span class="integration-chip">{t}</span>
+            <span class="integration-chip">
+              <img class="integration-logo" src={t.icon} alt={`${t.name} logo`} loading="lazy" />
+              <span>{t.name}</span>
+            </span>
           ))}
         </div>
       </div>
@@ -826,7 +838,7 @@ const heroChips = [
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <h2 class="footer-mark">Varholdt.</h2>
+        <h2 class="footer-mark">Varholdt AI</h2>
         <div class="footer-meta">
           <div>Varholdt AI LLC — est. 2026</div>
           <div>Youngsville, Louisiana</div>

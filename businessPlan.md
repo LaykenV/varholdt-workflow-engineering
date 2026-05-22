@@ -321,6 +321,26 @@ Six named agents we lead with in sales. Each one is described in a four-line spe
 
 **Where the agent lives ("delivery surface"):** Default delivery is whichever existing tool the team already lives in — Outlook / Gmail, Slack / Teams, SharePoint / Drive, the CRM, the ATS, Excel. A lightweight web app is added only where review and control specifically require one (e.g., a review queue UI with confidence highlighting and audit log). Promise: **every sprint has one primary interface and one export destination — no Zapier-in-a-trench-coat integration sprawl.**
 
+**Integration research note (May 2026):** Do not describe these as "Vercel AI SDK supports every app natively." The accurate positioning is: Vercel AI SDK gives us the agent/runtime layer, tool calling, and MCP client support; Vercel Chat SDK gives us a practical multi-chat delivery layer; app APIs, MCP servers, and automation bridges give us the actual system connections. Research sources: [AI SDK MCP tools](https://ai-sdk.dev/docs/ai-sdk-core/mcp-tools), [AI SDK tools and tool calling](https://ai-sdk.dev/docs/ai-sdk-core/tools-and-tool-calling), [Vercel Chat SDK KB](https://vercel.com/kb/chat-sdk), [Chat SDK guide](https://vercel.com/kb/guide/the-complete-guide-to-chat-sdk/), [Slack + Vercel agent skill](https://docs.slack.dev/ai/getting-started-with-vercel-skill).
+
+**Priority integration surfaces for Varholdt AI:**
+
+| Priority | Integration | Why it matters for our clients | Build path |
+|---|---|---|---|
+| 1 | Slack | Best "agent in the channel" proof surface for teams already living in Slack. Great for intake, approvals, status updates, knowledge search, and exception routing. | Vercel Slack Agent Skill / Chat SDK + AI SDK tools; Slack MCP or Slack API where useful. |
+| 1 | Microsoft Teams | Most likely chat surface for GovCon, insurance, accounting, and Microsoft 365-heavy SMBs. | Chat SDK Teams adapter / Bot Framework, then AI SDK tools behind it. |
+| 1 | Outlook | Email is still the system of record for document-heavy workflows: inbound requests, attachments, approvals, and outbound drafts. | Microsoft Graph API + AI SDK tools; route sensitive actions through human approval. |
+| 1 | SharePoint | Critical for Microsoft 365 document stores, SOPs, proposal libraries, client folders, and audit trails. | Microsoft Graph API / MCP where available; retrieval + citation layer. |
+| 1 | Google Drive | Common document source for smaller teams and proposal consultants. | Google Drive API / MCP where available; retrieval + citation layer. |
+| 1 | Gmail | Strong email surface for smaller professional services teams. | Gmail API + AI SDK tools; draft-only by default. |
+| 2 | Excel / Google Sheets | Where SMB workflow reality often lives: trackers, compliance matrices, claim logs, candidate sheets, and reporting. | Microsoft Graph, Google Sheets API, or export/import workflow. |
+| 2 | HubSpot | Likely CRM for SMB sales/service teams; useful for intake, follow-ups, notes, and pipeline updates. | HubSpot API / MCP where available; write actions behind approval. |
+| 2 | Salesforce | Relevant for larger SMBs and insurance/staffing ops with established CRM process. | Salesforce API / MCP where available; scoped object-level tools. |
+| 2 | ATS systems | Staffing and recruiting need resume parsing, candidate-job matching, and submission workflows. | Start with Greenhouse / Lever APIs where present; otherwise structured CSV/email handoff. |
+| 3 | Google Chat | Useful when a client is fully Google Workspace and wants chat-native workflows. | Chat SDK Google Chat adapter + AI SDK tools. |
+| 3 | GitHub / Linear | Relevant only for technical clients or internal delivery ops, not the primary document-heavy ICP. | Chat SDK adapters / APIs for issue triage, code review, and delivery tracking. |
+| 3 | Zapier / Make / n8n / Pipedream | Fast way to reach long-tail apps during a sprint without overbuilding custom connectors. | Use as bridge/prototype layer only; replace with direct API if workflow becomes core. |
+
 
 ### Asset 1 — The One-Page PDF
 
@@ -355,7 +375,7 @@ Re-record until it's tight. Three takes minimum. No "ums," no fumbling. This is 
 **One screen. Above the fold:**
 
 - Hero sentence: *Install AI workflow agents — without hiring an AI team.*
-- Subhead: *Human-reviewed agents that read your documents, draft and route the predictable work, and live in the tools your team already uses — Outlook, Slack, Teams, SharePoint, your CRM, your ATS. Not another app.*
+- Subhead: *Human-reviewed agents that read your documents, draft and route the predictable work, and live in the tools your team already uses — Slack, Teams, Outlook, Gmail, SharePoint, Drive, your CRM, your ATS. Not another app.*
 - Loom embed
 - Primary CTA: "Book a free 30-min workflow audit"
 - Secondary CTA: "Watch the 2-min demo"
@@ -363,7 +383,13 @@ Re-record until it's tight. Three takes minimum. No "ums," no fumbling. This is 
 **Below the fold (one scroll):**
 
 - **"The agents"** — 6 named agents from the Workflow Agents Catalog, each as a card showing Reads / Does / Human approves / Outputs to. This is the most-scrolled section after the hero; treat it as the primary "what they actually buy" surface.
-- **"Lives in your tools"** — a row of tool chips (Outlook, Gmail, Slack, Teams, SharePoint, Drive, Excel, HubSpot, Salesforce, ATS) with a one-line note: *"We build the workflow around the tools your team already uses. Lightweight review UI only where control specifically requires one."*
+- **"No new app. Your tools."** — render these as icon+name chips, not plain text. Use the official brand icon where allowed; otherwise use Simple Icons or the closest platform-provided asset. Keep the row scannable, buyer-facing, and focused on where work actually happens:
+
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/slack.svg" width="18" height="18" alt="Slack logo"> Slack · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftteams.svg" width="18" height="18" alt="Microsoft Teams logo"> Teams · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftoutlook.svg" width="18" height="18" alt="Microsoft Outlook logo"> Outlook · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/gmail.svg" width="18" height="18" alt="Gmail logo"> Gmail · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftsharepoint.svg" width="18" height="18" alt="Microsoft SharePoint logo"> SharePoint · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googledrive.svg" width="18" height="18" alt="Google Drive logo"> Drive · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/microsoftexcel.svg" width="18" height="18" alt="Microsoft Excel logo"> Excel · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/googlesheets.svg" width="18" height="18" alt="Google Sheets logo"> Sheets · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/hubspot.svg" width="18" height="18" alt="HubSpot logo"> HubSpot · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/salesforce.svg" width="18" height="18" alt="Salesforce logo"> Salesforce · <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/greenhouse.svg" width="18" height="18" alt="Greenhouse logo"> Greenhouse / ATS
+
+  Supporting line: *"We build the workflow around the tools your team already uses. Slack and Teams for chat-native agents; Outlook/Gmail for email workflows; SharePoint/Drive for source documents; Excel/Sheets, CRMs, and ATSs for the systems of record. Lightweight review UI only where control specifically requires one."*
+
+  Optional "long tail" sentence under the chips, only if space allows: *"Need another system? We can usually connect through direct APIs, MCP servers, or approved automation bridges like Zapier, Make, n8n, and Pipedream."*
 - **"Who it's for"** — segments
 - **"How it works"** — three-step: Free audit → $5K sprint → 6-month retainer
 - **Proof:** Convex hackathon win, DOL contract, OmniBid screenshot

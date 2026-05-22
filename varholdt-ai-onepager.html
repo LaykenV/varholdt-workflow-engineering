@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <title>Varholdt AI — AI Workflow Agents for Document-Heavy Teams</title>
+<link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
+<link rel="alternate icon" href="public/favicon-32.png" type="image/png" />
+<link rel="apple-touch-icon" href="public/apple-touch-icon.png" />
 <style>
   :root {
     --ink:    #0f1a2b;
@@ -59,6 +62,9 @@
     padding-bottom: 8px;
   }
   .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
     font-weight: 700;
     letter-spacing: 0.18em;
@@ -66,12 +72,11 @@
     text-transform: uppercase;
     color: var(--ink);
   }
-  .brand .dot {
-    display: inline-block;
-    width: 8px; height: 8px;
-    background: var(--accent);
-    margin-right: 8px;
-    transform: translateY(-1px);
+  .brand-mark {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border-radius: 8px;
   }
   .brand small {
     display: block;
@@ -333,8 +338,8 @@
 
   <header>
     <div class="brand">
-      <span class="dot"></span>Varholdt&nbsp;AI
-      <small>Fractional AI Department</small>
+      <img class="brand-mark" src="public/brand-mark.svg" alt="" width="34" height="34" />
+      <span>Varholdt&nbsp;AI<small>Fractional AI Department</small></span>
     </div>
     <div class="meta">
       <b>One-pager · v2</b><br />

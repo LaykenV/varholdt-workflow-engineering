@@ -6,6 +6,7 @@ type Props = {
 
 const { title, description } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const brandImageUrl = new URL("/brand-logo.svg", Astro.site ?? Astro.url.origin);
 ---
 
 <!doctype html>
@@ -17,6 +18,10 @@ const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin)
     <meta name="generator" content={Astro.generator} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate icon" href="/favicon-32.png" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0a0b0e" />
+    <meta property="og:image" content={brandImageUrl} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
