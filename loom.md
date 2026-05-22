@@ -29,11 +29,33 @@ If needed, say:
 
 > This is a working build study and operator tool. The same workflow pattern is what I install for client teams during a sprint.
 
+## Demo Page Details
+
+Record the OmniBid portion from:
+
+```txt
+http://localhost:3000/demo/rfp-agent
+```
+
+Implementation notes from the OmniBid repo:
+
+- Route file: `/Users/laykenvarholdt/projects/omnibid/src/routes/_authed/demo/rfp-agent.tsx`
+- Main component: `/Users/laykenvarholdt/projects/omnibid/src/routes/_authed/demo/-rfpAgentDemo.tsx`
+- Demo fixture/config: `/Users/laykenvarholdt/projects/omnibid/src/routes/_authed/demo/-demoData.ts`
+- Route is implemented under the authenticated route tree, but TanStack exposes it as `/demo/rfp-agent`.
+- App chrome is hidden on this route, so the Loom should only show the demo canvas.
+- Sign in before recording. Do not show the sign-in flow.
+- The queued public solicitation is Library of Congress solicitation `030ADV26R0008`.
+- The page uses a 15.5-second replay-style workflow animation, then loads a pinned completed Convex run when available and falls back to fixture rows if not.
+- The fixture has 19 requirements. Do not use the old "70+ requirements in under five seconds" line for this recording.
+- The UI shows source references as visible pills in the matrix. There is no PDF source jump or citation drawer in the current demo page, so do not narrate one.
+- The "Excel · Word · SharePoint" surface is a destination label, not a working export control. Do not click it or describe export as already shipped.
+
 ## 2-Minute Run Of Show
 
 ### 0:00-0:12 — Who This Is For
 
-On screen: Varholdt AI landing page hero or the OmniBid demo page title state.
+On screen: OmniBid demo page title state at `http://localhost:3000/demo/rfp-agent`.
 
 Script:
 
@@ -47,17 +69,17 @@ Script:
 
 > We build human-reviewed AI workflow agents for document-heavy teams. They read the source documents, extract the work that matters, draft or route the next step, and keep a person in the approval loop.
 
-### 0:25-0:35 — Set Up The Example
+### 0:25-0:32 — Set Up The Example
 
-On screen: demo page input panel with a pre-filled SAM.gov URL or solicitation number.
+On screen: demo page input panel with Library of Congress solicitation `030ADV26R0008` pre-filled.
 
 Script:
 
-> This example is OmniBid, an RFP Response Agent. I am using a real public solicitation from SAM.gov.
+> This example is OmniBid, an RFP Response Agent. I am using a real public Library of Congress solicitation from SAM.gov.
 
-Click the primary action.
+Click `Run Agent`.
 
-### 0:35-1:25 — The Proof Moment
+### 0:32-1:28 — The Proof Moment
 
 On screen: purpose-built demo workflow view.
 
@@ -66,22 +88,20 @@ Show these beats in order:
 1. Ingest state: solicitation is resolved and source document is acquired.
 2. Extraction state: requirements are pulled from the RFP.
 3. Matrix state: requirement rows appear grouped by category.
-4. Citation proof: pause on one row and show the source citation.
+4. Citation proof: pause on one row and point out the source reference pill.
 5. Human review: show status controls or review queue language.
 
 Script:
 
 > The agent resolves the solicitation, reads the RFP, and turns the messy document into a structured compliance matrix. The important part is traceability: every requirement carries a source reference so a human reviewer can verify it before anything leaves the team.
 
-If the selected demo reliably hits the landing-page stat, add:
+Optional line if the matrix is visible and the count reads cleanly:
 
-> In this example, it extracts more than 70 requirements in under five seconds.
+> This run produced 19 reviewable requirements across mandatory clauses, evaluation factors, personnel rules, deliverables, formatting, and certifications.
 
-Only say this if the recording actually shows it or the data is already loaded and truthful.
+### 1:28-1:47 — Pattern, Not Product
 
-### 1:25-1:45 — Pattern, Not Product
-
-On screen: matrix still visible. Optionally show a side panel titled "Same pattern, different documents."
+On screen: matrix still visible. The footer says "Varholdt AI · Human-reviewed document workflow agents."
 
 Script:
 
@@ -91,7 +111,7 @@ Then say only three examples:
 
 > For a staffing firm, that might be resumes against a requisition. For an insurance team, claims against a policy. For an accounting firm, client source docs into a review queue.
 
-### 1:45-2:00 — Single CTA
+### 1:47-2:03 — Single CTA
 
 On screen: Varholdt AI CTA or a final demo-page CTA strip.
 
@@ -104,12 +124,13 @@ Script:
 - Use one story, one workflow, one CTA.
 - Keep the talking-head intro under 15 seconds. Screen share is the proof.
 - Pre-pick the RFP. Do not browse SAM.gov live.
-- Preload the demo page and have the input queued.
+- Preload `http://localhost:3000/demo/rfp-agent` and confirm the input shows `030ADV26R0008`.
 - Hide browser bookmarks, notifications, account menus, and unrelated tabs.
 - Do not show code, terminal output, Convex dashboards, API logs, or environment variables.
 - Do not show OmniBid login/account UI.
 - Do not use words like "maybe," "still building," "rough," or "eventually."
-- Do not promise Excel/PDF export, confidence scoring, or source-document jump behavior unless it is visible and working in the recording.
+- Do not say this is a fresh live parse. The demo page uses a 15.5-second replay of a completed run for recording reliability.
+- Do not promise Excel/PDF export, confidence scoring, source-document jump behavior, or a citation drawer. They are not visible in the current demo.
 - Re-record until the final take is under 2:10. Ideal final length: 1:50-2:05.
 
 ## What To Show
@@ -121,6 +142,7 @@ Show:
 - Requirement rows grouped into clear categories.
 - Source citations or section references.
 - Human-review status controls.
+- The destination label: Excel · Word · SharePoint.
 - A final CTA to book the free workflow audit.
 
 Avoid:
@@ -140,7 +162,7 @@ Use this if recording needs to be read almost word-for-word:
 >
 > We build human-reviewed AI workflow agents for document-heavy teams. They read source documents, extract the work that matters, draft or route the next step, and keep a person in the approval loop.
 >
-> This example is OmniBid, an RFP Response Agent I built around public federal solicitations. I am going to start with a SAM.gov opportunity and turn it into a compliance matrix.
+> This example is OmniBid, an RFP Response Agent I built around public federal solicitations. This is a real Library of Congress solicitation from SAM.gov, packaged as a clean demo of the workflow.
 >
 > The agent resolves the solicitation, reads the source document, and extracts the requirements into a structured matrix. The important part is traceability: every row carries a source reference, so a human reviewer can verify the requirement before it becomes part of the proposal workflow.
 >
@@ -150,13 +172,17 @@ Use this if recording needs to be read almost word-for-word:
 
 ## Pre-Recording Checklist
 
-- Choose one public RFP that parses cleanly.
-- Confirm the requirement count and best citation examples.
+- Start the OmniBid dev server and open `http://localhost:3000/demo/rfp-agent`.
+- Sign in before recording if the route redirects through auth.
+- Confirm the demo page is full-screen and app chrome is hidden.
+- Confirm the queued solicitation is `030ADV26R0008`.
+- Confirm the requirement count reads `19`.
+- Pick one row with a clean source reference to pause on during the recording.
 - Confirm no CUI, private company data, or logged-in personal data appears.
 - Clear browser chrome as much as possible.
 - Turn on Do Not Disturb.
 - Use a 1440px-wide browser window unless Loom capture looks better full screen.
-- Run one silent click-through before recording.
+- Run one silent click-through: idle state → `Run Agent` → workflow animation → matrix ready → approve one row.
 - Record at least three takes.
 - Use the tightest take, not the first complete take.
 
@@ -167,4 +193,3 @@ The Loom is successful if a buyer can answer all three questions within two minu
 1. What does Varholdt AI build?
 2. Can Layken actually ship a working document workflow?
 3. What should I do next?
-
