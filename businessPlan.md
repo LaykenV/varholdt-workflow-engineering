@@ -1,33 +1,41 @@
-# Varholdt AI — Founding Document (v5)
+# Varholdt AI — Founding Document (v6)
 
-**Date:** 2026-05-20. Supersedes v4.
+**Date:** 2026-05-22. Supersedes v5.
 
 **What this doc is:** The complete operating plan for Varholdt AI. Designed to be handed off to another agent or picked up by Layken in two weeks and executed without re-deliberation. If a question is not answered here, the default is: stop writing, send the next outreach message, and let real buyer conversations resolve it.
 
-**What changed from v4:**
+**What changed from v5 (and why):**
 
-- Repositioned from "AI Workflow Engineering" to **Fractional AI Department for document-heavy businesses**. Buyers understand "department." They do not understand "workflow engineering" without an additional sentence of explanation.
-- Sprint + retainer replaces Teardown + Build + Launch Support as the primary offer structure. Custom builds remain on the menu but are no longer the main pitch.
-- ICP widened from "GovCon primary, others secondary through warm intros" to **document-heavy broadly** (GovCon, proposal consultants, staffing, regional insurance, CPA/accounting, construction back office). The first 50 outreach attempts cast a wider net to find any real workflow pain, then narrow based on what pulls.
-- Week 1 is reduced to four assets and an outreach list. Brand site is a single landing page, not a multi-section site. LLC/EIN/insurance push to Week 2.
-- Founding sprint price is $5,000 credited toward a 6-month retainer if signed within 14 days of sprint delivery.
-- No SaaS for 90 days. Reusable code modules are OK only when they serve a paid client's deliverable. OmniBid stays as a demo asset only.
-- CUI/CMMC deployment tier framework retained from v4 because it is a credibility moat in GovCon discovery calls.
-- Anti-pivot rule added: this is the last rewrite of the founding doc before a buyer conversation happens. Doc revisions are not progress.
+- Added a **Free 30-Minute AI Workflow Audit** as the new front door above the $5K Sprint. Reasoning: competitive scan against Cyndra showed that low-friction first-call CTAs are standard at this stage. The $5K sprint stays as paid proof; the audit is a sales motion, not a deliverable.
+- Reframed the offering surface as **agents that live in the tools your team already uses** (Outlook/Gmail, Slack/Teams, SharePoint/Drive, CRMs, ATSs, Excel). The underlying work is unchanged — what shifts is how it's described to buyers who don't want "another app."
+- Restructured workflow examples as **named agents with a four-line spec** (Reads / Does / Human approves / Outputs to). More tangible than "AI workflows." Aligns with how prospects actually shop.
+- Reframed GovCon positioning from *capture/strategy expertise* (which Layken does not have) to **document workflow expertise for federal-adjacent teams**. Veteran + DOL credentials read as "I get the federal world," not "I know how RFPs are won." Proposal consultants become a partner channel rather than a substitute for domain depth.
+- v5 retained: Fractional AI Department framing, document-heavy SMB ICP, sprint→retainer→continuing operations stack, CUI/CMMC deployment tiers, anti-pivot rule.
+
+**What changed from v4 (kept for context):**
+
+- Repositioned from "AI Workflow Engineering" to **Fractional AI Department for document-heavy businesses**.
+- Sprint + retainer replaced Teardown + Build + Launch Support as the primary offer structure.
+- ICP widened from "GovCon primary" to **document-heavy broadly**.
+- Week 1 reduced to four assets and an outreach list. Single landing page, not multi-section.
+- Founding sprint price set at $5,000, credited toward retainer if signed within 14 days.
+- No SaaS for 90 days. CUI/CMMC tier framework retained as GovCon credibility moat.
 
 ---
 
 ## Part 1 — The One-Sentence Business
 
-**Varholdt AI is a Fractional AI Department for document-heavy small and mid-sized businesses.**
+**Varholdt AI is a Fractional AI Department for document-heavy small and mid-sized businesses. We build human-reviewed AI workflow agents that live in the tools your team already uses.**
 
 Long version for the landing page:
 
-> We install a practical AI department inside document-heavy businesses — without you hiring a full AI team. We find the workflows worth automating, build them, train your team, and keep them running.
+> Most teams don't need another app — they need the annoying document work to happen where they already work. We build AI workflow agents for document-heavy teams: agents that read RFPs, resumes, claims, and source docs, draft and route what should be drafted and routed, and keep a human in the loop on every decision. They live in Outlook, Slack, Teams, SharePoint, Drive, your CRM, your ATS — wherever your team already is.
 
 Even longer version for discovery calls:
 
-> Most businesses your size know AI matters but do not know which tools to trust, which workflows are worth automating, or who to hire. Hiring a full-time AI engineer is a $180K+ commitment with no guarantee of ROI. We are the alternative: a senior AI operator who shows up part-time for 6 months, finds the bottlenecks, builds the tools, trains your team, and keeps it running. When the engagement ends, you own working systems and your team knows how to use them.
+> Most businesses your size know AI matters but do not know which tools to trust, which workflows are worth automating, or who to hire. Hiring a full-time AI engineer is a $180K+ commitment with no guarantee of ROI. We are the alternative: a senior AI operator who shows up part-time for 6 months, finds the bottlenecks, builds the agents, trains your team, and keeps it running. The agents live in the tools you already pay for, with human review on every output and full audit trail. When the engagement ends, you own working systems and your team knows how to use them.
+
+**Positioning note (do not put this on the website, but use it to keep the framing tight):** Cyndra for document-heavy SMB workflows — founder-led implementation, stronger human-review and citation-traceability discipline, narrower than a generic "AI employees" play.
 
 ---
 
@@ -62,9 +70,30 @@ Even longer version for discovery calls:
 
 ## Part 3 — The Offer Stack
 
-Three offers. One front door, one main offer, one exception. Sprint and retainer are the only two offers pitched in outreach.
+Four offers, four roles:
 
-### Offer 1 — AI Workflow Sprint (front door)
+1. **Free 30-min Workflow Audit** — top-of-funnel qualifier. The thing every cold outreach links to.
+2. **$5K AI Workflow Sprint** — paid proof. The thing that produces a real prototype.
+3. **Fractional AI Department retainer** — the main commercial outcome.
+4. **Build-Only project** — exception case, not pitched in outreach.
+
+Sprint and retainer are the only two offers *pitched* in outreach. The audit is the *call-to-action* that gets prospects into a conversation where the sprint can be scoped.
+
+### Offer 0 — Free 30-Minute AI Workflow Audit (front door / CTA)
+
+- **Price:** Free.
+- **Format:** 30-minute video call. No deliverable, no written report, no prototype. A sales motion, not a product.
+- **What happens on the call:**
+  - 10 min — prospect describes one document-heavy workflow that slows their team down
+  - 10 min — verbal feedback: what's likely automatable, what isn't, where the highest-leverage slice probably sits, whether SaaS already solves it
+  - 10 min — qualify pain, workflow owner, volume, urgency, data access, decision timeline; pitch the sprint if there's fit
+- **Discipline:**
+  - Do not build anything before, during, or after this call. No slides, no maps, no follow-up document. A summary email at most.
+  - If a prospect tries to extract free strategy ("can you send me a list of tools that would work?"), the answer is "that's exactly what the $5K sprint produces — written, with a working prototype."
+- **Why it exists:** Reduces friction from cold message to first conversation. Cyndra-style. Lets Layken get more reps in front of real workflows faster, which also helps close the GovCon domain-depth gap by exposure rather than self-study.
+- **Why it's safe:** The sprint is still the conversion offer. The audit doesn't replace the sprint — it sits above it. Pricing power is intact because the audit doesn't ship a real deliverable.
+
+### Offer 1 — AI Workflow Sprint (paid proof)
 
 - **Price:** $5,000 flat. One-time. 10 business days.
 - **Credit mechanic:** 100% credited toward a 6-month Fractional AI Department retainer if signed within 14 days of sprint delivery.
@@ -135,20 +164,25 @@ The widened ICP for the first 50 outreach attempts. We are looking for any busin
 
 **Sub-segments to test in the first 50:**
 
-1. **GovCon and federal-adjacent contractors** — RFPs, SOWs, compliance matrices, capability statements, past performance. Highest credential match. Veteran + active federal contractor + OmniBid demo.
-2. **Proposal consultants and capture firms** — They sell proposal services to GovCon and have the same workflows at scale. They may also become a referral channel.
+1. **Federal-adjacent contractors (proposal and ops teams, not capture strategy)** — RFPs, SOWs, compliance matrices, capability statements, past performance. We sell **document workflow expertise**, not capture/proposal-management expertise. Veteran + active federal contractor + OmniBid demo provide credibility on "I understand the federal world and federal documents" — not on "I know how to win contracts." If a discovery call drifts toward capture strategy, pricing strategy, or proposal management, refer out (see partner channel note below).
+2. **Proposal consultants and capture firms** — They already own the capture/strategy domain. We build the workflow layer underneath their service. **Partner channel target:** they bring domain depth; we bring the document-AI implementation. Either as referral source (they recommend us to their GovCon clients) or as direct client (we tool *their* proposal shop).
 3. **Staffing and recruiting** — Resume intake, candidate-job matching, compliance packets, client submissions.
 4. **Regional insurance agencies** — Claims intake, document extraction, renewal prep, response drafting. Strong Lafayette/Acadiana density.
 5. **CPA and accounting firms** — Document intake, source doc extraction, working papers, client communication drafting.
 6. **Construction back office** — Submittals, RFIs, change orders, vendor docs.
 
-**First-50 weighting:** Focus on the segments where credibility is strongest and outreach language is sharpest. Suggested mix:
+**Positioning discipline on segment 1:**
+- ✅ "We help proposal and operations teams turn RFPs, SOWs, amendments, and past-performance docs into reviewable AI-assisted workflows."
+- ❌ "We help GovCon firms win more contracts." (Implies capture, pricing, proposal management — not our lane.)
 
-- 25 GovCon contractors
-- 10 proposal / capture consultants
-- 10 staffing / recruiting firms
-- 5 regional insurance agencies
-- CPA/accounting and construction back office held for warm intros only until one of the four primary segments produces signal.
+**First-50 weighting:** Focus on segments where credibility is strongest and outreach language is sharpest. Reweighted in v6 to acknowledge the GovCon domain-depth gap — fewer cold pitches into GovCon ops teams until either (a) Layken closes the knowledge gap via APMP Foundation or shadowing a real proposal cycle, or (b) we route GovCon work through proposal-consultant partners.
+
+- **15 federal-adjacent ops/proposal teams** (down from 25). Lead with document workflow language, never capture strategy.
+- **15 proposal / capture consultants** (up from 10). Higher weighting because they're both direct buyers and the partner channel that backstops the GovCon knowledge gap.
+- **10 staffing / recruiting firms** (unchanged).
+- **5 regional insurance agencies** (unchanged).
+- **5 CPA / accounting firms** (promoted from warm-intros only).
+- Construction back office held for warm intros only until one of the five active segments produces signal.
 
 **ICP narrowing rule:** After the first 50 outreach attempts (expected: weeks 1–3), the segment with the highest reply rate and most qualified discovery calls becomes the primary cold-outbound target. Other segments stay open through warm intros only.
 
@@ -245,19 +279,62 @@ Five gating items. Done by Sunday May 26.
 
 Four assets. Built in Week 1. Iterated based on what conversations reveal.
 
+### The Workflow Agents Catalog
+
+Six named agents we lead with in sales. Each one is described in a four-line spec so the buyer can see themselves in it. Use this structure on the landing page, in the PDF, and on calls. **Do not invent agents we cannot ship in a sprint** — every agent below maps to capability that already exists in OmniBid, Civicly, Atlas, or the implementation patterns we've shipped.
+
+1. **RFP Response Agent**
+   - **Reads:** RFP PDFs, amendments, Q&A, past-performance library
+   - **Does:** extracts L/M/C requirements with section citations, flags deadlines and missing capabilities, drafts a compliance matrix
+   - **Human approves:** requirements interpretation, assumptions, no-bid recommendations
+   - **Outputs to:** Excel / Word / Teams / SharePoint proposal folder
+
+2. **Document Intake Agent**
+   - **Reads:** inbound emails, attachments, scanned forms, source docs
+   - **Does:** classifies the document, extracts structured fields with confidence scores, routes to the right queue or system
+   - **Human approves:** low-confidence extractions and exception cases
+   - **Outputs to:** CRM, ATS, claims system, accounting software, or a review queue
+
+3. **Resume Screening Agent**
+   - **Reads:** inbound resumes, the open requisition, the company's hiring rubric
+   - **Does:** scores candidate-job match, surfaces top N candidates with rationale, drafts initial outreach
+   - **Human approves:** the shortlist and the outreach copy before send
+   - **Outputs to:** ATS, recruiter inbox, hiring-manager Slack/Teams channel
+
+4. **Claims Prep Agent**
+   - **Reads:** claim submission, supporting documents, policy file
+   - **Does:** extracts the loss event, identifies the applicable coverage clauses, drafts the initial coverage summary
+   - **Human approves:** coverage determination, exclusions called out, response language
+   - **Outputs to:** claims system, adjuster inbox, response template
+
+5. **Drafting Workbench Agent**
+   - **Reads:** prior proposals, capability statements, the new ask, house voice guide
+   - **Does:** pre-drafts proposal sections, vendor letters, RFI responses in the team's voice
+   - **Human approves:** every paragraph before it leaves
+   - **Outputs to:** Word, Google Docs, proposal template
+
+6. **Knowledge Search Agent**
+   - **Reads:** past performance, SOPs, prior proposals, internal wiki
+   - **Does:** answers natural-language questions with grounded citations to source documents
+   - **Human approves:** N/A (answers are read-only; citation links let the user verify)
+   - **Outputs to:** Slack, Teams, or a lightweight web search UI
+
+**Where the agent lives ("delivery surface"):** Default delivery is whichever existing tool the team already lives in — Outlook / Gmail, Slack / Teams, SharePoint / Drive, the CRM, the ATS, Excel. A lightweight web app is added only where review and control specifically require one (e.g., a review queue UI with confidence highlighting and audit log). Promise: **every sprint has one primary interface and one export destination — no Zapier-in-a-trench-coat integration sprawl.**
+
+
 ### Asset 1 — The One-Page PDF
 
-**Title:** Fractional AI Department for Document-Heavy Teams
+**Title:** AI Workflow Agents for Document-Heavy Teams
 
 **Sections (one page total):**
 
-1. **Top:** Logo / Varholdt AI / hero sentence
-2. **What this is:** 3 sentences. "A senior AI operator inside your business for 6 months. We find the workflows worth automating, build them, train your team, and keep them running. You don't hire a full AI team."
-3. **Who it's for:** GovCon, proposal consultants, staffing, insurance, accounting, construction back office. Teams of 20–250 with recurring document and email work.
-4. **What we build (examples):** RFP shred and compliance matrix, document intake and extraction, internal knowledge search, drafting workbenches, missing-info detection.
-5. **The engagement:** Month 1 — $5K sprint (workflow map, prototype, training, roadmap). Months 2–6 — $6K/month founding rate. First two clients only.
+1. **Top:** Logo / Varholdt AI / hero sentence — *"Install AI workflow agents that live in the tools your team already uses."*
+2. **What this is:** 3 sentences. "We build human-reviewed AI workflow agents for document-heavy teams. They read your RFPs, resumes, claims, and source docs, draft and route what should be drafted and routed, and keep a human in the loop. They live in Outlook, Slack, Teams, SharePoint, Drive, your CRM, and your ATS — not in another app your team has to log into."
+3. **Who it's for:** Federal-adjacent ops/proposal teams, proposal consultants, staffing, insurance, accounting, construction back office. 20–250 person teams with recurring document and email work.
+4. **The agents (examples):** RFP Response Agent · Document Intake Agent · Resume Screening Agent · Claims Prep Agent · Drafting Workbench Agent · Knowledge Search Agent. Each one in the four-line format from the Workflow Agents Catalog above.
+5. **The engagement:** Step 0 — free 30-min workflow audit. Step 1 — $5K sprint (workflow map, prototype, training, roadmap). Step 2 — $6K/month founding rate, 6-month minimum. First two clients only.
 6. **Proof:** Convex Modern Stack Hackathon 1st place. Active federal contractor (DOL). 8 production systems including OmniBid (federal RFP parser).
-7. **CTA:** 20-minute call. Calendly link. Email. Phone.
+7. **CTA:** "Book a free 30-min AI workflow audit." Calendly link. Email. Phone.
 
 ### Asset 2 — The 2-Minute Loom
 
@@ -267,7 +344,7 @@ Script outline:
 2. (0:15–0:30) What Varholdt AI does in one sentence.
 3. (0:30–1:30) **OmniBid walkthrough.** Pull a real public RFP from SAM.gov, run it through the parser, show requirement extraction, show compliance matrix generation. This is the moment of proof.
 4. (1:30–1:50) "This is one workflow. We build versions of this for proposals, intake, claims, resumes, and internal knowledge."
-5. (1:50–2:00) "If your team is drowning in documents, book a 20-minute call."
+5. (1:50–2:00) "If your team is drowning in documents, book a free 30-minute workflow audit."
 
 Re-record until it's tight. Three takes minimum. No "ums," no fumbling. This is the single most-watched asset in the business for the next 90 days.
 
@@ -277,19 +354,21 @@ Re-record until it's tight. Three takes minimum. No "ums," no fumbling. This is 
 
 **One screen. Above the fold:**
 
-- Hero sentence: *Install practical AI workflows without hiring an AI team.*
-- Subhead: *Varholdt AI is a Fractional AI Department for document-heavy teams. We find the bottlenecks, build the tools, train your staff, and keep the systems running.*
+- Hero sentence: *Install AI workflow agents — without hiring an AI team.*
+- Subhead: *Human-reviewed agents that read your documents, draft and route the predictable work, and live in the tools your team already uses — Outlook, Slack, Teams, SharePoint, your CRM, your ATS. Not another app.*
 - Loom embed
-- Calendly button: "Book a 20-minute workflow call"
+- Primary CTA: "Book a free 30-min workflow audit"
+- Secondary CTA: "Watch the 2-min demo"
 
 **Below the fold (one scroll):**
 
-- "What we build" (5 workflow examples with one-line descriptions)
-- "Who it's for" (segments)
-- "How it works" (sprint → retainer)
-- Proof: Convex hackathon win, DOL contract, OmniBid screenshot
-- Founder bio (3 sentences)
-- Footer: email, LinkedIn
+- **"The agents"** — 6 named agents from the Workflow Agents Catalog, each as a card showing Reads / Does / Human approves / Outputs to. This is the most-scrolled section after the hero; treat it as the primary "what they actually buy" surface.
+- **"Lives in your tools"** — a row of tool chips (Outlook, Gmail, Slack, Teams, SharePoint, Drive, Excel, HubSpot, Salesforce, ATS) with a one-line note: *"We build the workflow around the tools your team already uses. Lightweight review UI only where control specifically requires one."*
+- **"Who it's for"** — segments
+- **"How it works"** — three-step: Free audit → $5K sprint → 6-month retainer
+- **Proof:** Convex hackathon win, DOL contract, OmniBid screenshot
+- **Founder bio** (3 sentences)
+- **Footer:** email, LinkedIn
 
 No multi-page navigation. No blog. No "Services" page. No "About" page. One page.
 
@@ -299,11 +378,11 @@ Two versions. Warm and cold. Both short. Both reference a real trigger when poss
 
 **Warm intro / referral ask (to network):**
 
-> Hey [Name] — I'm launching Varholdt AI, a Fractional AI Department for document-heavy businesses (GovCon, insurance, staffing, accounting, that kind of thing). Opening 2 founding spots at a reduced rate.
+> Hey [Name] — I'm launching Varholdt AI. We build AI workflow agents for document-heavy teams (GovCon, insurance, staffing, accounting). The agents live in the tools the team already uses — Outlook, Slack, SharePoint, the CRM — so nobody has to log into a new app. Opening 2 founding spots at a reduced rate.
 >
-> The idea: I work with one document-heavy team for 6 months — find the bottlenecks, build the AI workflows, train the team, keep them running. First month is a $5K paid sprint that delivers a working prototype and a roadmap. They can stop after month 1 if it's not obviously useful.
+> The idea: I work with one document-heavy team for 6 months — find the bottlenecks, build the agents, train the team, keep them running. There's a paid $5K sprint up front that delivers a working prototype and a roadmap; they can stop after that if it's not obviously useful.
 >
-> Do you know anyone running a 30–150 person business where people are still manually reading PDFs, copying info into spreadsheets, or drafting the same kinds of documents over and over? Happy to hop on a quick call with them and see if it's a fit.
+> Do you know anyone running a 30–150 person business where people are still manually reading PDFs, copying info into spreadsheets, or drafting the same kinds of documents over and over? Happy to do a free 30-min audit with them and see if it's a fit.
 >
 > — Layken
 
@@ -311,11 +390,11 @@ Two versions. Warm and cold. Both short. Both reference a real trigger when poss
 
 > Hi [Name] — saw [specific trigger: proposal manager opening / recent contract award / new compliance hire / visible RFP volume]. Usually when a team is [hiring proposal managers / scaling capture / adding claims staff / growing intake volume], the document workflow behind it gets messy fast — manual PDF reads, copy-paste into spreadsheets, repetitive drafting.
 >
-> I run Varholdt AI, a Fractional AI Department for document-heavy teams. We turn that manual work into AI-assisted internal tools with human review.
+> I run Varholdt AI. We build AI workflow agents for document-heavy teams — agents that read the docs, draft and route the predictable work, and live in the tools your team already uses (Outlook, Teams, SharePoint, your CRM). Human review on every output.
 >
-> I'm opening 2 founding sprint spots: $5K, 10 business days — one workflow mapped, one working prototype, one 90-day roadmap. If it's useful, it can turn into a 6-month engagement; if not, you keep the prototype and the roadmap.
+> If it's a fit, I offer a free 30-minute workflow audit. No deck. We walk one workflow you actually do every week and I tell you whether it's automatable, whether SaaS already solves it, or where the real leverage is. Here's a 2-min walkthrough of a federal RFP parser I built: [Loom link]
 >
-> Worth a 20-minute call? Here's a 2-minute walkthrough of a federal RFP parser I built: [Loom link]
+> Worth 30 minutes?
 >
 > — Layken
 
@@ -324,7 +403,7 @@ Two versions. Warm and cold. Both short. Both reference a real trigger when poss
 - "Saw the [role] opening at [Company]"
 - "[Trigger] — workflow idea for [Company]"
 - "Quick thought on your [proposal/compliance/intake] workflow"
-- "20 minutes — AI workflow idea for [Company]"
+- "Free 30-min audit — AI workflow idea for [Company]"
 
 ---
 
@@ -661,6 +740,6 @@ This document is v5. v1 through v4 were written without a single buyer conversat
 
 Reading a Twitter screenshot is not on the list. Reading another agent's reply is not on the list. Having a worry on a Tuesday night is not on the list. The doc is good enough. Execute it.
 
-The first milestone is not a better doc. The first milestone is a 20-minute discovery call with a real prospective buyer about a real workflow before June 3.
+The first milestone is not a better doc. The first milestone is a free 30-minute workflow audit with a real prospective buyer about a real workflow before June 3.
 
 Everything else is logistics.

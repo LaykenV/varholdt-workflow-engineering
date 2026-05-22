@@ -5,43 +5,72 @@ import "@/styles/global.css";
 
 const builds = [
   {
-    tag: "RFP & Compliance",
-    title: "RFP shred and compliance matrix",
-    body: "Ingest the solicitation, extract every L/M/C requirement with section citations, generate the shred and matrix, flag missing capabilities, and route gaps to a workbench your captures team can resolve.",
-    foot: ["SAM.gov ingestion", "Citation-grounded extraction", "Human-reviewed matrix"],
+    tag: "Proposals",
+    title: "RFP Response Agent",
+    reads: "RFP PDFs, amendments, Q&A, past-performance library",
+    does: "Extracts L/M/C requirements with section citations, flags deadlines and missing capabilities, drafts compliance matrix",
+    approves: "Requirements interpretation, assumptions, no-bid recommendations",
+    outputs: "Excel · Word · Teams · SharePoint proposal folder",
+    foot: ["SAM.gov ingestion", "Citation-grounded", "Human-reviewed"],
   },
   {
-    tag: "Intake & extraction",
-    title: "Document intake and extraction",
-    body: "Resumes, claims, source docs, submittals — read once, route to the right place. Confidence-scored fields with a review queue for the exception cases.",
-    foot: ["OCR + LLM", "Exception queue"],
+    tag: "Intake",
+    title: "Document Intake Agent",
+    reads: "Inbound emails, attachments, scanned forms, source docs",
+    does: "Classifies the document, extracts structured fields with confidence scores, routes to the right queue or system",
+    approves: "Low-confidence extractions and exception cases",
+    outputs: "CRM · ATS · claims system · accounting software · review queue",
+    foot: ["OCR + LLM", "Confidence scoring", "Exception queue"],
   },
   {
-    tag: "Knowledge",
-    title: "Internal knowledge search",
-    body: "Past performance, SOPs, prior proposals — all answerable with citations.",
-    foot: ["RAG with sources", "SSO"],
+    tag: "Hiring",
+    title: "Resume Screening Agent",
+    reads: "Inbound resumes, the open requisition, the company's hiring rubric",
+    does: "Scores candidate-job match, surfaces top N candidates with rationale, drafts initial outreach",
+    approves: "The shortlist and the outreach copy before send",
+    outputs: "ATS · recruiter inbox · hiring-manager Slack/Teams channel",
+    foot: ["Match scoring", "Outreach drafts"],
+  },
+  {
+    tag: "Insurance",
+    title: "Claims Prep Agent",
+    reads: "Claim submission, supporting documents, policy file",
+    does: "Extracts loss event, identifies applicable coverage clauses, drafts initial coverage summary",
+    approves: "Coverage determination, exclusions called out, response language",
+    outputs: "Claims system · adjuster inbox · response template",
+    foot: ["Policy-grounded", "Audit log"],
   },
   {
     tag: "Drafting",
-    title: "Drafting workbenches",
-    body: "Proposal sections, claims responses, vendor letters — pre-drafted from your house voice, finished by a human in minutes.",
+    title: "Drafting Workbench Agent",
+    reads: "Prior proposals, capability statements, the new ask, house voice guide",
+    does: "Pre-drafts proposal sections, vendor letters, RFI responses in the team's voice",
+    approves: "Every paragraph before it leaves",
+    outputs: "Word · Google Docs · proposal template",
     foot: ["House-voice tuned", "Version diffs"],
   },
   {
-    tag: "Detection",
-    title: "Missing-info detection",
-    body: "Catches the gap before it ships — clauses, signatures, certifications, attachments.",
-    foot: ["Pre-submit checks"],
+    tag: "Knowledge",
+    title: "Knowledge Search Agent",
+    reads: "Past performance, SOPs, prior proposals, internal wiki",
+    does: "Answers natural-language questions with grounded citations to source documents",
+    approves: "Read-only — citation links let the user verify",
+    outputs: "Slack · Teams · lightweight web search UI",
+    foot: ["RAG with citations", "SSO"],
   },
 ];
 
+const integrationChips = [
+  "Outlook", "Gmail", "Slack", "Teams", "SharePoint", "Drive",
+  "Excel / Sheets", "HubSpot", "Salesforce", "ATS", "SAM.gov", "Word",
+];
+
 const segments = [
-  { num: "01", title: "GovCon contractors", body: "RFPs, SOWs, compliance matrices, capability statements, past performance.", weight: "Primary", primary: true },
-  { num: "02", title: "Proposal & capture consultants", body: "Proposal services at scale — same workflows, same documents, same deadlines.", weight: "Primary", primary: true },
+  { num: "01", title: "Federal-adjacent ops & proposal teams", body: "RFPs, SOWs, compliance matrices, capability statements, past performance. We bring the document-AI layer; we don't pretend to be capture strategists.", weight: "Primary", primary: true },
+  { num: "02", title: "Proposal & capture consultants", body: "Direct buyers and partner channel. They own the capture domain; we build the workflow layer.", weight: "Primary", primary: true },
   { num: "03", title: "Staffing & recruiting", body: "Resume intake, candidate-job matching, compliance packets, client submissions.", weight: "Testing", primary: false },
   { num: "04", title: "Regional insurance", body: "Claims intake, document extraction, renewal prep, response drafting.", weight: "Testing", primary: false },
-  { num: "05", title: "CPA & accounting", body: "Document intake, source doc extraction, working papers, client comms.", weight: "Warm intro", primary: false },
+  { num: "05", title: "CPA & accounting", body: "Document intake, source doc extraction, working papers, client comms.", weight: "Testing", primary: false },
   { num: "06", title: "Construction back-office", body: "Submittals, RFIs, change orders, vendor docs.", weight: "Warm intro", primary: false },
 ];
 
@@ -107,11 +136,11 @@ const heroChips = [
         <span>Varholdt AI</span>
       </a>
       <nav class="nav-links">
-        <a href="#what">Workflows</a>
+        <a href="#what">Agents</a>
         <a href="#how">Process</a>
         <a href="#proof">Proof</a>
         <a class="btn btn-primary" href="#book">
-          Book a call
+          Book a free audit
           <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 8h10M9 4l4 4-4 4"></path>
           </svg>
@@ -141,19 +170,20 @@ const heroChips = [
 
       <div class="container hero-inner">
         <h1 class="hero-headline">
-          <span class="line"><span>Install practical AI</span></span>
+          <span class="line"><span>Install AI workflow agents</span></span>
           <span class="line"><span>without hiring an <em>AI team.</em></span></span>
         </h1>
 
         <p class="hero-sub">
-          A senior AI operator embedded in your business for six months. Finds the
-          workflows worth automating, ships the tools, trains your team, keeps the
-          systems running. <strong>One person. Not an agency.</strong>
+          Human-reviewed agents that read your documents, draft and route the
+          predictable work, and live in the tools your team already uses —
+          <strong>Outlook, Slack, Teams, SharePoint, your CRM.</strong> Not
+          another app.
         </p>
 
         <div class="hero-actions">
           <a class="btn btn-primary" href="#book">
-            Book a 20-min call
+            Book a free 30-min audit
             <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 8h10M9 4l4 4-4 4"></path>
             </svg>
@@ -162,8 +192,8 @@ const heroChips = [
         </div>
 
         <div class="hero-meta">
-          <span><span class="tick"></span> 10-day paid sprint</span>
-          <span><span class="tick"></span> $5K credits to retainer</span>
+          <span><span class="tick"></span> Free 30-min workflow audit</span>
+          <span><span class="tick"></span> $5K paid sprint, credits to retainer</span>
           <span><span class="tick"></span> 2 founding spots open</span>
         </div>
 
@@ -330,14 +360,15 @@ const heroChips = [
         <div class="intro-grid">
           <p class="intro-statement">
             Most teams know AI matters. They don't know <em>which workflow</em>
-            to start with. We find it, ship it, train the team, keep it running.
+            to start with — or where the agent should actually live so the team
+            will use it. We find both, ship it, train the team, keep it running.
           </p>
           <div class="intro-points">
             <div class="intro-point reveal">
               <div class="num">01</div>
               <div>
-                <h4>One operator. Not an agency.</h4>
-                <p>Same person on every call, in the SOW, and in the code. No account-manager handoffs, no offshore subcontractors.</p>
+                <h4>Lives in the tools you already use.</h4>
+                <p>Outlook, Slack, Teams, SharePoint, Drive, your CRM, your ATS. A lightweight review UI only where control specifically requires one.</p>
               </div>
             </div>
             <div class="intro-point reveal" data-delay="1">
@@ -351,7 +382,7 @@ const heroChips = [
               <div class="num">03</div>
               <div>
                 <h4>Human review stays in the loop.</h4>
-                <p>Decision-support, not autonomous high-stakes decisions. Audit logs, citations, confidence scores on every workflow.</p>
+                <p>Decision-support, not autonomous high-stakes decisions. Audit logs, citations, confidence scores on every agent.</p>
               </div>
             </div>
           </div>
@@ -393,15 +424,17 @@ const heroChips = [
       </div>
     </section>
 
-    <!-- What we build -->
+    <!-- What we build — the agents -->
     <section class="section" id="what">
       <div class="container">
         <div class="section-head">
-          <div class="kicker-row"><span class="kicker">03 — What we build</span></div>
-          <h2 class="section-title">Five workflows we ship <em>over and over.</em></h2>
+          <div class="kicker-row"><span class="kicker">03 — The agents</span></div>
+          <h2 class="section-title">Six agents we ship <em>over and over.</em></h2>
           <p class="section-lede">
-            We start with the highest-leverage slice — the 20% of a workflow that produces 80% of the pain.
-            Ship it, tune it from real usage, then expand. One at a time. No parallel scope creep.
+            Each one reads what it should read, does what it should do, hands off
+            to a human at the decision point, and writes the result back to the
+            tool you already use. We ship one in your sprint, then expand. One at
+            a time. No parallel scope creep.
           </p>
         </div>
 
@@ -409,15 +442,55 @@ const heroChips = [
           {builds.map((b, i) => (
             <article class="build reveal" data-delay={(i % 4).toString()}>
               <div class="build-head">
-                <span class="build-num">0{i + 1}  ·  05</span>
+                <span class="build-num">0{i + 1}  ·  0{builds.length}</span>
                 <span class="build-tag">{b.tag}</span>
               </div>
               <h3>{b.title}</h3>
-              <p>{b.body}</p>
+              <dl class="build-spec">
+                <div class="build-spec-row">
+                  <dt>Reads</dt>
+                  <dd>{b.reads}</dd>
+                </div>
+                <div class="build-spec-row">
+                  <dt>Does</dt>
+                  <dd>{b.does}</dd>
+                </div>
+                <div class="build-spec-row">
+                  <dt>Human approves</dt>
+                  <dd>{b.approves}</dd>
+                </div>
+                <div class="build-spec-row">
+                  <dt>Outputs to</dt>
+                  <dd>{b.outputs}</dd>
+                </div>
+              </dl>
               <div class="build-foot">
                 {b.foot.map((f) => <span>{f}</span>)}
               </div>
             </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Integrations strip -->
+    <section class="section integrations-section" id="integrations" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">03b — Lives in your tools</span></div>
+          <h2 class="section-title">No new app. <em>Your tools.</em></h2>
+          <p class="section-lede">
+            We build the workflow around the tools your team already uses. A
+            lightweight review UI only where control specifically requires one —
+            confidence highlighting, audit log, citation links. Every sprint has
+            one primary interface and one export destination. No Zapier in a
+            trench coat.
+          </p>
+        </div>
+
+        <div class="integration-chips reveal">
+          {integrationChips.map((t) => (
+            <span class="integration-chip">{t}</span>
           ))}
         </div>
       </div>
@@ -455,16 +528,37 @@ const heroChips = [
       <div class="container">
         <div class="section-head">
           <div class="kicker-row"><span class="kicker">05 — How it works</span></div>
-          <h2 class="section-title">Ship the first tool in <em>ten days.</em></h2>
+          <h2 class="section-title">Free audit, paid sprint, then we get to <em>work.</em></h2>
           <p class="section-lede">
-            The sprint is paid proof. If it's not obviously worth it, you keep the prototype and the roadmap
-            and we shake hands. If it is, the $5K credits against month one of the retainer.
+            Three steps. Start with a free 30-minute audit — we walk one workflow you actually do every
+            week and I tell you whether it's automatable, whether SaaS already solves it, or where the
+            real leverage is. If it's a fit, the paid sprint produces a real prototype. If it isn't, you
+            owe me nothing and you've still got a clearer head about the problem.
           </p>
+        </div>
+
+        <div class="how-audit reveal">
+          <div class="how-audit-left">
+            <div class="how-step"><span class="num">0</span> Free</div>
+            <h3>30-minute AI Workflow Audit</h3>
+            <p>
+              One workflow, 30 minutes, verbal feedback. No deck, no deliverable,
+              no obligation. We figure out together whether there's a real
+              opportunity worth a paid sprint — or whether the right answer is a
+              SaaS tool, a process change, or doing nothing.
+            </p>
+          </div>
+          <a class="btn btn-primary how-audit-cta" href="#book">
+            Book the audit
+            <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8h10M9 4l4 4-4 4"></path>
+            </svg>
+          </a>
         </div>
 
         <div class="how">
           <div class="how-card how-sprint reveal">
-            <div class="how-step"><span class="num">1</span> Front door</div>
+            <div class="how-step"><span class="num">1</span> Paid proof</div>
             <h3>AI Workflow Sprint</h3>
             <div class="how-price">
               <span class="amt">$5,000</span>
@@ -660,15 +754,16 @@ const heroChips = [
         <div class="cta-grid reveal">
           <div class="cta-body">
             <span class="cta-eyebrow">Founding spots — 2 of 2 open</span>
-            <h2 class="cta-title">Twenty minutes. One workflow. A real conversation.</h2>
+            <h2 class="cta-title">Thirty minutes. One workflow. A real conversation.</h2>
             <p>
-              We'll walk through one workflow that slows your team down every week —
-              who owns it, how often it runs, what you've already tried. If a sprint
-              makes sense, we'll scope it on the call.
+              Free 30-minute workflow audit. We'll walk one workflow that slows
+              your team down every week — who owns it, how often it runs, what
+              you've already tried. If an agent makes sense, we'll scope a sprint
+              on the call.
             </p>
             <p>
-              If a SaaS tool is the right answer, I'll tell you which one. No deck, no
-              discovery framework, no pitch.
+              If a SaaS tool is the right answer, I'll tell you which one. No deck,
+              no discovery framework, no pitch.
             </p>
             <div class="cta-actions">
               <a class="btn btn-primary" href="#">
@@ -689,7 +784,7 @@ const heroChips = [
               </svg>
               <div>
                 <div class="k">Schedule</div>
-                <div class="v">20 minutes — video</div>
+                <div class="v">30 minutes — video</div>
               </div>
             </div>
             <div class="cta-row">
@@ -742,7 +837,7 @@ const heroChips = [
       </div>
       <div class="footer-bottom">
         <span>© 2026 Varholdt AI</span>
-        <span>Fractional AI Department for document-heavy teams</span>
+        <span>AI workflow agents for document-heavy teams</span>
       </div>
     </div>
   </footer>

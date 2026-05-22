@@ -1,5 +1,5 @@
 export const marketingPage = {
-  title: "Varholdt AI — Fractional AI Department for document-heavy teams",
+  title: "Varholdt AI — AI workflow agents for document-heavy teams",
   description:
-    "A senior AI operator inside your business for six months. We find the workflows worth automating, build them, train your team, and keep them running.",
+    "Human-reviewed AI agents that read your documents, draft and route the predictable work, and live in the tools your team already uses — Outlook, Slack, Teams, SharePoint, your CRM. Not another app.",
 };
