@@ -3,50 +3,833 @@ import SiteLayout from "@/layouts/SiteLayout.astro";
 import { marketingPage } from "@/data/marketing";
 import "@/styles/global.css";
 
-const calendlyUrl =
-  import.meta.env.PUBLIC_CALENDLY_URL ?? "https://calendly.com/layken-varholdt/20min";
-const loomUrl = import.meta.env.PUBLIC_LOOM_URL;
-const contactEmail = import.meta.env.PUBLIC_CONTACT_EMAIL ?? "layken@varholdt.ai";
+const builds = [
+  {
+    tag: "RFP & Compliance",
+    title: "RFP shred and compliance matrix",
+    body: "Ingest the solicitation, extract every L/M/C requirement with section citations, generate the shred and matrix, flag missing capabilities, and route gaps to a workbench your captures team can resolve.",
+    foot: ["SAM.gov ingestion", "Citation-grounded extraction", "Human-reviewed matrix"],
+  },
+  {
+    tag: "Intake & extraction",
+    title: "Document intake and extraction",
+    body: "Resumes, claims, source docs, submittals — read once, route to the right place. Confidence-scored fields with a review queue for the exception cases.",
+    foot: ["OCR + LLM", "Exception queue"],
+  },
+  {
+    tag: "Knowledge",
+    title: "Internal knowledge search",
+    body: "Past performance, SOPs, prior proposals — all answerable with citations.",
+    foot: ["RAG with sources", "SSO"],
+  },
+  {
+    tag: "Drafting",
+    title: "Drafting workbenches",
+    body: "Proposal sections, claims responses, vendor letters — pre-drafted from your house voice, finished by a human in minutes.",
+    foot: ["House-voice tuned", "Version diffs"],
+  },
+  {
+    tag: "Detection",
+    title: "Missing-info detection",
+    body: "Catches the gap before it ships — clauses, signatures, certifications, attachments.",
+    foot: ["Pre-submit checks"],
+  },
+];
+
+const segments = [
+  { num: "01", title: "GovCon contractors", body: "RFPs, SOWs, compliance matrices, capability statements, past performance.", weight: "Primary", primary: true },
+  { num: "02", title: "Proposal & capture consultants", body: "Proposal services at scale — same workflows, same documents, same deadlines.", weight: "Primary", primary: true },
+  { num: "03", title: "Staffing & recruiting", body: "Resume intake, candidate-job matching, compliance packets, client submissions.", weight: "Testing", primary: false },
+  { num: "04", title: "Regional insurance", body: "Claims intake, document extraction, renewal prep, response drafting.", weight: "Testing", primary: false },
+  { num: "05", title: "CPA & accounting", body: "Document intake, source doc extraction, working papers, client comms.", weight: "Warm intro", primary: false },
+  { num: "06", title: "Construction back-office", body: "Submittals, RFIs, change orders, vendor docs.", weight: "Warm intro", primary: false },
+];
+
+const segmentsSystems = [
+  "OmniBid — RFP parser",
+  "Atlas Outbound",
+  "Mesh Mind",
+  "Civicly — Legislative RAG",
+  "TeachMagic",
+  "Acadiana Web Design",
+  "FoodTruckFlow",
+];
+
+const proofStats = [
+  { numHtml: '1<span class="suffix">st</span>', h: "Hackathon win", p: "Atlas Outbound — first place, $10K at the Convex Modern Stack Hackathon." },
+  { numHtml: "08", h: "Production systems", p: "OmniBid, Atlas, Mesh Mind, Civicly, TeachMagic, AWD, FoodTruckFlow." },
+  { numHtml: "DOL", h: "Federal contract, active", p: "Full-stack engineer on a Department of Labor contract. Veteran-owned." },
+  { numHtml: '72<span class="suffix">reqs</span>', h: "Parsed per RFP, with citations", p: "OmniBid shreds 70+ requirements per solicitation in under five seconds, with citations." },
+];
+
+const marqueeItems = [
+  "GovCon", "Proposal & Capture", "Staffing & Recruiting",
+  "Regional Insurance", "CPA & Accounting", "Construction Back-Office",
+  "Document-Heavy Teams",
+];
+
+const pipelineNodes = [
+  { name: "Ingest", sub: "47 docs", iconKey: "doc" },
+  { name: "Extract", sub: "Gemini", iconKey: "scan" },
+  { name: "Review", sub: "Human", iconKey: "eye" },
+  { name: "Export", sub: "Sheets", iconKey: "send" },
+];
+
+const activities = [
+  { time: "now", text: "RFP-2026-0421 — 72 requirements extracted", tag: "shipped", warn: false },
+  { time: "2m", text: "Claim #84021 — assigned to review queue", tag: "review", warn: true },
+  { time: "8m", text: "Resume batch — 24 candidates matched", tag: "shipped", warn: false },
+  { time: "14m", text: "SOW v3 — past-performance citations updated", tag: "shipped", warn: false },
+];
+
+const timelineSteps = [
+  { day: "Day 01 — Kickoff", h: "Confirm scope", p: "One workflow, decision-maker, 2–4 stakeholders, sample documents." },
+  { day: "Days 02–04 — Discovery", h: "Observe the actual work", p: "Not what they say they do — what they do. Map triggers, handoffs, time per cycle." },
+  { day: "Days 04–07 — Build", h: "Working prototype", p: "Upload → process → review → export. Citations, confidence scores, audit log." },
+  { day: "Days 08–09 — Memo", h: "Roadmap and ROI", p: "Buy, build, or integrate recommendation, 90-day plan, retainer proposal." },
+  { day: "Day 10 — Delivery", h: "Live demo and training", p: "Recorded 60-min training. Retainer handed over with 14-day credit window." },
+];
+
+const heroChips = [
+  { glyph: "SG", label: "SAM.gov", sub: "RFPs", cls: "c1" },
+  { glyph: "DR", label: "Google Drive", sub: "Docs", cls: "c2" },
+  { glyph: "SP", label: "SharePoint", sub: "Intake", cls: "c3" },
+  { glyph: "XL", label: "Excel / Sheets", sub: "Export", cls: "c4" },
+];
 ---
 
 <SiteLayout title={marketingPage.title} description={marketingPage.description}>
-  <main class="page-shell">
-    <section class="placeholder-hero" aria-labelledby="page-title">
-      <p class="eyebrow">{marketingPage.eyebrow}</p>
-      <h1 id="page-title">{marketingPage.headline}</h1>
-      <p class="subheadline">{marketingPage.subheadline}</p>
-      <p>{marketingPage.body}</p>
+  <!-- Nav -->
+  <header class="nav" id="site-nav">
+    <div class="container nav-row">
+      <a href="#top" class="brand">
+        <span class="brand-mark">V</span>
+        <span>Varholdt AI</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#what">Workflows</a>
+        <a href="#how">Process</a>
+        <a href="#proof">Proof</a>
+        <a class="btn btn-primary" href="#book">
+          Book a call
+          <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 8h10M9 4l4 4-4 4"></path>
+          </svg>
+        </a>
+      </nav>
+    </div>
+  </header>
 
-      <div class="actions" aria-label="Primary actions">
-        <a class="button" href={calendlyUrl}>Book a 20-minute call</a>
-        <a class="button secondary" href={`mailto:${contactEmail}`}>Email Layken</a>
-        {
-          loomUrl ? (
-            <a class="button secondary" href={loomUrl}>Watch the 2-minute demo</a>
-          ) : null
-        }
+  <main>
+    <!-- Hero -->
+    <section id="top" class="hero" data-hero>
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-bg-grid"></div>
+        <div class="hero-bg-glow"></div>
+        <div class="hero-bg-fade"></div>
+      </div>
+
+      <div class="hero-chips" aria-hidden="true">
+        {heroChips.map((c) => (
+          <span class={`hero-chip ${c.cls}`}>
+            <span class="glyph">{c.glyph}</span>
+            {c.label}
+            <span class="sub">{c.sub}</span>
+          </span>
+        ))}
+      </div>
+
+      <div class="container hero-inner">
+        <h1 class="hero-headline">
+          <span class="line"><span>Install practical AI</span></span>
+          <span class="line"><span>without hiring an <em>AI team.</em></span></span>
+        </h1>
+
+        <p class="hero-sub">
+          A senior AI operator embedded in your business for six months. Finds the
+          workflows worth automating, ships the tools, trains your team, keeps the
+          systems running. <strong>One person. Not an agency.</strong>
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#book">
+            Book a 20-min call
+            <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 8h10M9 4l4 4-4 4"></path>
+            </svg>
+          </a>
+          <a class="btn btn-ghost" href="#loom">Watch the 2-min demo</a>
+        </div>
+
+        <div class="hero-meta">
+          <span><span class="tick"></span> 10-day paid sprint</span>
+          <span><span class="tick"></span> $5K credits to retainer</span>
+          <span><span class="tick"></span> 2 founding spots open</span>
+        </div>
+
+        <div class="hero-demo-wrap">
+          <div class="hero-demo">
+            <!-- Demo dashboard -->
+            <div class="demo">
+              <div class="demo-head">
+                <div class="demo-head-left">
+                  <span class="demo-head-title">RFP Shred</span>
+                  <span class="demo-head-crumb">Sprint · Day 6 of 10</span>
+                </div>
+                <div class="demo-head-right">
+                  <span class="demo-tab active">Workflows</span>
+                  <span class="demo-tab">Documents</span>
+                  <span class="demo-tab">Reports</span>
+                </div>
+              </div>
+
+              <div class="demo-body">
+                <aside class="demo-sidebar">
+                  <div class="demo-sidebar-label">Active</div>
+                  <div class="demo-sidebar-item active">
+                    <span class="si-dot"></span> RFP Shred
+                    <span class="si-count">12</span>
+                  </div>
+                  <div class="demo-sidebar-item">
+                    <span class="si-dot"></span> Claims Intake
+                    <span class="si-count">47</span>
+                  </div>
+                  <div class="demo-sidebar-item">
+                    <span class="si-dot"></span> Resume Match
+                    <span class="si-count">8</span>
+                  </div>
+                  <div class="demo-sidebar-item">
+                    <span class="si-dot"></span> Knowledge Search
+                    <span class="si-count">—</span>
+                  </div>
+                  <div class="demo-sidebar-label" style="margin-top: 22px;">Archive</div>
+                  <div class="demo-sidebar-item">
+                    <span class="si-dot"></span> Submittals
+                  </div>
+                  <div class="demo-sidebar-item">
+                    <span class="si-dot"></span> Drafting Bench
+                  </div>
+                </aside>
+
+                <div class="demo-main">
+                  <div class="demo-main-head">
+                    <h4>RFP Shred — federal solicitation parser</h4>
+                    <span class="meta">847 docs · live</span>
+                  </div>
+
+                  <div class="demo-kpis">
+                    <div class="demo-kpi">
+                      <div class="k">Docs processed</div>
+                      <div class="v" data-ticker data-target="847">0</div>
+                      <div class="delta">↑ 12% this week</div>
+                    </div>
+                    <div class="demo-kpi">
+                      <div class="k">Avg parse time</div>
+                      <div class="v">4.2<span class="unit">s</span></div>
+                      <div class="delta">↓ 0.8s</div>
+                    </div>
+                    <div class="demo-kpi">
+                      <div class="k">Hours saved</div>
+                      <div class="v" data-ticker data-target="184">0</div>
+                      <div class="delta">vs. manual</div>
+                    </div>
+                    <div class="demo-kpi">
+                      <div class="k">Review queue</div>
+                      <div class="v">3</div>
+                      <div class="delta warn">awaiting human</div>
+                    </div>
+                  </div>
+
+                  <div class="demo-pipeline">
+                    <div class="demo-pipeline-head">
+                      <span class="t">Active pipeline</span>
+                      <span class="right"><span class="dot"></span> Live · 4 stages</span>
+                    </div>
+                    <div class="demo-flow" data-pipeline>
+                      {pipelineNodes.map((n, i) => (
+                        <>
+                          <div class="demo-node" data-node-idx={i}>
+                            <span class="icon">
+                              {n.iconKey === "doc" && (
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"></path>
+                                  <path d="M14 3v5h5M9 13h6M9 17h6"></path>
+                                </svg>
+                              )}
+                              {n.iconKey === "scan" && (
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"></path>
+                                  <path d="M4 12h16"></path>
+                                </svg>
+                              )}
+                              {n.iconKey === "eye" && (
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M1.5 12s4-7 10.5-7 10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"></path>
+                                  <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                              )}
+                              {n.iconKey === "send" && (
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+                                </svg>
+                              )}
+                            </span>
+                            <div class="name">{n.name}</div>
+                            <div class="sub">{n.sub}</div>
+                          </div>
+                          {i < pipelineNodes.length - 1 && <div class="demo-arrow-track"></div>}
+                        </>
+                      ))}
+                    </div>
+                    <div class="demo-activity">
+                      {activities.map((a) => (
+                        <div class="demo-activity-row">
+                          <span class="time">{a.time}</span>
+                          <span class="text">{a.text}</span>
+                          <span class={`pill ${a.warn ? "warn" : ""}`}>{a.tag}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="placeholder-grid" aria-label="Launch content placeholders">
-      <article>
-        <h2>Offer</h2>
-        <p>{marketingPage.offer}</p>
-      </article>
+    <!-- Marquee -->
+    <div class="marquee-section" aria-hidden="true">
+      <div class="marquee-track">
+        {[0, 1].map(() => (
+          <>
+            {marqueeItems.map((t) => (
+              <span class="marquee-item">
+                <span class="glyph"></span>
+                {t}
+              </span>
+            ))}
+          </>
+        ))}
+      </div>
+    </div>
 
-      <article>
-        <h2>What We Build</h2>
-        <ul>
-          {marketingPage.examples.map((item) => <li>{item}</li>)}
-        </ul>
-      </article>
+    <!-- Intro -->
+    <section class="section" id="intro">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">01 — Thesis</span></div>
+          <h2 class="section-title">Find the workflow <em>worth automating.</em></h2>
+          <p class="section-lede">
+            Hiring a full-time AI engineer is a $180K bet with no guarantee of ROI.
+            Generic SaaS solves the easy 30% and leaves the messy middle. We're the
+            third option — a senior operator embedded for six months.
+          </p>
+        </div>
+        <div class="intro-grid">
+          <p class="intro-statement">
+            Most teams know AI matters. They don't know <em>which workflow</em>
+            to start with. We find it, ship it, train the team, keep it running.
+          </p>
+          <div class="intro-points">
+            <div class="intro-point reveal">
+              <div class="num">01</div>
+              <div>
+                <h4>One operator. Not an agency.</h4>
+                <p>Same person on every call, in the SOW, and in the code. No account-manager handoffs, no offshore subcontractors.</p>
+              </div>
+            </div>
+            <div class="intro-point reveal" data-delay="1">
+              <div class="num">02</div>
+              <div>
+                <h4>Buy, build, or integrate — honest answer.</h4>
+                <p>Sometimes the right answer is a $99/mo SaaS tool we configure for you. We'll tell you when that's the case.</p>
+              </div>
+            </div>
+            <div class="intro-point reveal" data-delay="2">
+              <div class="num">03</div>
+              <div>
+                <h4>Human review stays in the loop.</h4>
+                <p>Decision-support, not autonomous high-stakes decisions. Audit logs, citations, confidence scores on every workflow.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <article>
-        <h2>Proof</h2>
-        <ul>
-          {marketingPage.proof.map((item) => <li>{item}</li>)}
-        </ul>
-      </article>
+    <!-- Loom -->
+    <section class="section" id="loom" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">02 — Proof, on film</span></div>
+          <h2 class="section-title">Watch a real federal RFP get parsed in <em>under five seconds.</em></h2>
+          <p class="section-lede">
+            Two minutes. One real public RFP from SAM.gov. Ingested, requirements extracted with citations,
+            compliance matrix generated. The same engine ships inside our retainer engagements.
+          </p>
+        </div>
+
+        <div class="loom-frame reveal">
+          <div class="loom-meta">
+            <span class="red"></span>
+            Loom · 02:14 · OmniBid walkthrough
+          </div>
+          <div class="loom-overlay">
+            <button class="loom-play" aria-label="Play demo">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5.14v13.72L19 12 8 5.14z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="loom-corner">Placeholder — embed Loom here</div>
+        </div>
+
+        <div class="loom-caption">
+          <span>00:00 Intro &nbsp;·&nbsp; 00:15 What Varholdt AI does &nbsp;·&nbsp; 00:30 OmniBid live</span>
+          <span>Hosted on Loom &nbsp;·&nbsp; CC available</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- What we build -->
+    <section class="section" id="what">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">03 — What we build</span></div>
+          <h2 class="section-title">Five workflows we ship <em>over and over.</em></h2>
+          <p class="section-lede">
+            We start with the highest-leverage slice — the 20% of a workflow that produces 80% of the pain.
+            Ship it, tune it from real usage, then expand. One at a time. No parallel scope creep.
+          </p>
+        </div>
+
+        <div class="builds">
+          {builds.map((b, i) => (
+            <article class="build reveal" data-delay={(i % 4).toString()}>
+              <div class="build-head">
+                <span class="build-num">0{i + 1}  ·  05</span>
+                <span class="build-tag">{b.tag}</span>
+              </div>
+              <h3>{b.title}</h3>
+              <p>{b.body}</p>
+              <div class="build-foot">
+                {b.foot.map((f) => <span>{f}</span>)}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Who it's for -->
+    <section class="section" id="who" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">04 — Who it's for</span></div>
+          <h2 class="section-title">Built for document-heavy teams.</h2>
+          <p class="section-lede">
+            20–250 person teams with recurring document and email volume, a workflow owner with authority,
+            a decision-maker who can sign inside 30 days, and tried-SaaS-but-the-messy-middle-remains energy.
+          </p>
+        </div>
+
+        <div class="segments">
+          {segments.map((s, i) => (
+            <div class="segment reveal" data-delay={(i % 4).toString()}>
+              <span class="segment-num">{s.num}</span>
+              <div>
+                <h4>{s.title}</h4>
+                <p>{s.body}</p>
+              </div>
+              <span class={`segment-weight ${s.primary ? "primary" : ""}`}>{s.weight}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section" id="how">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">05 — How it works</span></div>
+          <h2 class="section-title">Ship the first tool in <em>ten days.</em></h2>
+          <p class="section-lede">
+            The sprint is paid proof. If it's not obviously worth it, you keep the prototype and the roadmap
+            and we shake hands. If it is, the $5K credits against month one of the retainer.
+          </p>
+        </div>
+
+        <div class="how">
+          <div class="how-card how-sprint reveal">
+            <div class="how-step"><span class="num">1</span> Front door</div>
+            <h3>AI Workflow Sprint</h3>
+            <div class="how-price">
+              <span class="amt">$5,000</span>
+              <span class="per">flat — 10 business days</span>
+            </div>
+            <ul class="how-list">
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Current-state map</strong> of one document-heavy workflow with stakeholder interviews</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Working prototype</strong> of the highest-leverage slice — live, demo-able, not slideware</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>90-day roadmap</strong> and buy, build, or integrate memo with ROI assumptions</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>60-min leadership training</strong>, recorded for your team</span>
+              </li>
+            </ul>
+            <div class="how-foot">
+              Credit mechanic — <strong>100% of the sprint fee</strong> applies toward month 1 of the retainer if signed within 14 days.
+            </div>
+          </div>
+
+          <div class="how-card how-retainer reveal" data-delay="1">
+            <div class="how-step"><span class="num">2</span> Main offer</div>
+            <h3>Fractional AI Department</h3>
+            <div class="how-price">
+              <span class="amt">$6,000</span>
+              <span class="per">per month — 6-mo min</span>
+              <span class="strike">$10,000 standard</span>
+            </div>
+            <ul class="how-list">
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>1 core workflow</strong> shipped and tuned to production</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>1–2 supporting automations</strong> or integrations</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Monthly training</strong> and ROI usage report</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Quarterly roadmap reviews</strong> with the workflow owner</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Ongoing support, tuning, and prompt iteration</strong> on shipped work</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8.5l3 3 7-7.5"></path>
+                </svg>
+                <span><strong>Hosting and AI tokens included</strong> up to a $1.5K monthly cap; pass-through at cost above</span>
+              </li>
+            </ul>
+            <div class="how-foot">
+              Founding rate — <strong>first two clients only.</strong> Standard rate steps up to $10K per month after the first case studies ship.
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline">
+          <div class="timeline-head">
+            <h3>The 10-day sprint, day by day</h3>
+            <span class="kicker">Day 01 → Day 10</span>
+          </div>
+          <div class="timeline-grid">
+            {timelineSteps.map((s, i) => (
+              <div class="timeline-step reveal" data-delay={(i % 5).toString()}>
+                <div class="day">{s.day}</div>
+                <h5>{s.h}</h5>
+                <p>{s.p}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Proof -->
+    <section class="section" id="proof">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">06 — Proof</span></div>
+          <h2 class="section-title">Proof from real systems.</h2>
+          <p class="section-lede">
+            Eight production systems, one active federal contract, one hackathon win.
+            The portfolio proves we can ship. The founding sprints will prove we produce client ROI —
+            we're shipping the second piece in public.
+          </p>
+        </div>
+
+        <div class="proof-grid reveal">
+          {proofStats.map((s) => (
+            <div class="proof-cell">
+              <div class="num" set:html={s.numHtml}></div>
+              <h4>{s.h}</h4>
+              <p>{s.p}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="proof-systems">
+          {segmentsSystems.map((s) => (
+            <span class="proof-system"><span class="dot"></span>{s}</span>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Founder -->
+    <section class="section" id="founder" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">07 — The operator</span></div>
+          <h2 class="section-title">Same person, intro call to month six.</h2>
+        </div>
+
+        <div class="founder-grid">
+          <div class="headshot reveal">
+            <div class="headshot-monogram">LV</div>
+            <div class="headshot-tag">Placeholder — founder headshot</div>
+          </div>
+
+          <div class="founder-body reveal" data-delay="1">
+            <h3>Layken Varholdt — founder, sole operator.</h3>
+            <p>
+              Air Force veteran (4 years active, 2W0X1 Munitions Systems). Currently a
+              <strong> full-stack engineer on a federal Department of Labor contract</strong>,
+              based in Youngsville, Louisiana. Family of five.
+            </p>
+            <p>
+              Built OmniBid — a SAM.gov-integrated federal RFP parser with requirement
+              extraction and citation-grounded compliance matrices — and seven other
+              production systems on the same stack you'll see in the sprint:
+              <strong> Convex, TanStack Start, Vercel AI SDK, Gemini, Claude, Vapi, Stripe.</strong>
+            </p>
+            <p>
+              You hire one person. <strong>That person scopes, builds, demos, trains,
+              and supports.</strong> No account managers, no offshore subcontractors,
+              no handoffs. When the engagement ends, the source code is yours.
+            </p>
+
+            <div class="founder-stats">
+              <div class="founder-stat">
+                <div class="k">Experience</div>
+                <div class="v">8 production systems</div>
+              </div>
+              <div class="founder-stat">
+                <div class="k">Background</div>
+                <div class="v">USAF veteran</div>
+              </div>
+              <div class="founder-stat">
+                <div class="k">Active</div>
+                <div class="v">Federal contract</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="book">
+      <div class="container">
+        <div class="cta-grid reveal">
+          <div class="cta-body">
+            <span class="cta-eyebrow">Founding spots — 2 of 2 open</span>
+            <h2 class="cta-title">Twenty minutes. One workflow. A real conversation.</h2>
+            <p>
+              We'll walk through one workflow that slows your team down every week —
+              who owns it, how often it runs, what you've already tried. If a sprint
+              makes sense, we'll scope it on the call.
+            </p>
+            <p>
+              If a SaaS tool is the right answer, I'll tell you which one. No deck, no
+              discovery framework, no pitch.
+            </p>
+            <div class="cta-actions">
+              <a class="btn btn-primary" href="#">
+                Book on Calendly
+                <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 8h10M9 4l4 4-4 4"></path>
+                </svg>
+              </a>
+              <a class="btn btn-ghost" href="mailto:layken@varholdt.ai">Email instead</a>
+            </div>
+          </div>
+
+          <div class="cta-side">
+            <div class="cta-row">
+              <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2.5" y="3.5" width="11" height="10" rx="1.5"></rect>
+                <path d="M2.5 6.5h11M5.5 2v3M10.5 2v3"></path>
+              </svg>
+              <div>
+                <div class="k">Schedule</div>
+                <div class="v">20 minutes — video</div>
+              </div>
+            </div>
+            <div class="cta-row">
+              <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3.5" width="12" height="9" rx="1.5"></rect>
+                <path d="M2.5 4.5l5.5 4 5.5-4"></path>
+              </svg>
+              <div>
+                <div class="k">Email</div>
+                <div class="v">layken@varholdt.ai</div>
+              </div>
+            </div>
+            <div class="cta-row">
+              <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M8 14s5-4.5 5-8.5a5 5 0 0 0-10 0c0 4 5 8.5 5 8.5z"></path>
+                <circle cx="8" cy="5.5" r="1.8"></circle>
+              </svg>
+              <div>
+                <div class="k">Based in</div>
+                <div class="v">Youngsville, Louisiana</div>
+              </div>
+            </div>
+            <div class="cta-row">
+              <svg class="icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 3.5C3 3 3.4 2.5 4 2.5h2l1 3-1.5 1c.7 1.6 2 2.9 3.6 3.6l1-1.5 3 1v2c0 .6-.5 1-1 1A11 11 0 0 1 3 3.5z"></path>
+              </svg>
+              <div>
+                <div class="k">Response</div>
+                <div class="v">Same business day</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <h2 class="footer-mark">Varholdt.</h2>
+        <div class="footer-meta">
+          <div>Varholdt AI LLC — est. 2026</div>
+          <div>Youngsville, Louisiana</div>
+          <div>USAF veteran-led</div>
+          <div><a href="mailto:layken@varholdt.ai">layken@varholdt.ai</a></div>
+          <div><a href="#">LinkedIn</a> &nbsp; <a href="#">laykenvarholdt.com</a></div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Varholdt AI</span>
+        <span>Fractional AI Department for document-heavy teams</span>
+      </div>
+    </div>
+  </footer>
 </SiteLayout>
+
+<script>
+  // Nav scrolled state
+  const nav = document.getElementById("site-nav");
+  if (nav) {
+    const onScroll = () => {
+      if (window.scrollY > 20) nav.classList.add("scrolled");
+      else nav.classList.remove("scrolled");
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  // Hero is-ready (triggers demo entrance)
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  if (hero) {
+    window.setTimeout(() => hero.classList.add("is-ready"), 80);
+  }
+
+  // IntersectionObserver reveal
+  const revealEls = document.querySelectorAll(".reveal");
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add("in");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" }
+    );
+    revealEls.forEach((el) => io.observe(el));
+  } else {
+    revealEls.forEach((el) => el.classList.add("in"));
+  }
+
+  // Pipeline active node cycle
+  const pipeline = document.querySelector("[data-pipeline]");
+  if (pipeline) {
+    const nodes = Array.from(pipeline.querySelectorAll<HTMLElement>("[data-node-idx]"));
+    let idx = 0;
+    const setActive = (i: number) => {
+      nodes.forEach((n, j) => n.classList.toggle("active", j === i));
+    };
+    setActive(0);
+    window.setInterval(() => {
+      idx = (idx + 1) % nodes.length;
+      setActive(idx);
+    }, 1800);
+  }
+
+  // KPI tickers — count up from 0 to target when first revealed
+  const tickers = document.querySelectorAll<HTMLElement>("[data-ticker]");
+  const animateTicker = (el: HTMLElement) => {
+    const target = parseInt(el.getAttribute("data-target") || "0", 10);
+    if (!target) return;
+    const duration = 1400;
+    const start = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(target * eased);
+      el.textContent = String(val);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  if ("IntersectionObserver" in window) {
+    const tickIO = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            animateTicker(e.target as HTMLElement);
+            tickIO.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.3 }
+    );
+    tickers.forEach((el) => tickIO.observe(el));
+  } else {
+    tickers.forEach((el) => animateTicker(el));
+  }
+</script>
