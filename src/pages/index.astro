@@ -5,6 +5,17 @@ import "@/styles/global.css";
 
 const builds = [
   {
+    kind: "intake",
+    tag: "Intake",
+    title: "Document Intake Agent",
+    reads: "Inbound emails, attachments, scanned forms, source docs",
+    does: "Classifies the document, extracts structured fields with confidence scores, routes to the right queue or system",
+    approves: "Low-confidence extractions and exception cases",
+    outputs: "CRM · ATS · claims system · accounting software · review queue",
+    foot: ["Confidence-scored", "Exception routing"],
+  },
+  {
+    kind: "rfp",
     tag: "Proposals",
     title: "RFP Response Agent",
     reads: "RFP PDFs, amendments, Q&A, past-performance library",
@@ -14,15 +25,7 @@ const builds = [
     foot: ["SAM.gov ingestion", "Citation-grounded", "Human-reviewed"],
   },
   {
-    tag: "Drafting",
-    title: "Drafting Workbench Agent",
-    reads: "Prior proposals, capability statements, the new ask, house voice guide",
-    does: "Pre-drafts proposal sections, vendor letters, RFI responses in the team's voice",
-    approves: "Every paragraph before it leaves",
-    outputs: "Word · Google Docs · proposal template",
-    foot: ["House-voice tuned", "Version diffs"],
-  },
-  {
+    kind: "resume",
     tag: "Hiring",
     title: "Resume Screening Agent",
     reads: "Inbound resumes, the open requisition, the company's hiring rubric",
@@ -32,6 +35,7 @@ const builds = [
     foot: ["Match scoring", "Outreach drafts"],
   },
   {
+    kind: "claims",
     tag: "Insurance",
     title: "Claims Prep Agent",
     reads: "Claim submission, supporting documents, policy file",
@@ -72,26 +76,6 @@ const proofStats = [
   { numHtml: "DOL", h: "Federal contract, active", p: "Full-stack engineer on a Department of Labor contract. Veteran-owned." },
 ];
 
-const marqueeItems = [
-  "GovCon", "Proposal & Capture", "Staffing & Recruiting",
-  "Regional Insurance", "CPA & Accounting", "Construction Back-Office",
-  "Document-Heavy Teams",
-];
-
-const pipelineNodes = [
-  { name: "Ingest", sub: "47 docs", iconKey: "doc" },
-  { name: "Extract", sub: "Gemini", iconKey: "scan" },
-  { name: "Review", sub: "Human", iconKey: "eye" },
-  { name: "Export", sub: "Sheets", iconKey: "send" },
-];
-
-const activities = [
-  { time: "now", text: "RFP-2026-0421 — 72 requirements extracted", tag: "shipped", warn: false },
-  { time: "2m", text: "Claim #84021 — assigned to review queue", tag: "review", warn: true },
-  { time: "8m", text: "Resume batch — 24 candidates matched", tag: "shipped", warn: false },
-  { time: "14m", text: "SOW v3 — past-performance citations updated", tag: "shipped", warn: false },
-];
-
 const timelineSteps = [
   { day: "Day 01 — Kickoff", h: "Confirm scope", p: "One workflow, decision-maker, 2–4 stakeholders, sample documents." },
   { day: "Days 02–04 — Discovery", h: "Observe the actual work", p: "Not what they say they do — what they do. Map triggers, handoffs, time per cycle." },
@@ -106,6 +90,68 @@ const heroChips = [
   { key: "drive", label: "Google Drive", cls: "c3" },
   { key: "sheets", label: "Sheets", cls: "c4" },
 ];
+
+// Combined Find → Run card data.
+// Each workflow ties a "winner" candidate row to its execution feed + score.
+const findrunWorkflows = [
+  {
+    key: "rfp",
+    label: "RFP",
+    longLabel: "RFP intake",
+    tag: "Proposals",
+    cand: "rfp",
+    scores: { vol: 0.80, rep: 0.85, roi: 0.95 },
+    rows: [
+      { time: "10:02", kind: "in",    title: "Slack · #rfp-alerts",            meta: "SAM.gov · 47-page solicitation" },
+      { time: "10:03", kind: "step",  title: "Extracting requirements",        meta: "Section L · M · C · 14 items found" },
+      { time: "10:04", kind: "step",  title: "Drafting compliance matrix",     meta: "Every row cited back to source" },
+      { time: "10:05", kind: "human", title: "PM approved 12 of 14",           meta: "2 flagged for clarification" },
+      { time: "10:06", kind: "out",   title: "SharePoint · /proposals/2026-Q3", meta: "Excel matrix ready for review" },
+    ],
+  },
+  {
+    key: "claims",
+    label: "Claims",
+    longLabel: "Claims intake",
+    tag: "Insurance",
+    cand: "claims",
+    scores: { vol: 0.78, rep: 0.82, roi: 0.88 },
+    rows: [
+      { time: "14:11", kind: "in",    title: "Outlook · claims@",              meta: "First notice of loss · 6 attachments" },
+      { time: "14:12", kind: "step",  title: "Matching loss event to policy",  meta: "Section 4.b · 3 exclusions reviewed" },
+      { time: "14:13", kind: "step",  title: "Drafting coverage summary",      meta: "Covered · reserve $18,400" },
+      { time: "14:14", kind: "human", title: "Adjuster approved coverage",     meta: "Audit log written" },
+      { time: "14:15", kind: "out",   title: "Claims system · response sent",  meta: "Notification queued to insured" },
+    ],
+  },
+  {
+    key: "resume",
+    label: "Resume",
+    longLabel: "Resume match",
+    tag: "Hiring",
+    cand: "resume",
+    scores: { vol: 0.72, rep: 0.78, roi: 0.82 },
+    rows: [
+      { time: "08:47", kind: "in",    title: "Gmail · careers@",               meta: "24 resumes · Req-0421 Sr Backend" },
+      { time: "08:48", kind: "step",  title: "Scoring against rubric",         meta: "Top 3 surfaced with rationale" },
+      { time: "08:49", kind: "step",  title: "Drafting outreach",              meta: "House voice · subject A/B prepared" },
+      { time: "08:51", kind: "human", title: "Recruiter approved shortlist",   meta: "3 advanced · 21 declined with notes" },
+      { time: "08:52", kind: "out",   title: "ATS · #hiring-be channel",       meta: "Outreach queued · channel pinged" },
+    ],
+  },
+];
+
+// Candidate list for the Find pane. Two of these never win — they're the
+// always-loser rows that prove the triage actually rejects work. They hide
+// on mobile to keep the rail to three visible rows.
+const findrunCandidates = [
+  { key: "email",   name: "Email triage",           hideOnMobile: true  },
+  { key: "rfp",     name: "RFP intake",             hideOnMobile: false },
+  { key: "claims",  name: "Claims intake",          hideOnMobile: false },
+  { key: "resume",  name: "Resume screening",       hideOnMobile: false },
+  { key: "expense", name: "Expense classification", hideOnMobile: true  },
+];
+
 ---
 
 <SiteLayout title={marketingPage.title} description={marketingPage.description}>
@@ -175,15 +221,14 @@ const heroChips = [
 
       <div class="container hero-inner">
         <h1 class="hero-headline">
-          <span class="line"><span>Install AI workflow agents</span></span>
-          <span class="line"><span>without hiring an <em>AI team.</em></span></span>
+          Turn document-heavy workflows into <em>human-reviewed</em> AI agents.
         </h1>
 
         <p class="hero-sub">
-          Human-reviewed agents that read your documents, draft and route the
-          predictable work, and live in the tools your team already uses —
-          <strong>Outlook, Slack, Teams, SharePoint, your CRM.</strong> Not
-          another app.
+          We build agents that read RFPs, resumes, claims, emails, and source
+          documents, then draft, route, and prepare the next step inside the
+          <strong>tools your team already uses</strong>. Every important output
+          stays human-reviewed, cited, and auditable.
         </p>
 
         <div class="hero-actions">
@@ -201,251 +246,208 @@ const heroChips = [
           <span><span class="tick"></span> $5K paid sprint, credits to retainer</span>
           <span><span class="tick"></span> 2 founding spots open</span>
         </div>
-
-        <div class="hero-demo-wrap">
-          <div class="hero-demo">
-            <!-- Demo dashboard -->
-            <div class="demo">
-              <div class="demo-head">
-                <div class="demo-head-left">
-                  <span class="demo-head-title">RFP Shred</span>
-                  <span class="demo-head-crumb">Sprint · Day 6 of 10</span>
-                </div>
-                <div class="demo-head-right">
-                  <span class="demo-tab active">Workflows</span>
-                  <span class="demo-tab">Documents</span>
-                  <span class="demo-tab">Reports</span>
-                </div>
-              </div>
-
-              <div class="demo-body">
-                <aside class="demo-sidebar">
-                  <div class="demo-sidebar-label">Active</div>
-                  <div class="demo-sidebar-item active">
-                    <span class="si-dot"></span> RFP Shred
-                    <span class="si-count">12</span>
-                  </div>
-                  <div class="demo-sidebar-item">
-                    <span class="si-dot"></span> Claims Intake
-                    <span class="si-count">47</span>
-                  </div>
-                  <div class="demo-sidebar-item">
-                    <span class="si-dot"></span> Resume Match
-                    <span class="si-count">8</span>
-                  </div>
-                  <div class="demo-sidebar-item">
-                    <span class="si-dot"></span> Knowledge Search
-                    <span class="si-count">—</span>
-                  </div>
-                  <div class="demo-sidebar-label" style="margin-top: 22px;">Archive</div>
-                  <div class="demo-sidebar-item">
-                    <span class="si-dot"></span> Submittals
-                  </div>
-                  <div class="demo-sidebar-item">
-                    <span class="si-dot"></span> Drafting Bench
-                  </div>
-                </aside>
-
-                <div class="demo-main">
-                  <div class="demo-main-head">
-                    <h4>RFP Shred — federal solicitation parser</h4>
-                    <span class="meta">847 docs · live</span>
-                  </div>
-
-                  <div class="demo-kpis">
-                    <div class="demo-kpi">
-                      <div class="k">Docs processed</div>
-                      <div class="v" data-ticker data-target="847">0</div>
-                      <div class="delta">↑ 12% this week</div>
-                    </div>
-                    <div class="demo-kpi">
-                      <div class="k">Avg parse time</div>
-                      <div class="v">4.2<span class="unit">s</span></div>
-                      <div class="delta">↓ 0.8s</div>
-                    </div>
-                    <div class="demo-kpi">
-                      <div class="k">Hours saved</div>
-                      <div class="v" data-ticker data-target="184">0</div>
-                      <div class="delta">vs. manual</div>
-                    </div>
-                    <div class="demo-kpi">
-                      <div class="k">Review queue</div>
-                      <div class="v">3</div>
-                      <div class="delta warn">awaiting human</div>
-                    </div>
-                  </div>
-
-                  <div class="demo-pipeline">
-                    <div class="demo-pipeline-head">
-                      <span class="t">Active pipeline</span>
-                      <span class="right"><span class="dot"></span> Live · 4 stages</span>
-                    </div>
-                    <div class="demo-flow" data-pipeline>
-                      {pipelineNodes.map((n, i) => (
-                        <>
-                          <div class="demo-node" data-node-idx={i}>
-                            <span class="icon">
-                              {n.iconKey === "doc" && (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"></path>
-                                  <path d="M14 3v5h5M9 13h6M9 17h6"></path>
-                                </svg>
-                              )}
-                              {n.iconKey === "scan" && (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3"></path>
-                                  <path d="M4 12h16"></path>
-                                </svg>
-                              )}
-                              {n.iconKey === "eye" && (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M1.5 12s4-7 10.5-7 10.5 7 10.5 7-4 7-10.5 7S1.5 12 1.5 12z"></path>
-                                  <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                              )}
-                              {n.iconKey === "send" && (
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
-                                </svg>
-                              )}
-                            </span>
-                            <div class="name">{n.name}</div>
-                            <div class="sub">{n.sub}</div>
-                          </div>
-                          {i < pipelineNodes.length - 1 && <div class="demo-arrow-track"></div>}
-                        </>
-                      ))}
-                    </div>
-                    <div class="demo-activity">
-                      {activities.map((a) => (
-                        <div class="demo-activity-row">
-                          <span class="time">{a.time}</span>
-                          <span class="text">{a.text}</span>
-                          <span class={`pill ${a.warn ? "warn" : ""}`}>{a.tag}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- Marquee -->
-    <div class="marquee-section" aria-hidden="true">
-      <div class="marquee-track">
-        {[0, 1].map(() => (
-          <>
-            {marqueeItems.map((t) => (
-              <span class="marquee-item">
-                <span class="glyph"></span>
-                {t}
-              </span>
-            ))}
-          </>
-        ))}
-      </div>
-    </div>
-
-    <!-- Intro -->
-    <section class="section" id="intro">
+    <!-- Who it's for / Problem · Fit -->
+    <section class="section" id="who">
       <div class="container">
         <div class="section-head">
-          <div class="kicker-row"><span class="kicker">01 — Thesis</span></div>
-          <h2 class="section-title">Find the workflow <em>worth automating.</em></h2>
+          <div class="kicker-row"><span class="kicker">01 — Who it's for</span></div>
+          <h2 class="section-title">Built for document-heavy teams.</h2>
           <p class="section-lede">
-            Hiring a full-time AI engineer is a $180K bet with no guarantee of ROI.
-            Generic SaaS solves the easy 30% and leaves the messy middle. We're the
-            third option — a senior operator embedded for six months.
-          </p>
-        </div>
-        <div class="intro-grid">
-          <p class="intro-statement">
-            Most teams know AI matters. They don't know <em>which workflow</em>
-            to start with — or where the agent should actually live so the team
-            will use it. We find both, ship it, train the team, keep it running.
-          </p>
-          <div class="intro-points">
-            <div class="intro-point reveal">
-              <div class="num">01</div>
-              <div>
-                <h4>Lives in the tools you already use.</h4>
-                <p>Outlook, Slack, Teams, SharePoint, Drive, your CRM, your ATS. A lightweight review UI only where control specifically requires one.</p>
-              </div>
-            </div>
-            <div class="intro-point reveal" data-delay="1">
-              <div class="num">02</div>
-              <div>
-                <h4>Buy, build, or integrate — honest answer.</h4>
-                <p>Sometimes the right answer is a $99/mo SaaS tool we configure for you. We'll tell you when that's the case.</p>
-              </div>
-            </div>
-            <div class="intro-point reveal" data-delay="2">
-              <div class="num">03</div>
-              <div>
-                <h4>Human review stays in the loop.</h4>
-                <p>Decision-support, not autonomous high-stakes decisions. Audit logs, citations, confidence scores on every agent.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Loom -->
-    <section class="section" id="loom" style="padding-top: 0;">
-      <div class="container">
-        <div class="section-head">
-          <div class="kicker-row"><span class="kicker">02 — Proof, on film</span></div>
-          <h2 class="section-title">Watch a real federal RFP get parsed in <em>under five seconds.</em></h2>
-          <p class="section-lede">
-            Two minutes. One real public RFP from SAM.gov. Ingested, requirements extracted with citations,
-            compliance matrix generated. The same engine ships inside our retainer engagements.
+            If your team is still reading PDFs, copying fields into spreadsheets,
+            rewriting the same responses, or hunting through shared drives for
+            source material, you probably don't need another AI app. You need one
+            recurring workflow cleaned up, instrumented, and put under human
+            control.
           </p>
         </div>
 
-        <div class="loom-frame reveal">
-          <div class="loom-meta">
-            <span class="red"></span>
-            Loom · 02:14 · OmniBid walkthrough
-          </div>
-          <div class="loom-overlay">
-            <button class="loom-play" aria-label="Play demo">
-              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M8 5.14v13.72L19 12 8 5.14z"></path>
-              </svg>
-            </button>
-          </div>
-          <div class="loom-corner">Placeholder — embed Loom here</div>
-        </div>
-
-        <div class="loom-caption">
-          <span>00:00 Intro &nbsp;·&nbsp; 00:15 What Varholdt AI does &nbsp;·&nbsp; 00:30 OmniBid live</span>
-          <span>Hosted on Loom &nbsp;·&nbsp; CC available</span>
+        <div class="segments">
+          {segments.map((s, i) => (
+            <div class="segment reveal" data-delay={(i % 4).toString()}>
+              <span class="segment-num">{s.num}</span>
+              <div>
+                <h4>{s.title}</h4>
+                <p>{s.body}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>
 
     <!-- What we build — the agents -->
-    <section class="section" id="what">
+    <section class="section" id="what" style="padding-top: 0;">
       <div class="container">
         <div class="section-head">
-          <div class="kicker-row"><span class="kicker">03 — The agents</span></div>
-          <h2 class="section-title">Four agents we ship <em>over and over.</em></h2>
+          <div class="kicker-row"><span class="kicker">02 — The agents</span></div>
+          <h2 class="section-title">Four agents already running in <em>production.</em></h2>
           <p class="section-lede">
-            Each one reads what it should read, does what it should do, hands off
-            to a human at the decision point, and writes the result back to the
-            tool you already use. We ship one in your sprint, then expand. One at
-            a time. No parallel scope creep.
+            Each agent reads what it should read, does what it should do, hands
+            the decision back to a human, and writes the result into the tool
+            you already use. We ship one in your sprint, then expand.
           </p>
         </div>
 
         <div class="builds">
           {builds.map((b, i) => (
             <article class="build reveal" data-delay={(i % 4).toString()}>
+              <div class={`agent-preview agent-preview-${b.kind}`} aria-hidden="true">
+                {b.kind === "intake" && (
+                  <div class="ap-intake">
+                    <ul class="ap-intake-stack" role="list">
+                      <li class="ap-intake-doc ap-id-1">
+                        <span class="ap-intake-env" aria-hidden="true">
+                          <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0.8" y="0.8" width="14.4" height="10.4" rx="1.2"/>
+                            <path d="M1.4 1.8l6.6 5 6.6-5"/>
+                          </svg>
+                        </span>
+                        <span class="ap-intake-name">invoice-04.pdf</span>
+                        <span class="ap-intake-tag">Invoice</span>
+                      </li>
+                      <li class="ap-intake-doc ap-id-2">
+                        <span class="ap-intake-env" aria-hidden="true">
+                          <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0.8" y="0.8" width="14.4" height="10.4" rx="1.2"/>
+                            <path d="M1.4 1.8l6.6 5 6.6-5"/>
+                          </svg>
+                        </span>
+                        <span class="ap-intake-name">RFP-2026-0184.pdf</span>
+                        <span class="ap-intake-tag">RFP</span>
+                      </li>
+                      <li class="ap-intake-doc ap-id-3">
+                        <span class="ap-intake-env" aria-hidden="true">
+                          <svg viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="0.8" y="0.8" width="14.4" height="10.4" rx="1.2"/>
+                            <path d="M1.4 1.8l6.6 5 6.6-5"/>
+                          </svg>
+                        </span>
+                        <span class="ap-intake-name">claim-018324.pdf</span>
+                        <span class="ap-intake-tag">Claim</span>
+                      </li>
+                    </ul>
+                    <div class="ap-intake-extract">
+                      <div class="ap-intake-head">
+                        <span><span class="ap-doc-tag-dot"></span>Extracted</span>
+                        <span class="ap-intake-conf">Confidence</span>
+                      </div>
+                      <ul class="ap-intake-fields" role="list">
+                        <li class="ap-intake-field ap-if-1">
+                          <span class="ap-intake-flabel">Vendor</span>
+                          <span class="ap-intake-fbar"><i style="--w:0.96"></i></span>
+                        </li>
+                        <li class="ap-intake-field ap-if-2">
+                          <span class="ap-intake-flabel">Amount</span>
+                          <span class="ap-intake-fbar"><i style="--w:0.92"></i></span>
+                        </li>
+                        <li class="ap-intake-field ap-if-3">
+                          <span class="ap-intake-flabel">Due date</span>
+                          <span class="ap-intake-fbar"><i style="--w:0.84"></i></span>
+                        </li>
+                        <li class="ap-intake-field ap-if-4">
+                          <span class="ap-intake-flabel">PO #</span>
+                          <span class="ap-intake-fbar"><i style="--w:0.54" data-low></i></span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+                {b.kind === "rfp" && (
+                  <div class="ap-rfp">
+                    <div class="ap-doc">
+                      <div class="ap-doc-head">
+                        <span class="ap-doc-tag"><span class="ap-doc-tag-dot"></span>RFP-2026-0184.pdf</span>
+                        <span class="ap-doc-status">L · M · C</span>
+                      </div>
+                      <div class="ap-doc-lines">
+                        <span class="ap-line" style="--w:84%"></span>
+                        <span class="ap-line is-hl is-hl-1" style="--w:72%"></span>
+                        <span class="ap-line" style="--w:64%"></span>
+                        <span class="ap-line is-hl is-hl-2" style="--w:78%"></span>
+                        <span class="ap-line is-hl is-hl-3" style="--w:58%"></span>
+                        <span class="ap-line" style="--w:42%"></span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                {b.kind === "resume" && (
+                  <div class="ap-resume">
+                    <ul class="ap-resumes" role="list">
+                      <li class="ap-resume-row ap-rr-1">
+                        <span class="ap-avatar">JL</span>
+                        <span class="ap-resume-body">
+                          <span class="ap-resume-name"></span>
+                          <span class="ap-resume-meta"></span>
+                        </span>
+                        <span class="ap-resume-check" aria-hidden="true">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-6.5"/></svg>
+                        </span>
+                      </li>
+                      <li class="ap-resume-row ap-rr-2">
+                        <span class="ap-avatar">MR</span>
+                        <span class="ap-resume-body">
+                          <span class="ap-resume-name"></span>
+                          <span class="ap-resume-meta"></span>
+                        </span>
+                        <span class="ap-resume-check" aria-hidden="true">
+                          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5l3 3 6-6.5"/></svg>
+                        </span>
+                      </li>
+                      <li class="ap-resume-row ap-rr-3">
+                        <span class="ap-avatar">AK</span>
+                        <span class="ap-resume-body">
+                          <span class="ap-resume-name"></span>
+                          <span class="ap-resume-meta"></span>
+                        </span>
+                      </li>
+                    </ul>
+                    <div class="ap-gauge">
+                      <svg viewBox="0 0 80 80" class="ap-gauge-svg" aria-hidden="true">
+                        <circle class="ap-gauge-track" cx="40" cy="40" r="32"></circle>
+                        <circle class="ap-gauge-arc" cx="40" cy="40" r="32" pathLength="100"></circle>
+                      </svg>
+                      <span class="ap-gauge-nums">
+                        <span class="ap-gauge-stage ap-gs-1">87</span>
+                        <span class="ap-gauge-stage ap-gs-2">92</span>
+                        <span class="ap-gauge-stage ap-gs-3">73</span>
+                      </span>
+                      <span class="ap-gauge-label">MATCH</span>
+                    </div>
+                  </div>
+                )}
+                {b.kind === "claims" && (
+                  <div class="ap-claims">
+                    <div class="ap-claim-form">
+                      <div class="ap-claim-head">
+                        <span><span class="ap-doc-tag-dot"></span>FNOL · Claim #018324</span>
+                      </div>
+                      <ul class="ap-claim-fields" role="list">
+                        <li class="ap-field ap-f-1"><span class="ap-field-label">Loss event</span><span class="ap-field-bar"><i></i></span></li>
+                        <li class="ap-field ap-f-2"><span class="ap-field-label">Date / loc.</span><span class="ap-field-bar"><i></i></span></li>
+                        <li class="ap-field ap-f-3"><span class="ap-field-label">Coverage</span><span class="ap-field-bar"><i></i></span></li>
+                        <li class="ap-field ap-f-4"><span class="ap-field-label">Reserve</span><span class="ap-field-bar"><i></i></span></li>
+                      </ul>
+                    </div>
+                    <div class="ap-claim-policy">
+                      <div class="ap-policy-head"><span>Policy</span></div>
+                      <ol class="ap-policy-clauses">
+                        <li class="ap-clause ap-c-1"><span class="ap-clause-num">§1</span><span class="ap-clause-bar"></span></li>
+                        <li class="ap-clause ap-c-2"><span class="ap-clause-num">§2</span><span class="ap-clause-bar"></span></li>
+                        <li class="ap-clause ap-c-3"><span class="ap-clause-num">§3</span><span class="ap-clause-bar"></span></li>
+                        <li class="ap-clause ap-c-4"><span class="ap-clause-num">§4</span><span class="ap-clause-bar"></span></li>
+                      </ol>
+                    </div>
+                    <svg class="ap-claim-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                      <path class="ap-link ap-link-1" d="M 62,52 C 56,52 58,33 52,33" pathLength="100"></path>
+                      <path class="ap-link ap-link-2" d="M 62,71 C 56,71 58,71 52,71" pathLength="100"></path>
+                      <path class="ap-link ap-link-3" d="M 62,33 C 56,33 58,90 52,90" pathLength="100"></path>
+                    </svg>
+                  </div>
+                )}
+              </div>
               <div class="build-head">
                 <span class="build-num">0{i + 1}  ·  0{builds.length}</span>
                 <span class="build-tag">{b.tag}</span>
@@ -478,18 +480,52 @@ const heroChips = [
       </div>
     </section>
 
-    <!-- Integrations strip -->
+    <!-- Loom -->
+    <section class="section" id="loom" style="padding-top: 0;">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker-row"><span class="kicker">03 — Proof, on film</span></div>
+          <h2 class="section-title">Watch an RFP become a <em>reviewable compliance matrix.</em></h2>
+          <p class="section-lede">
+            A real public RFP from SAM.gov: ingested, extracted with citations,
+            compliance matrix generated. The same engine handles claims,
+            resumes, and intake workflows shown above.
+          </p>
+        </div>
+
+        <div class="loom-frame reveal">
+          <div class="loom-meta">
+            <span class="red"></span>
+            Loom · 02:14 · OmniBid walkthrough
+          </div>
+          <div class="loom-overlay">
+            <button class="loom-play" aria-label="Play demo">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5.14v13.72L19 12 8 5.14z"></path>
+              </svg>
+            </button>
+          </div>
+          <div class="loom-corner">Placeholder — embed Loom here</div>
+        </div>
+
+        <div class="loom-caption">
+          <span>00:00 Intro &nbsp;·&nbsp; 00:15 What Varholdt AI does &nbsp;·&nbsp; 00:30 OmniBid live</span>
+          <span>Hosted on Loom &nbsp;·&nbsp; CC available</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Lives in your tools (merged from Integrations) -->
     <section class="section integrations-section" id="integrations" style="padding-top: 0;">
       <div class="container">
         <div class="section-head">
-          <div class="kicker-row"><span class="kicker">03b — Lives in your tools</span></div>
+          <div class="kicker-row"><span class="kicker">04 — Lives in your tools</span></div>
           <h2 class="section-title">No new app. <em>Your tools.</em></h2>
           <p class="section-lede">
-            We build the workflow around the tools your team already uses. A
-            lightweight review UI only where control specifically requires one —
-            confidence highlighting, audit log, citation links. Every sprint has
-            one primary interface and one export destination. No Zapier in a
-            trench coat.
+            We build the workflow around the tools your team already uses. One
+            primary interface. One export destination. Clear human approval
+            points. A lightweight review UI only where control specifically
+            requires one.
           </p>
         </div>
 
@@ -499,32 +535,6 @@ const heroChips = [
               <img class="integration-logo" src={t.icon} alt={`${t.name} logo`} loading="lazy" />
               <span>{t.name}</span>
             </span>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Who it's for -->
-    <section class="section" id="who" style="padding-top: 0;">
-      <div class="container">
-        <div class="section-head">
-          <div class="kicker-row"><span class="kicker">04 — Who it's for</span></div>
-          <h2 class="section-title">Built for document-heavy teams.</h2>
-          <p class="section-lede">
-            20–250 person teams with recurring document and email volume, a workflow owner with authority,
-            a decision-maker who can sign inside 30 days, and tried-SaaS-but-the-messy-middle-remains energy.
-          </p>
-        </div>
-
-        <div class="segments">
-          {segments.map((s, i) => (
-            <div class="segment reveal" data-delay={(i % 4).toString()}>
-              <span class="segment-num">{s.num}</span>
-              <div>
-                <h4>{s.title}</h4>
-                <p>{s.body}</p>
-              </div>
-            </div>
           ))}
         </div>
       </div>
@@ -576,25 +586,25 @@ const heroChips = [
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 8.5l3 3 7-7.5"></path>
                 </svg>
-                <span><strong>Current-state map</strong> of one document-heavy workflow with stakeholder interviews</span>
+                <span><strong>Map the workflow</strong> with your team</span>
               </li>
               <li>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 8.5l3 3 7-7.5"></path>
                 </svg>
-                <span><strong>Working prototype</strong> of the highest-leverage slice — live, demo-able, not slideware</span>
+                <span><strong>Build the part that matters most</strong> — live, not slides</span>
               </li>
               <li>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 8.5l3 3 7-7.5"></path>
                 </svg>
-                <span><strong>90-day roadmap</strong> and buy, build, or integrate memo with ROI assumptions</span>
+                <span><strong>Recommendation:</strong> buy, build, or integrate — with ROI assumptions</span>
               </li>
               <li>
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 8.5l3 3 7-7.5"></path>
                 </svg>
-                <span><strong>60-min leadership training</strong>, recorded for your team</span>
+                <span><strong>60-min team training</strong>, recorded</span>
               </li>
             </ul>
             <div class="how-foot">
@@ -621,12 +631,6 @@ const heroChips = [
                 <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 8.5l3 3 7-7.5"></path>
                 </svg>
-                <span><strong>1–2 supporting automations</strong> or integrations</span>
-              </li>
-              <li>
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 8.5l3 3 7-7.5"></path>
-                </svg>
                 <span><strong>Monthly training</strong> and ROI usage report</span>
               </li>
               <li>
@@ -641,15 +645,125 @@ const heroChips = [
                 </svg>
                 <span><strong>Ongoing support, tuning, and prompt iteration</strong> on shipped work</span>
               </li>
-              <li>
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M3 8.5l3 3 7-7.5"></path>
-                </svg>
-                <span><strong>Hosting and AI tokens included</strong> up to a $1.5K monthly cap; pass-through at cost above</span>
-              </li>
             </ul>
             <div class="how-foot">
-              Founding rate — <strong>first two clients only.</strong> Standard rate steps up to $10K per month after the first case studies ship.
+              Founding rate — <strong>first two clients only.</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- How we pick the workflow (findrun, demoted from intro) -->
+        <div class="how-find reveal">
+          <header class="how-find-head">
+            <span class="kicker">During the sprint</span>
+            <h3>How we pick the workflow.</h3>
+            <p>
+              The audit narrows the candidate list to one. The workflow with the
+              highest combined volume × repeatability × ROI wins the sprint —
+              then runs inside the tools your team already uses.
+            </p>
+          </header>
+
+          <div class="findrun" data-findrun aria-label="How we pick the workflow and what the agent does next">
+            <header class="findrun-head">
+              <span class="findrun-head-status">
+                <span class="findrun-head-dot" aria-hidden="true"></span>
+                <span class="findrun-head-label">Live</span>
+                <span class="findrun-head-sep" aria-hidden="true"></span>
+                <span class="findrun-head-workflow" data-findrun-name>RFP intake</span>
+                <span class="findrun-head-tag" data-findrun-tag>Proposals</span>
+              </span>
+              <nav class="findrun-tabs" aria-label="Swap workflow">
+                {findrunWorkflows.map((w, i) => (
+                  <button
+                    class={`findrun-pill ${i === 0 ? "active" : ""}`}
+                    type="button"
+                    data-workflow={w.key}
+                    data-tag={w.tag}
+                    data-long={w.longLabel}
+                    data-cand={w.cand}
+                    data-vol={w.scores.vol}
+                    data-rep={w.scores.rep}
+                    data-roi={w.scores.roi}
+                    aria-pressed={i === 0 ? "true" : "false"}
+                  >{w.label}</button>
+                ))}
+              </nav>
+            </header>
+
+            <div class="findrun-body">
+              <!-- FIND pane -->
+              <aside class="findrun-pane findrun-find">
+                <div class="findrun-pane-head">
+                  <span class="findrun-pane-eyebrow">Find</span>
+                  <p class="findrun-pane-line">Which workflow earns the sprint?</p>
+                </div>
+
+                <ul class="findrun-cands" role="list">
+                  {findrunCandidates.map((c) => (
+                    <li
+                      class={`findrun-cand ${c.hideOnMobile ? "is-mobile-hide" : ""}`}
+                      data-cand={c.key}
+                    >
+                      <span class="findrun-cand-mark" aria-hidden="true"></span>
+                      <span class="findrun-cand-name">{c.name}</span>
+                      <span class="findrun-cand-tag" aria-hidden="true">Selected</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div class="findrun-why">
+                  <span class="findrun-why-label">Why this one</span>
+                  <dl class="findrun-bars">
+                    <div class="findrun-bar-row">
+                      <dt>Vol</dt>
+                      <dd><span class="findrun-bar"><i data-bar="vol" style="--w:0.80"></i></span></dd>
+                    </div>
+                    <div class="findrun-bar-row">
+                      <dt>Rep</dt>
+                      <dd><span class="findrun-bar"><i data-bar="rep" style="--w:0.85"></i></span></dd>
+                    </div>
+                    <div class="findrun-bar-row">
+                      <dt>ROI</dt>
+                      <dd><span class="findrun-bar"><i data-bar="roi" style="--w:0.95"></i></span></dd>
+                    </div>
+                  </dl>
+                </div>
+              </aside>
+
+              <!-- RUN pane -->
+              <section class="findrun-pane findrun-run">
+                <div class="findrun-pane-head">
+                  <span class="findrun-pane-eyebrow">Run</span>
+                  <p class="findrun-pane-line">Then runs it inside the tools your team already uses</p>
+                </div>
+
+                <div class="findrun-feed-wrap">
+                  {findrunWorkflows.map((w, i) => (
+                    <ol
+                      class={`findrun-feed ${i === 0 ? "active" : ""}`}
+                      data-workflow-body={w.key}
+                      aria-hidden={i === 0 ? "false" : "true"}
+                    >
+                      {w.rows.map((r, ri) => (
+                        <li class={`feed-row feed-row-${r.kind}`} style={`--row-i: ${ri};`}>
+                          <span class="feed-row-time">{r.time}</span>
+                          <span class="feed-row-kind" aria-hidden="true">
+                            {r.kind === "in"    && "IN"}
+                            {r.kind === "step"  && "··"}
+                            {r.kind === "human" && "✓"}
+                            {r.kind === "out"   && "→"}
+                          </span>
+                          <span class="feed-row-body">
+                            <span class="feed-row-title">{r.title}</span>
+                            <span class="feed-row-meta">{r.meta}</span>
+                          </span>
+                        </li>
+                      ))}
+                    </ol>
+                  ))}
+                </div>
+              </section>
             </div>
           </div>
         </div>
@@ -679,9 +793,10 @@ const heroChips = [
           <div class="kicker-row"><span class="kicker">06 — Proof</span></div>
           <h2 class="section-title">Proof from real systems.</h2>
           <p class="section-lede">
-            Eight production systems, one active federal contract, one hackathon win.
-            The portfolio proves we can ship. The founding sprints will prove we produce client ROI —
-            we're shipping the second piece in public.
+            The proof today is shipped software: production systems, federal
+            document workflows, and a live RFP parser. Founding engagements are
+            priced to turn that implementation proof into client ROI case
+            studies.
           </p>
         </div>
 
@@ -717,13 +832,12 @@ const heroChips = [
             <p>
               Air Force veteran (4 years active, 2W0X1 Munitions Systems). Currently a
               <strong> full-stack engineer on a federal Department of Labor contract</strong>,
-              based in Youngsville, Louisiana. Family of five.
+              based in Youngsville, Louisiana.
             </p>
             <p>
               Built OmniBid — a SAM.gov-integrated federal RFP parser with requirement
               extraction and citation-grounded compliance matrices — and seven other
-              production systems on the same stack you'll see in the sprint:
-              <strong> Convex, TanStack Start, Vercel AI SDK, Gemini, Claude, Vapi, Stripe.</strong>
+              <strong>production systems built on the same stack you'll see in the sprint.</strong>
             </p>
             <p>
               You hire one person. <strong>That person scopes, builds, demos, trains,
@@ -756,16 +870,13 @@ const heroChips = [
         <div class="cta-grid reveal">
           <div class="cta-body">
             <span class="cta-eyebrow">Founding spots — 2 of 2 open</span>
-            <h2 class="cta-title">Thirty minutes. One workflow. A real conversation.</h2>
+            <h2 class="cta-title">Bring one workflow your team does every week.</h2>
             <p>
-              Free 30-minute workflow audit. We'll walk one workflow that slows
-              your team down every week — who owns it, how often it runs, what
-              you've already tried. If an agent makes sense, we'll scope a sprint
-              on the call.
+              In 30 minutes, we'll talk through what's automatable, what should
+              stay human-owned, and whether a paid sprint makes sense.
             </p>
             <p>
-              If a SaaS tool is the right answer, I'll tell you which one. No deck,
-              no discovery framework, no pitch.
+              If a SaaS tool is the right answer, I'll tell you which one.
             </p>
             <div class="cta-actions">
               <a class="btn btn-primary" href="#">
@@ -857,12 +968,6 @@ const heroChips = [
     window.addEventListener("scroll", onScroll, { passive: true });
   }
 
-  // Hero is-ready (triggers demo entrance)
-  const hero = document.querySelector<HTMLElement>("[data-hero]");
-  if (hero) {
-    window.setTimeout(() => hero.classList.add("is-ready"), 80);
-  }
-
   // IntersectionObserver reveal
   const revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
@@ -882,51 +987,62 @@ const heroChips = [
     revealEls.forEach((el) => el.classList.add("in"));
   }
 
-  // Pipeline active node cycle
-  const pipeline = document.querySelector("[data-pipeline]");
-  if (pipeline) {
-    const nodes = Array.from(pipeline.querySelectorAll<HTMLElement>("[data-node-idx]"));
-    let idx = 0;
-    const setActive = (i: number) => {
-      nodes.forEach((n, j) => n.classList.toggle("active", j === i));
-    };
-    setActive(0);
-    window.setInterval(() => {
-      idx = (idx + 1) % nodes.length;
-      setActive(idx);
-    }, 1800);
-  }
+  // Find → Run card: pills swap both the candidate winner (left pane) and
+  // the live execution feed (right pane) in sync.
+  const findrun = document.querySelector<HTMLElement>("[data-findrun]");
+  if (findrun) {
+    const pills = Array.from(findrun.querySelectorAll<HTMLButtonElement>(".findrun-pill"));
+    const feeds = Array.from(findrun.querySelectorAll<HTMLElement>("[data-workflow-body]"));
+    const cands = Array.from(findrun.querySelectorAll<HTMLElement>(".findrun-cand"));
+    const bars  = Array.from(findrun.querySelectorAll<HTMLElement>(".findrun-bar i"));
+    const nameEl = findrun.querySelector<HTMLElement>("[data-findrun-name]");
+    const tagEl  = findrun.querySelector<HTMLElement>("[data-findrun-tag]");
 
-  // KPI tickers — count up from 0 to target when first revealed
-  const tickers = document.querySelectorAll<HTMLElement>("[data-ticker]");
-  const animateTicker = (el: HTMLElement) => {
-    const target = parseInt(el.getAttribute("data-target") || "0", 10);
-    if (!target) return;
-    const duration = 1400;
-    const start = performance.now();
-    const step = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const val = Math.round(target * eased);
-      el.textContent = String(val);
-      if (t < 1) requestAnimationFrame(step);
+    // Seed initial winner highlight + bar widths from the active pill.
+    const seed = pills.find((p) => p.classList.contains("active")) || pills[0];
+
+    const setActive = (pill: HTMLButtonElement) => {
+      const key   = pill.dataset.workflow || "";
+      const tag   = pill.dataset.tag || "";
+      const long  = pill.dataset.long || (pill.textContent || "").trim();
+      const cand  = pill.dataset.cand || key;
+      const vol   = pill.dataset.vol || "0.8";
+      const rep   = pill.dataset.rep || "0.8";
+      const roi   = pill.dataset.roi || "0.8";
+
+      pills.forEach((p) => {
+        const on = p === pill;
+        p.classList.toggle("active", on);
+        p.setAttribute("aria-pressed", on ? "true" : "false");
+      });
+
+      if (nameEl) nameEl.textContent = long;
+      if (tagEl && tag) tagEl.textContent = tag;
+
+      cands.forEach((c) => {
+        c.classList.toggle("is-winner", c.dataset.cand === cand);
+      });
+
+      bars.forEach((b) => {
+        const which = b.dataset.bar;
+        const w = which === "vol" ? vol : which === "rep" ? rep : roi;
+        b.style.setProperty("--w", w);
+      });
+
+      feeds.forEach((f) => {
+        const on = f.dataset.workflowBody === key;
+        f.classList.toggle("active", on);
+        f.setAttribute("aria-hidden", on ? "false" : "true");
+      });
     };
-    requestAnimationFrame(step);
-  };
-  if ("IntersectionObserver" in window) {
-    const tickIO = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            animateTicker(e.target as HTMLElement);
-            tickIO.unobserve(e.target);
-          }
-        }
-      },
-      { threshold: 0.3 }
-    );
-    tickers.forEach((el) => tickIO.observe(el));
-  } else {
-    tickers.forEach((el) => animateTicker(el));
+
+    if (seed) setActive(seed);
+
+    pills.forEach((p) => {
+      p.addEventListener("click", () => {
+        if (p.classList.contains("active")) return;
+        setActive(p);
+      });
+    });
   }
 </script>
