@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Varholdt AI Outreach Targets</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #090c10;
+      --panel: #121821;
+      --panel-2: #171f2a;
+      --ink: #f1f5f2;
+      --muted: #9aa6a3;
+      --line: #2a3441;
+      --accent: #4fd1bd;
+      --accent-2: #f38b66;
+      --soft: #19323a;
+      --done: #10161d;
+      --shadow: 0 14px 34px rgba(0, 0, 0, .34);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at 20% -10%, rgba(79, 209, 189, .12), transparent 32rem),
+        linear-gradient(180deg, #0b1118 0%, var(--bg) 34rem);
+      color: var(--ink);
+      line-height: 1.45;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(9, 12, 16, .92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+    .wrap { width: min(1440px, calc(100vw - 32px)); margin: 0 auto; }
+    .topbar { padding: 18px 0 14px; display: grid; gap: 14px; }
+    .title-row { display: flex; align-items: end; justify-content: space-between; gap: 18px; }
+    h1 { margin: 0; font-size: 24px; line-height: 1.1; letter-spacing: 0; }
+    .sub { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+    .progress { min-width: 220px; text-align: right; }
+    .meter { height: 8px; border-radius: 999px; overflow: hidden; background: #202936; margin-top: 7px; }
+    .meter span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #82f2d6); transition: width .2s ease; }
+    .controls { display: grid; grid-template-columns: minmax(220px, 1fr) 220px 150px 130px auto auto; gap: 10px; align-items: center; }
+    input, select, button, textarea {
+      font: inherit;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--ink);
+    }
+    input::placeholder, textarea::placeholder { color: #697672; }
+    input:focus, select:focus, textarea:focus, button:focus-visible {
+      outline: 2px solid rgba(79, 209, 189, .42);
+      outline-offset: 2px;
+    }
+    input, select { height: 40px; padding: 0 11px; }
+    button { height: 40px; padding: 0 13px; cursor: pointer; font-weight: 650; }
+    button.primary { background: var(--accent); color: #07100f; border-color: var(--accent); }
+    button.ghost { background: transparent; color: var(--ink); }
+    main { padding: 18px 0 36px; }
+    .board { display: grid; gap: 10px; }
+    .card {
+      display: grid;
+      grid-template-columns: 38px 1.15fr .9fr .8fr .7fr;
+      gap: 14px;
+      align-items: start;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      box-shadow: var(--shadow);
+    }
+    .card.done { background: var(--done); opacity: .68; }
+    .check { width: 22px; height: 22px; accent-color: var(--accent); margin-top: 3px; }
+    .company { margin: 0 0 6px; font-size: 17px; line-height: 1.2; }
+    .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .pill { display: inline-flex; align-items: center; min-height: 23px; padding: 2px 8px; border-radius: 999px; background: var(--soft); color: #9ce6dc; font-size: 12px; font-weight: 700; }
+    .pill.priority-high { background: #3b241f; color: #ffad8e; }
+    .field { margin: 0 0 8px; font-size: 13px; color: var(--muted); }
+    .field strong { display: block; color: var(--ink); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+    a { color: #77ddcd; font-weight: 700; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .actions a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 9px; border: 1px solid var(--line); border-radius: 8px; background: #0d131b; font-size: 13px; }
+    .status-select { width: 100%; height: 36px; margin-bottom: 8px; }
+    textarea { width: 100%; min-height: 84px; padding: 9px; resize: vertical; font-size: 13px; }
+    .empty { padding: 32px; text-align: center; color: var(--muted); background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+    @media (max-width: 1060px) {
+      .controls { grid-template-columns: 1fr 1fr; }
+      .card { grid-template-columns: 34px 1fr; }
+      .card > section { grid-column: 2; }
+    }
+    @media (max-width: 640px) {
+      .wrap { width: min(100vw - 20px, 1440px); }
+      .title-row { display: block; }
+      .progress { text-align: left; margin-top: 12px; }
+      .controls { grid-template-columns: 1fr; }
+      .card { padding: 12px; gap: 10px; }
+      h1 { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap topbar">
+      <div class="title-row">
+        <div>
+          <h1>Varholdt AI Outreach Targets</h1>
+          <p class="sub">50 researched targets. Check them off, track status, and keep notes in this browser.</p>
+        </div>
+        <div class="progress">
+          <strong id="progressText">0 / 50 contacted</strong>
+          <div class="meter" aria-hidden="true"><span id="progressBar"></span></div>
+        </div>
+      </div>
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search company, contact, hook..." />
+        <select id="segment"></select>
+        <select id="priority">
+          <option value="">All priorities</option>
+          <option>High</option>
+          <option>Medium</option>
+        </select>
+        <select id="statusFilter">
+          <option value="">All statuses</option>
+          <option>New</option>
+          <option>Contacted</option>
+          <option>Replied</option>
+          <option>Call booked</option>
+          <option>Not fit</option>
+        </select>
+        <button id="hideDone" class="ghost" type="button">Hide done</button>
+        <button id="export" class="primary" type="button">Export state</button>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <div id="board" class="board"></div>
+  </main>
+  <script>
+    const targets = [{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"A.J. Labourdette Inc.","location":"Harahan LA","website":"https://www.ajlab.net","source_url":"https://www.ajlab.net/capability-statement/","public_contact":"aaron@ajlab.net; info@ajlabourdetteinc.com; 504-733-0772","likely_buyer_role":"Government business POC / operations","public_person_or_team":"Aaron Labourdette","why_fit":"Gov/business capability statement; government and military sector work; telecom/design/integration services","workflow_hook":"RFP/SOW review, compliance matrix, vendor docs, project submittal routing","outreach_angle":"Veteran/federal-doc credibility plus OmniBid RFP workflow demo; offer audit around turning solicitations and specs into reviewable matrices","channel":"Cold email","status":"New","notes":"Public page lists CAGE 3BQP6, NAICS, government business POC."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"Trigon Associates LLC","location":"New Orleans LA","website":"https://www.trigonassociates.com","source_url":"https://www.trigonassociates.com/wp-content/uploads/2023/08/Trigon-Capability-Statement-2023.pdf","public_contact":"504-585-5767","likely_buyer_role":"Principal / proposal operations / project management team","public_person_or_team":"Leadership / BD team","why_fit":"Engineering, management, consulting; WOSB; capability statement; public infrastructure and environmental work","workflow_hook":"RFQ/RFP intake, requirements extraction, bid/no-bid packet prep, subconsultant document collection","outreach_angle":"Position as document workflow help under their engineering/proposal operations, not capture strategy","channel":"Cold email","status":"New","notes":"Capability statement shows NAICS including engineering/management/environmental and CAGE 5HPX5."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"GLE Associates Inc.","location":"Tampa FL / Louisiana service area","website":"https://www.gleassociates.com","source_url":"https://www.gleassociates.com/wp-content/uploads/2024/06/Federal-Capability-Statement-2024.pdf","public_contact":"Contact form","likely_buyer_role":"Director of federal programs / proposal manager","public_person_or_team":"Federal team","why_fit":"Federal capability statement; environmental, industrial hygiene, forensics, construction consulting; small business for several NAICS","workflow_hook":"Federal RFP/RFQ docs, environmental reports, site assessment templates, deliverable review queues","outreach_angle":"Audit the recurring document flow from solicitation to compliance review to final deliverable package","channel":"Cold email","status":"New","notes":"Good fit despite not Louisiana-HQ because federal workflow and Louisiana work are explicit."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"Louisiana Technology Consulting LLC","location":"Mandeville LA","website":"https://www.ltc.la","source_url":"https://www.highergov.com/awardee/louisiana-technology-consulting-llc-416310637/","public_contact":"Contact form / website","likely_buyer_role":"Owner / federal programs / operations team","public_person_or_team":"Leadership team","why_fit":"Louisiana federal contract recipient; software consulting, system integration, DBA, programming, project management","workflow_hook":"Task-order intake, requirements mapping, status/reporting docs, customer deliverables","outreach_angle":"Use software/federal shared language; pitch workflow agent for task-order and deliverable review","channel":"Cold email","status":"New","notes":"HigherGov lists federal award history and primary NAICS 541512."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"GOTECH Inc.","location":"Baton Rouge LA","website":"https://www.gotech-inc.com","source_url":"https://www.gotech-inc.com/","public_contact":"info@gotech-inc.com; 225-766-5358","likely_buyer_role":"President / operations / proposal coordinator","public_person_or_team":"Rhaoul A. Guillaume Sr. / team","why_fit":"Engineering and consulting firm with public, state, and federal government agency experience","workflow_hook":"RFQs, CE&I documentation, project reports, compliance and schedule deliverables","outreach_angle":"Lead with reducing manual proposal and project-document assembly for public-sector engineering work","channel":"Cold email","status":"New","notes":"Official page names government agency experience and contact details."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"Fourrier & de Abreu Engineers LLC","location":"Baton Rouge LA","website":"https://fdaengineers.com","source_url":"https://fdaengineers.com/","public_contact":"contact@fdaengineers.com; 225-677-7950","likely_buyer_role":"Founder / principal / proposal operations","public_person_or_team":"Leadership team","why_fit":"Minority-owned engineering firm; DBE/SEBD; USACE-validated lab; multi-state licensed engineering","workflow_hook":"RFP/RFQ review, lab/accreditation docs, project submittals, compliance tables","outreach_angle":"Offer audit on one bid or project-document workflow that repeatedly pulls from specs, lab docs, and forms","channel":"Cold email","status":"New","notes":"Official page shows certifications, USACE validation, NAICS-style service lines."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"Kemper Engineering Services LLC","location":"Baton Rouge LA","website":"https://kempereng.com","source_url":"https://kempereng.com/","public_contact":"mediaforKES@kempereng.com","likely_buyer_role":"Founder / operations / federal BD","public_person_or_team":"Kemper Engineering leadership","why_fit":"WOSB/SDVOSB; defense/security and heavy engineering work; multi-disciplinary consulting","workflow_hook":"Technical proposal inputs, forensic reports, source-doc synthesis, design-review packets","outreach_angle":"Veteran-to-veteran resonance; frame around document traceability for technical proposal/report workflows","channel":"Cold email","status":"New","notes":"Official page lists WOSB, SDVOSB, defense/security and LinkedIn company page."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"PMF Consulting Engineers / PMF LLC","location":"Baton Rouge LA","website":"https://pmfengineers.com","source_url":"https://pmfengineers.com/","public_contact":"Maurice@pmfengineers.com; 225-445-2453","likely_buyer_role":"Founder / principal / operations","public_person_or_team":"Maurice / leadership","why_fit":"Minority-owned DBE/SBE engineering, facility services, CMAR; public institutions focus; $7.8M 2026 revenue listed","workflow_hook":"Facilities assessments, capital planning docs, bid packages, monthly reports","outreach_angle":"Strong SMB-size fit; audit a facilities-condition or bid-package workflow with AI-assisted extraction and review","channel":"Cold email","status":"New","notes":"Official page gives revenue, divisions, contact email."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"MR Engineering & Surveying LLC","location":"Baton Rouge LA","website":"https://mresbr.com","source_url":"https://mresbr.com/","public_contact":"mickey@mresmail.com","likely_buyer_role":"Principal / operations / project manager","public_person_or_team":"Mickey / leadership","why_fit":"Civil engineering and land surveying for private and public-sector clients","workflow_hook":"RFQs, survey reports, project closeout docs, client deliverables","outreach_angle":"Pitch one workflow audit around turning project docs and RFQs into structured review tasks","channel":"Cold email","status":"New","notes":"Official page lists public-sector clients and direct email."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"La Terre Engineering LLC","location":"Baton Rouge LA","website":"https://www.laterre-eng.com","source_url":"https://www.laterre-eng.com/","public_contact":"stoussant@laterre-eng.com; 225-960-1160","likely_buyer_role":"Founder / principal engineer","public_person_or_team":"Seneca Toussant PE","why_fit":"Minority-owned civil engineering firm; public-oriented service areas: water/environmental, transportation, facilities","workflow_hook":"RFQ response prep, requirements extraction, drainage/water project docs, compliance checklisting","outreach_angle":"Lead with local Baton Rouge engineering workflows and founder-led hands-on implementation","channel":"Cold email","status":"New","notes":"Official page lists founder, services, direct email."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"Stratum Engineering LLC","location":"Slidell LA","website":"https://stratumengr.com","source_url":"https://stratumengr.com/","public_contact":"inquiry@stratumengr.com; 985-643-1160","likely_buyer_role":"Owner / operations / project manager","public_person_or_team":"Leadership team","why_fit":"Small, locally owned geotechnical engineering and construction materials testing firm","workflow_hook":"Inspection reports, lab results, construction material docs, project deliverable routing","outreach_angle":"Audit a recurring report/review queue before suggesting any build","channel":"Cold email","status":"New","notes":"Official page emphasizes small business and construction-materials testing."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"Parish Engineering","location":"Baton Rouge LA","website":"https://www.parisheng.com","source_url":"https://www.parisheng.com/","public_contact":"contact@parisheng.com; 225-332-0222","likely_buyer_role":"Principal / operations / project manager","public_person_or_team":"Leadership team","why_fit":"Engineering/design/consulting firm; likely recurring proposal and project document load","workflow_hook":"Proposal packages, engineering deliverables, drawing/spec review","outreach_angle":"Local Baton Rouge intro; ask about one document-heavy workflow slowing project delivery","channel":"Cold email","status":"New","notes":"Official page has contact info and engineering/design/consulting positioning."},{"segment":"Federal-adjacent ops/proposal team","priority":"Medium","company":"Standard Engineering LLC","location":"Baton Rouge LA","website":"https://www.standardengr.com","source_url":"https://www.standardengr.com/","public_contact":"Contact form","likely_buyer_role":"Owner / operations / technical sales","public_person_or_team":"Leadership team","why_fit":"Engineering firm and product supplier; multi-state licensed; technical sales and engineered design work","workflow_hook":"Technical proposals, engineered design docs, fabrication drawing package review","outreach_angle":"Frame around structured extraction from specs and faster review of repetitive technical docs","channel":"Cold email","status":"New","notes":"Official page lists engineered design/fabrication and technical sales services."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"ITES Venture","location":"Fairfax VA","website":"https://www.itesventure.com","source_url":"https://www.itesventure.com/","public_contact":"Contact form","likely_buyer_role":"Federal operations / capture-proposal ops / AI lead","public_person_or_team":"Leadership team","why_fit":"Federal IT small business; TS facility clearance; OASIS+; intelligent automation and AI capability line","workflow_hook":"Task-order RFP review, compliance matrix, knowledge-management docs, audit-ready delivery records","outreach_angle":"Use peer-builder angle: they already sell AI/RPA, so pitch internal proposal/doc ops workflow rather than client delivery","channel":"Cold email","status":"New","notes":"Official page lists federal vehicles, AI/RPA/BPM capability, audited federal performance."},{"segment":"Federal-adjacent ops/proposal team","priority":"High","company":"DAS Federal LLC","location":"Gaithersburg MD","website":"https://www.dasfederal.com","source_url":"https://www.dasfederal.com/","public_contact":"info@dasfederal.com; 240-321-9412","likely_buyer_role":"Business development / capture manager / proposal operations","public_person_or_team":"BD and operations team","why_fit":"Federal contractor with active awards/news and NAICS including document preparation services","workflow_hook":"Proposal response support, compliance reviews, contract deliverable routing, document prep","outreach_angle":"Target internal BD/proposal bottleneck; reference their public capture-manager role and document-prep NAICS","channel":"Cold email","status":"New","notes":"Official page lists NAICS 561410 Document Preparation Services, CAGE, UEI, awards."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Advantage Proposals","location":"United States","website":"https://advantageproposals.com","source_url":"https://advantageproposals.com/","public_contact":"Contact form","likely_buyer_role":"Founder / managing partner / delivery lead","public_person_or_team":"Leadership team","why_fit":"Focused on federal civilian, DoD, state markets; small and mid-size specialization; 200+ proposal wins","workflow_hook":"Proposal intake, compliance matrix generation, reusable content review, client document collection","outreach_angle":"Partner/channel angle: AI workflow layer under their proposal service for SMB clients","channel":"Cold email","status":"New","notes":"Official page emphasizes small and mid-size GovCon clients and proposal/capture support."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Hinz Consulting","location":"United States","website":"https://hinzconsulting.com","source_url":"https://hinzconsulting.com/","public_contact":"Contact form","likely_buyer_role":"AI integration lead / proposals lead / partner","public_person_or_team":"Leadership team","why_fit":"Large proposal/capture firm; explicitly lists AI Integration & Optimization","workflow_hook":"RFP triage, compliance matrix, consultant handoff docs, fixed-price proposal artifacts","outreach_angle":"Approach as possible partner or niche subcontractor for document-agent prototypes","channel":"Cold email","status":"New","notes":"Official page lists proposals, capture, BD, AI integration, 320+ consultants."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Spettro Consulting","location":"United States","website":"https://www.spettroconsulting.com","source_url":"https://www.spettroconsulting.com/","public_contact":"Contact form","likely_buyer_role":"CEO / delivery lead","public_person_or_team":"CEO and President / leadership","why_fit":"WOSB specializing in BD, capture, proposal support for federal contractors; DoD and healthcare IT markets","workflow_hook":"Client RFP ingestion, compliance reviews, volume-lead packet preparation","outreach_angle":"Pitch as backend document-AI implementation for their proposal shop or clients","channel":"Cold email","status":"New","notes":"Official page includes WOSB, capture/proposal services, federal marketplace focus."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Barton Consulting","location":"United States","website":"https://www.bartonbd.com","source_url":"https://www.bartonbd.com/","public_contact":"Contact form","likely_buyer_role":"Founder / principal","public_person_or_team":"Bruce Barton","why_fit":"Boutique capture/proposal consultancy with 30+ vetted consultants","workflow_hook":"RFP package intake, color-review issue tracking, volume-lead SME docs","outreach_angle":"Offer a private workflow audit around one repeatable proposal-production bottleneck","channel":"Cold email","status":"New","notes":"Official page lists capture management, proposal management, orals, volume leads."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Bickley Group","location":"United States","website":"https://www.bickleygroup.com","source_url":"https://www.bickleygroup.com/","public_contact":"Contact form","likely_buyer_role":"Founder / principal / former CO","public_person_or_team":"Leadership","why_fit":"Federal procurement and contract advisory for small businesses; proposal and capture support","workflow_hook":"RFP/RFI analysis, compliance language, contract advisory templates","outreach_angle":"Good partner fit for small-business GovCon clients that need workflow implementation below strategy","channel":"Cold email","status":"New","notes":"Official page positions around small businesses entering/scaling federal marketplace."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Crown Government Services LLC","location":"United States","website":"https://crown-gsllc.com","source_url":"https://crown-gsllc.com/","public_contact":"Contact form","likely_buyer_role":"Founder / federal BD partner","public_person_or_team":"Leadership team","why_fit":"Gov contracting consultancy for small businesses from SAM registration through capture/proposal/award","workflow_hook":"SAM/certification packets, proposal document checklists, RFP routing","outreach_angle":"Pitch document-workflow agent as a white-label or referralable implementation asset for clients","channel":"Cold email","status":"New","notes":"Official page lists capture strategy, proposal development, contract award."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"MarksCom Proposal Management LLC","location":"United States","website":"https://www.markscomproposals.com","source_url":"https://www.markscomproposals.com/","public_contact":"Contact form","likely_buyer_role":"President / proposal management lead","public_person_or_team":"Rob Marks","why_fit":"Full-service proposal development, marketing communications, capture management for public-sector contracts","workflow_hook":"Complex proposal volumes, evaluation notices, corporate RFP packets","outreach_angle":"Approach as a way to reduce manual admin around compliance and source-document traceability","channel":"Cold email","status":"New","notes":"Official page lists federal/state proposal efforts and Rob Marks' proposal background."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"Faunce Associates LLC","location":"United States","website":"https://www.faunceassociates.com","source_url":"https://www.faunceassociates.com/","public_contact":"Contact form","likely_buyer_role":"Founder / managing partner / BD support lead","public_person_or_team":"Leadership team","why_fit":"Minority woman-owned small business supporting GovCon BD, capture, and proposal work","workflow_hook":"Flexible proposal support, client document intake, review cycles","outreach_angle":"Partner angle: document-agent implementation to make their scalable/flexible support more efficient","channel":"Cold email","status":"New","notes":"Official page says established in 2013 for GovCon BD/capture/proposal support."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"InspireWins / Pam Silverthorn","location":"United States","website":"https://www.inspirewins.com","source_url":"https://www.inspirewins.com/","public_contact":"Contact form","likely_buyer_role":"Owner / government proposal consultant","public_person_or_team":"Pam Silverthorn","why_fit":"Government proposal consultant focused on compliant/responsive federal proposals","workflow_hook":"Compliance checks, RFP parsing, proposal outline creation","outreach_angle":"Pitch lightweight collaboration: OmniBid-style compliance matrix as an assistant for her proposal clients","channel":"Cold email","status":"New","notes":"Official page emphasizes federal RFP compliance and capture/proposal support."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"First Foster Consulting LLC","location":"Metro Atlanta GA","website":"https://www.firstfosterconsulting.com","source_url":"https://www.firstfosterconsulting.com/government","public_contact":"Contact form","likely_buyer_role":"Founder / proposal-development lead","public_person_or_team":"Leadership team","why_fit":"WOSB federal consulting firm; capture, proposal development, acquisition lifecycle management","workflow_hook":"Procurement lifecycle docs, proposal writing, training materials","outreach_angle":"Partner with acquisition/proposal experts; you implement workflow automation underneath their domain work","channel":"Cold email","status":"New","notes":"Official page lists WOSB, federal/commercial clients, proposal/capture services."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"Cavalry Consulting","location":"United States","website":"https://www.cavalryconsulting.com","source_url":"https://www.cavalryconsulting.com/","public_contact":"Contact form","likely_buyer_role":"Founder / proposal services lead","public_person_or_team":"Leadership team","why_fit":"Proposal, capture, marketing services for federal/state/local contracts; OASIS+ content","workflow_hook":"RFP analysis, OASIS+ on-ramp prep, compliance matrices","outreach_angle":"Timely hook around OASIS+ preparation and repeatable compliance workflows","channel":"Cold email","status":"New","notes":"Official page discusses OASIS+ Phase II On-Ramp and proposal/capture services."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"Prevail Consulting LLC","location":"United States","website":"https://www.prevail01-llc.com","source_url":"https://www.prevail01-llc.com/","public_contact":"Contact form","likely_buyer_role":"Founder / capture-proposal lead","public_person_or_team":"Leadership team","why_fit":"Helps 8(a), HUBZone, SDVOSB, EDWOSB, and small businesses qualify opportunities and build compliant proposals","workflow_hook":"Opportunity qualification, compliant proposal build, evaluation-criteria mapping","outreach_angle":"Partner/channel angle for their small-business clients; AI supports documents, not capture judgment","channel":"Cold email","status":"New","notes":"Official page targets socioeconomic small businesses and compliant proposals."},{"segment":"Proposal/capture consultant or partner","priority":"Medium","company":"KRD Consulting LLC / KRD Services","location":"United States","website":"https://www.krdservices.com","source_url":"https://www.krdservices.com/","public_contact":"Contact form","likely_buyer_role":"Founder / consulting principal","public_person_or_team":"Leadership team","why_fit":"WOSB GovCon consulting across pre-award, award, close-out; proposal response and compliance","workflow_hook":"RFI/RFP/RFQ document review, compliance workflows, contract closeout docs","outreach_angle":"Pitch a workflow audit around proposal-response and contract-compliance document handling","channel":"Cold email","status":"New","notes":"Official page lists proposal response, award, subcontracting, compliance."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"iQuasar LLC","location":"Northern Virginia","website":"https://iquasar.com","source_url":"https://iquasar.com/","public_contact":"Contact form","likely_buyer_role":"Founder / GovCon consulting lead / AI implementation lead","public_person_or_team":"Leadership team","why_fit":"GovCon solutions partner with proposal, capture, cleared recruitment, staffing, software, AI integration","workflow_hook":"Proposal development, candidate/key-personnel docs, contract vehicle support","outreach_angle":"Strong fit because they overlap proposal, staffing, and AI; suggest one internal workflow audit","channel":"Cold email","status":"New","notes":"Official page lists proposal development, capture, cleared recruitment, AI integration."},{"segment":"Proposal/capture consultant or partner","priority":"High","company":"The Peerless Group","location":"National Capital Region","website":"https://choosepeerless.com","source_url":"https://choosepeerless.com/","public_contact":"Contact form","likely_buyer_role":"Founder / partner / proposal support lead","public_person_or_team":"Jennifer Namvar / leadership","why_fit":"Boutique capture/proposal firm for federal contractors; works with small businesses and technical innovators","workflow_hook":"Capture/proposal handoff docs, compliance matrices, RFP deconstruction, SME packets","outreach_angle":"Partner angle: document workflow implementation for clients once capture strategy is clear","channel":"Cold email","status":"New","notes":"Official page names capture/proposal services, small-business segment, $5B+ awarded bids."},{"segment":"Staffing / recruiting","priority":"High","company":"FlexForce Workforce Solutions","location":"Lafayette/Baton Rouge/New Orleans LA","website":"https://flexforcepros.com","source_url":"https://flexforcepros.com/contact-us/","public_contact":"lafayette@flexforcepros.com; batonrouge@flexforcepros.com; nola@flexforcepros.com","likely_buyer_role":"Branch manager / operations manager / owner","public_person_or_team":"Branch teams","why_fit":"Regional staffing firm with multiple Gulf Coast branches; says it improves recruiting/staffing processes","workflow_hook":"Resume intake, candidate screening, client submissions, onboarding packets","outreach_angle":"Local workflow audit: candidate docs to client submission packet with human recruiter approval","channel":"Cold email","status":"New","notes":"Official contact page lists branch emails and customized recruiting/staffing processes."},{"segment":"Staffing / recruiting","priority":"High","company":"WorkNet Staffing","location":"Lafayette/New Orleans/Baton Rouge LA","website":"https://www.worknetstaffing.com","source_url":"https://www.worknetstaffing.com/","public_contact":"Lafayette 337-261-5450; New Orleans 504-779-9040","likely_buyer_role":"Owner / branch manager / operations lead","public_person_or_team":"WorkNet team","why_fit":"Locally owned staffing firm; 30+ years; interviews, orients, screens candidates","workflow_hook":"Resume submission, interview notes, screening results, temp-to-hire paperwork","outreach_angle":"Pitch AI-assisted intake/review queue that keeps recruiters in control","channel":"Cold email","status":"New","notes":"Official page says founded 1978 and broadened into clerical, industrial, professional services."},{"segment":"Staffing / recruiting","priority":"High","company":"AMPM Staffing Services","location":"Luling / South Louisiana","website":"https://ampmstaffing.com","source_url":"https://ampmstaffing.com/employers/","public_contact":"985-785-6857","likely_buyer_role":"Owner / employer services / operations lead","public_person_or_team":"AMPM team","why_fit":"Independent local staffing/payroll firm; established 1968; New Orleans/Baton Rouge/River Regions","workflow_hook":"Applications, drug/background screening packets, OSHA/site-specific docs, client reqs","outreach_angle":"Audit one employer-side placement workflow from request to screened candidate submission","channel":"Cold email","status":"New","notes":"Employers page lists interviews, software testing, drug/background/site screenings."},{"segment":"Staffing / recruiting","priority":"Medium","company":"Spherion Louisiana","location":"Baton Rouge/Lafayette LA","website":"https://www.spherion.com","source_url":"https://www.spherion.com/our-locations/louisiana/","public_contact":"Contact form / local office","likely_buyer_role":"Location manager / owner","public_person_or_team":"Local franchise owners","why_fit":"National staffing brand with local Louisiana offices; flexible staffing, temp-to-hire, direct hire","workflow_hook":"Applicant screening, job-order matching, client submissions","outreach_angle":"Local franchise may have budget and autonomy; pitch branch-specific workflow audit","channel":"Cold email","status":"New","notes":"Official page lists Baton Rouge and Lafayette offices plus workforce solutions."},{"segment":"Staffing / recruiting","priority":"High","company":"AMMON Staffing","location":"Baton Rouge/Lafayette LA","website":"https://ammonstaffing.net","source_url":"https://ammonstaffing.net/lafayette/","public_contact":"877-222-4559; 225-293-4481","likely_buyer_role":"Owner / commercial division / operations lead","public_person_or_team":"AMMON team","why_fit":"Family-owned 40-year staffing firm; office/admin, industrial, logistics, medical; EOR/payrolling","workflow_hook":"Healthcare/commercial candidate docs, onboarding, credential packets, employer requests","outreach_angle":"Lead with one recurring staffing workflow, especially credential/onboarding packet review","channel":"Cold email","status":"New","notes":"Official page mentions Employer of Record, healthcare credentialing, ASA affiliation."},{"segment":"Staffing / recruiting","priority":"High","company":"GLO Resources","location":"Baton Rouge LA","website":"https://gloresources.com","source_url":"https://gloresources.com/","public_contact":"Contact form","likely_buyer_role":"Owner / operations / professional placement lead","public_person_or_team":"Leadership team","why_fit":"Baton Rouge staffing/recruiting firm; hiring, payroll, safety/training programs","workflow_hook":"Talent intake, safety/training docs, payroll/onboarding packets","outreach_angle":"Pitch audit for moving from open job req to qualified candidate packet faster","channel":"Cold email","status":"New","notes":"Official page positions as complete employer solutions with hiring/payroll/safety."},{"segment":"Staffing / recruiting","priority":"Medium","company":"Global Labor Solutions","location":"Baton Rouge LA","website":"https://globallaborsolutions.com","source_url":"https://globallaborsolutions.com/services/","public_contact":"sales@globallaborsolutions.com; 225-500-0640","likely_buyer_role":"Owner / sales / operations lead","public_person_or_team":"GLS team","why_fit":"Staffing services include contract staffing, on-site management, workforce solutions, payrolling","workflow_hook":"Timecards, onboarding docs, role requirements, payroll admin","outreach_angle":"Audit on-site/payrolling document workflow and client reporting","channel":"Cold email","status":"New","notes":"Official page lists sales email and service lines."},{"segment":"Staffing / recruiting","priority":"High","company":"Lofton Staffing","location":"Baton Rouge/Lafayette/New Orleans LA","website":"https://www.loftonstaffing.com","source_url":"https://lofton.jobs/locations/","public_contact":"225-924-0200; 225-709-0100","likely_buyer_role":"Branch manager / executive search / operations lead","public_person_or_team":"Lofton team","why_fit":"Gulf South staffing/security/executive search with multiple LA offices","workflow_hook":"Candidate intake, executive search summaries, payroll/worker comp docs, client submissions","outreach_angle":"Approach branch or executive-search division with recruiter-approved document workflow angle","channel":"Cold email","status":"New","notes":"Official locations page lists corporate, executive search, Baton Rouge/Lafayette/New Orleans."},{"segment":"Staffing / recruiting","priority":"Medium","company":"Crescent Career Consultants LLC","location":"New Orleans LA","website":"https://www.crescentcareerconsultants.com","source_url":"https://www.crescentcareerconsultants.com/","public_contact":"Contact form","likely_buyer_role":"Founder / owner / recruiting operations","public_person_or_team":"Leadership team","why_fit":"WOSB/WBENC staffing firm; recruitment screening, processing, payroll, onboarding","workflow_hook":"Screening, payroll, onboarding, client hiring-manager packets","outreach_angle":"Strong document bottleneck fit; pitch audit around candidate screening and onboarding packet generation","channel":"Cold email","status":"New","notes":"Official page lists certifications and recruitment screening/processing/payroll/onboarding."},{"segment":"Staffing / recruiting","priority":"Medium","company":"Pontchartrain Professionals / Pontchartrain Partners","location":"New Orleans LA","website":"https://pontchpartners.com","source_url":"https://pontchpartners.com/professional-services/accounting/","public_contact":"504-900-1301","likely_buyer_role":"Professional services / staffing lead","public_person_or_team":"Team","why_fit":"Professional staffing for accounting roles; skilled employee matching","workflow_hook":"Resume review, accounting candidate summaries, client submissions","outreach_angle":"Narrow hook: accounting-staffing document workflows and candidate summaries","channel":"Cold email","status":"New","notes":"Official page lists accounting staffing roles and phone."},{"segment":"Insurance agency","priority":"High","company":"TSL Insurance Group","location":"Lafayette/Baton Rouge/Franklin/Abbeville LA","website":"https://www.tslins.com","source_url":"https://www.tslins.com/","public_contact":"Contact form / local offices","likely_buyer_role":"Agency principal / commercial lines manager","public_person_or_team":"Commercial lines team","why_fit":"50+ year agency; commercial/personal/life/health; service for claims/questions; electronic delivery of docs","workflow_hook":"Certificates of insurance, policy renewals, claims support, MSA/contract review","outreach_angle":"Very strong workflow fit: COIs, renewals, claims, contract review all repeated document work","channel":"Cold email","status":"New","notes":"Official page lists certificates, policies, binders, claims support, contract review, MSA review."},{"segment":"Insurance agency","priority":"High","company":"Ideal Insurance LLC","location":"Lafayette LA","website":"https://idealinsurancellc.com","source_url":"https://idealinsurancellc.com/business-insurance/","public_contact":"contact@idealinsurancellc.com; 337-205-7433","likely_buyer_role":"Owner / commercial lines lead","public_person_or_team":"Agency team","why_fit":"Commercial insurance agency; same-day COIs; document upload; business insurance in Lafayette","workflow_hook":"COI requests, quote intake, policy comparison, claims/coverage review","outreach_angle":"Local founder-led pitch: help route uploaded business docs into reviewable quote/COI tasks","channel":"Cold email","status":"New","notes":"Official page says same-day certificates and coverage review."},{"segment":"Insurance agency","priority":"Medium","company":"Gulf Coast Insurance","location":"Lafayette LA","website":"https://www.gciagency.com","source_url":"https://www.gciagency.com/business-commercial-insurance/","public_contact":"info@gciagency.com; 337-347-5880","likely_buyer_role":"Agency principal / commercial lines manager","public_person_or_team":"Agency team","why_fit":"Commercial insurance across many lines including workers comp, cyber, employee benefits","workflow_hook":"Renewal prep, claims intake, certificate requests, carrier quote docs","outreach_angle":"Audit a commercial renewal or COI workflow and keep human approval in the loop","channel":"Cold email","status":"New","notes":"Official page lists business/commercial products and contact details."},{"segment":"Insurance agency","priority":"Medium","company":"Turrentine Insurance Agency Inc.","location":"Alexandria LA","website":"https://www.turrentine.com","source_url":"https://www.turrentine.com/","public_contact":"Office@Turrentine.com; 318-445-3515","likely_buyer_role":"Agency principal / commercial lines manager","public_person_or_team":"Agency team","why_fit":"Independent agency since 1961; commercial lines across Louisiana and southeast/Texas","workflow_hook":"Commercial account renewals, claims support, coverage comparisons","outreach_angle":"Approach as a mature agency with enough recurring document volume to justify a sprint","channel":"Cold email","status":"New","notes":"Official page lists commercial coverage and broad Louisiana service area."},{"segment":"Insurance agency","priority":"Medium","company":"Greater Louisiana Insurance Group","location":"Lafayette/Baton Rouge/New Orleans LA","website":"https://www.gligins.com","source_url":"https://www.gligins.com/","public_contact":"info@gligins.com; 225-771-8751","likely_buyer_role":"Agency principal / commercial lines manager","public_person_or_team":"Agency team","why_fit":"Independent agency for personal and business insurance across Louisiana","workflow_hook":"Business quote intake, policy-service requests, carrier comparisons","outreach_angle":"Pitch an audit around policy service and business-insurance intake, not generic AI","channel":"Cold email","status":"New","notes":"Official page lists policy service, business insurance, statewide coverage."},{"segment":"CPA / accounting firm","priority":"High","company":"Girouard Melancon & Associates LLC","location":"Lafayette LA","website":"https://www.gmacpallc.com","source_url":"https://www.gmacpallc.com/clientportal.php","public_contact":"info@gmacpallc.com; 337-456-7876","likely_buyer_role":"Managing partner / firm administrator","public_person_or_team":"Partners / admin team","why_fit":"CPA firm with secure portal for working documents, receipts, QuickBooks files, tax returns","workflow_hook":"Client source-doc intake, portal uploads, tax-workpaper triage, client follow-up drafts","outreach_angle":"Local CPA workflow audit: source documents into review queue with human approval","channel":"Cold email","status":"New","notes":"Official client portal page explicitly describes document exchange."},{"segment":"CPA / accounting firm","priority":"High","company":"Broussard Poche LLP","location":"Lafayette/New Iberia/Crowley LA","website":"https://broussardpoche.com","source_url":"https://broussardpoche.com/","public_contact":"337-988-4930; 337-364-4554; 337-783-5693","likely_buyer_role":"Managing partner / firm administrator","public_person_or_team":"Partner team","why_fit":"70+ year CPA firm; secure file portal, engagement-letter signing, invoices","workflow_hook":"Secure file portal intake, engagement letters, tax document routing, client questions","outreach_angle":"Strong document-heavy firm; pitch audit around one tax-season intake/review bottleneck","channel":"Cold email","status":"New","notes":"Official page lists Secure File Portal and multiple offices."},{"segment":"CPA / accounting firm","priority":"High","company":"Briley Consulting Group LLC","location":"Lafayette LA","website":"https://brileycg.com","source_url":"https://brileycg.com/","public_contact":"337-268-1040","likely_buyer_role":"Founder / managing partner / firm admin","public_person_or_team":"BCG team","why_fit":"CPA firm with tax, consulting, strategic financial management; secure file portal","workflow_hook":"Client docs, tax/accounting request triage, recurring client advisory notes","outreach_angle":"Pitch as complete financial-document infrastructure, not tool replacement","channel":"Cold email","status":"New","notes":"Official page lists secure file portal and services."},{"segment":"CPA / accounting firm","priority":"High","company":"Frazer & Persac LLC","location":"Baton Rouge LA","website":"https://www.fpcpa.com","source_url":"https://www.fpcpa.com/clientportal.php","public_contact":"rennea@fpcpa.com; 225-769-4123","likely_buyer_role":"Managing partner / firm administrator","public_person_or_team":"Rennea / firm team","why_fit":"Baton Rouge accounting firm with secure portal and SecureSend for financial docs and QuickBooks files","workflow_hook":"Portal uploads, SecureSend triage, tax workpapers, client follow-up","outreach_angle":"Audit one client-document intake workflow before tax season or monthly close","channel":"Cold email","status":"New","notes":"Official page explicitly names tax returns, working papers, accounting database, scanned receipts, QuickBooks files."},{"segment":"CPA / accounting firm","priority":"Medium","company":"Wright Moore DeHart Dupuis & Hutchinson LLC","location":"Lafayette LA","website":"https://www.wmddh.com","source_url":"https://www.wmddh.com/client-login","public_contact":"337-232-3637","likely_buyer_role":"Managing partner / firm administrator","public_person_or_team":"Partner team","why_fit":"Professional tax/accounting firm with secure encrypted client portal","workflow_hook":"Secure file uploads/downloads, tax/accounting documentation, client communication","outreach_angle":"Pitch review queue and document classification for secure portal workflows","channel":"Cold email","status":"New","notes":"Official page describes secure encrypted portal."}];
+    const storageKey = 'varholdt-outreach-targets-v1';
+    const statuses = ['New', 'Contacted', 'Replied', 'Call booked', 'Not fit'];
+    const state = JSON.parse(localStorage.getItem(storageKey) || '{}');
+    const els = {
+      board: document.querySelector('#board'),
+      search: document.querySelector('#search'),
+      segment: document.querySelector('#segment'),
+      priority: document.querySelector('#priority'),
+      statusFilter: document.querySelector('#statusFilter'),
+      hideDone: document.querySelector('#hideDone'),
+      export: document.querySelector('#export'),
+      progressText: document.querySelector('#progressText'),
+      progressBar: document.querySelector('#progressBar')
+    };
+    let hideDone = false;
+
+    function idFor(target) {
+      return target.company.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    }
+    function getTargetState(id) {
+      return state[id] || { done: false, status: 'New', note: '' };
+    }
+    function save() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+      updateProgress();
+    }
+    function escapeHtml(value = '') {
+      return String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[char]));
+    }
+    function matches(target) {
+      const id = idFor(target);
+      const saved = getTargetState(id);
+      const q = els.search.value.trim().toLowerCase();
+      const haystack = Object.values(target).join(' ').toLowerCase() + ' ' + saved.note.toLowerCase() + ' ' + saved.status.toLowerCase();
+      if (q && !haystack.includes(q)) return false;
+      if (els.segment.value && target.segment !== els.segment.value) return false;
+      if (els.priority.value && target.priority !== els.priority.value) return false;
+      if (els.statusFilter.value && saved.status !== els.statusFilter.value) return false;
+      if (hideDone && saved.done) return false;
+      return true;
+    }
+    function renderSegmentOptions() {
+      const segments = [...new Set(targets.map(t => t.segment))];
+      els.segment.innerHTML = '<option value="">All segments</option>' + segments.map(s => `<option>${escapeHtml(s)}</option>`).join('');
+    }
+    function render() {
+      const visible = targets.filter(matches);
+      els.board.innerHTML = visible.length ? visible.map(target => {
+        const id = idFor(target);
+        const saved = getTargetState(id);
+        const priorityClass = target.priority === 'High' ? 'priority-high' : '';
+        return `
+          <article class="card ${saved.done ? 'done' : ''}" data-id="${id}">
+            <input class="check" type="checkbox" ${saved.done ? 'checked' : ''} aria-label="Mark ${escapeHtml(target.company)} contacted" />
+            <section>
+              <h2 class="company">${escapeHtml(target.company)}</h2>
+              <div class="meta">
+                <span class="pill ${priorityClass}">${escapeHtml(target.priority)}</span>
+                <span class="pill">${escapeHtml(target.segment)}</span>
+                <span class="pill">${escapeHtml(target.location)}</span>
+              </div>
+              <p class="field"><strong>Contact</strong>${escapeHtml(target.public_contact)}</p>
+              <p class="field"><strong>Likely buyer</strong>${escapeHtml(target.likely_buyer_role)}</p>
+              <div class="actions">
+                <a href="${escapeHtml(target.website)}" target="_blank" rel="noopener">Website</a>
+                <a href="${escapeHtml(target.source_url)}" target="_blank" rel="noopener">Source</a>
+              </div>
+            </section>
+            <section>
+              <p class="field"><strong>Why fit</strong>${escapeHtml(target.why_fit)}</p>
+              <p class="field"><strong>Workflow hook</strong>${escapeHtml(target.workflow_hook)}</p>
+            </section>
+            <section>
+              <p class="field"><strong>Outreach angle</strong>${escapeHtml(target.outreach_angle)}</p>
+              <p class="field"><strong>Notes from research</strong>${escapeHtml(target.notes || '')}</p>
+            </section>
+            <section>
+              <select class="status-select" aria-label="Status for ${escapeHtml(target.company)}">
+                ${statuses.map(s => `<option ${saved.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+              </select>
+              <textarea placeholder="Call notes, sent date, follow-up...">${escapeHtml(saved.note || '')}</textarea>
+            </section>
+          </article>`;
+      }).join('') : '<div class="empty">No targets match the current filters.</div>';
+      bindCards();
+      updateProgress();
+    }
+    function bindCards() {
+      document.querySelectorAll('.card').forEach(card => {
+        const id = card.dataset.id;
+        state[id] = getTargetState(id);
+        card.querySelector('.check').addEventListener('change', event => {
+          state[id].done = event.target.checked;
+          if (event.target.checked && state[id].status === 'New') state[id].status = 'Contacted';
+          save();
+          render();
+        });
+        card.querySelector('.status-select').addEventListener('change', event => {
+          state[id].status = event.target.value;
+          if (event.target.value !== 'New') state[id].done = true;
+          save();
+          render();
+        });
+        card.querySelector('textarea').addEventListener('input', event => {
+          state[id].note = event.target.value;
+          save();
+        });
+      });
+    }
+    function updateProgress() {
+      const done = targets.filter(t => getTargetState(idFor(t)).done).length;
+      const pct = Math.round((done / targets.length) * 100);
+      els.progressText.textContent = `${done} / ${targets.length} contacted`;
+      els.progressBar.style.width = `${pct}%`;
+    }
+    function exportState() {
+      const rows = targets.map(target => {
+        const saved = getTargetState(idFor(target));
+        return { company: target.company, segment: target.segment, contact: target.public_contact, status: saved.status, done: saved.done, note: saved.note };
+      });
+      const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'varholdt-outreach-state.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    renderSegmentOptions();
+    ['input', 'change'].forEach(evt => {
+      els.search.addEventListener(evt, render);
+      els.segment.addEventListener(evt, render);
+      els.priority.addEventListener(evt, render);
+      els.statusFilter.addEventListener(evt, render);
+    });
+    els.hideDone.addEventListener('click', () => {
+      hideDone = !hideDone;
+      els.hideDone.textContent = hideDone ? 'Show done' : 'Hide done';
+      render();
+    });
+    els.export.addEventListener('click', exportState);
+    render();
+  </script>
+</body>
+</html>
