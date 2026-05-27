@@ -2,19 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Varholdt AI — AI Workflow Agents for Document-Heavy Teams</title>
+<title>Varholdt AI — We find the workflow. We build the agent.</title>
 <link rel="icon" href="public/favicon.svg" type="image/svg+xml" />
 <link rel="alternate icon" href="public/favicon-32.png" type="image/png" />
 <link rel="apple-touch-icon" href="public/apple-touch-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@400;500&display=swap"
+/>
 <style>
+/* Hallmark · macrostructure: Marquee Hero · genre: modern-minimal
+ * theme: studied-DNA (source: src/pages/index.astro)
+ * paper: #0a0b0e (dark) · accent: #a6c8f2 (sky)
+ * display: DM Sans 500 · body: DM Sans 400 · mono: JetBrains Mono 400
+ */
+
   :root {
-    --ink:    #0f1a2b;
-    --ink-2:  #2a3650;
-    --muted:  #5a6479;
-    --rule:   #c9ced9;
-    --paper:  #fbfaf6;
-    --accent: #8a6a1e;
-    --accent-soft: #f3ecd9;
+    --ink:        #0a0b0e;
+    --ink-1:      #0f1116;
+    --ink-2:      #14171e;
+    --ink-3:      #1b1f28;
+    --line:       rgba(255, 255, 255, 0.07);
+    --line-2:     rgba(255, 255, 255, 0.14);
+    --line-3:     rgba(255, 255, 255, 0.22);
+    --text:       #eceff5;
+    --text-2:     #c9cfdb;
+    --muted:      rgba(236, 239, 245, 0.62);
+    --faint:      rgba(236, 239, 245, 0.40);
+    --accent:     #a6c8f2;
+    --accent-soft:#c5dbf5;
+
+    --sans: "DM Sans", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", monospace;
   }
 
   * { box-sizing: border-box; }
@@ -22,292 +43,355 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: #e8e6df;
-    color: var(--ink);
-    font-family: "Georgia", "Iowan Old Style", "Charter", serif;
-    font-size: 10.5pt;
-    line-height: 1.4;
+    background: #1c1f25;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 10pt;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
+  em { font-style: normal; color: inherit; }
+
+  /* On-screen helper banner (hidden in print) */
   .ui {
     max-width: 8.5in;
-    margin: 16px auto 0;
-    padding: 10px 18px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    margin: 18px auto 0;
+    padding: 11px 18px;
+    font-family: var(--sans);
     font-size: 12px;
-    color: #444;
-    background: #fff8d6;
-    border: 1px solid #e0d68a;
-    border-radius: 6px;
+    color: rgba(236, 239, 245, 0.82);
+    background: rgba(166, 200, 242, 0.08);
+    border: 1px solid rgba(166, 200, 242, 0.22);
+    border-radius: 8px;
   }
-  .ui b { color: #222; }
+  .ui b { color: var(--text); font-weight: 600; }
 
+  /* The page */
   .page {
     width: 8.5in;
     min-height: 11in;
-    margin: 16px auto;
-    background: var(--paper);
+    margin: 18px auto;
+    background: var(--ink);
+    color: var(--text);
     padding: 0.55in 0.6in 0.5in;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
     display: flex;
     flex-direction: column;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* ----- Header ----- */
+  /* subtle hero glow, like marketing */
+  .page::before {
+    content: "";
+    position: absolute;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 9in;
+    height: 320px;
+    background: radial-gradient(ellipse at center, rgba(166, 200, 242, 0.10), transparent 65%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  /* ---------- Header ---------- */
   header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    border-bottom: 1.5px solid var(--ink);
-    padding-bottom: 8px;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line);
+    position: relative;
   }
   .brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    font-size: 12.5pt;
-    text-transform: uppercase;
-    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 12pt;
+    letter-spacing: -0.012em;
+    color: var(--text);
   }
   .brand-mark {
-    width: 34px;
-    height: 34px;
+    width: 30px;
+    height: 30px;
+    border-radius: 7px;
     flex: 0 0 auto;
-    border-radius: 8px;
-  }
-  .brand small {
-    display: block;
-    font-weight: 400;
-    font-size: 8pt;
-    letter-spacing: 0.22em;
-    color: var(--muted);
-    margin-top: 2px;
   }
   .meta {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: var(--mono);
     font-size: 8.5pt;
     color: var(--muted);
     text-align: right;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
   }
-  .meta b { color: var(--ink); font-weight: 600; }
+  .meta b { color: var(--text); font-weight: 500; }
 
-  /* ----- Hero ----- */
+  /* ---------- Kicker (mono eyebrow, marketing style) ---------- */
+  .kicker {
+    font-family: var(--mono);
+    font-size: 8.5pt;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .kicker::before {
+    content: "";
+    width: 22px;
+    height: 1px;
+    background: var(--accent);
+    opacity: 0.7;
+  }
+
+  /* ---------- Hero ---------- */
   .hero {
-    padding: 18px 0 14px;
-    border-bottom: 1px solid var(--rule);
+    padding: 26px 0 22px;
+    position: relative;
   }
   .hero h1 {
-    font-family: "Georgia", serif;
-    font-weight: 400;
-    font-size: 22pt;
-    line-height: 1.15;
-    margin: 0 0 10px;
-    color: var(--ink);
-    letter-spacing: -0.005em;
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 30pt;
+    line-height: 1.06;
+    letter-spacing: -0.022em;
+    margin: 14px 0 14px;
+    color: var(--text);
+    max-width: 7.3in;
   }
-  .hero h1 em {
-    font-style: italic;
-    color: var(--accent);
-    font-weight: 400;
-  }
+  .hero h1 .line { display: block; }
+  .hero h1 .line-2 { color: var(--text-2); }
   .hero p {
     margin: 0;
     font-size: 10.5pt;
-    color: var(--ink-2);
+    line-height: 1.55;
+    color: var(--text-2);
     max-width: 6.6in;
-    line-height: 1.5;
   }
+  .hero p b { color: var(--text); font-weight: 500; }
 
-  /* ----- Body grid ----- */
-  .body {
-    display: grid;
-    grid-template-columns: 1.35fr 1fr;
-    gap: 22px;
-    padding: 14px 0 0;
-    flex: 1;
+  /* ---------- Section heading (kicker stacked above title) ---------- */
+  .section { padding: 18px 0 10px; border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 12px; }
+  .section-title {
+    font-family: var(--sans);
+    font-size: 13pt;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    color: var(--text);
+    margin: 6px 0 0;
+    display: block;
   }
+  .section-title em { color: var(--text-2); }
 
-  h2 {
-    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
-    font-size: 8.5pt;
-    text-transform: uppercase;
-    letter-spacing: 0.18em;
-    font-weight: 700;
-    color: var(--accent);
-    margin: 0 0 6px;
-  }
-
-  section { margin-bottom: 14px; }
-  section p { margin: 0 0 6px; }
-
-  /* What we build */
-  .builds {
+  /* ---------- Agents (numbered list, single-line specs) ---------- */
+  .agents {
     list-style: none;
-    padding: 0;
     margin: 0;
+    padding: 0;
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 5px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 28px;
   }
-  .builds li {
+  .agents li {
     display: grid;
-    grid-template-columns: 1.4in 1fr;
+    grid-template-columns: 22px 1fr;
     gap: 10px;
-    font-size: 10pt;
     align-items: baseline;
-    padding: 4px 0;
-    border-bottom: 1px dotted var(--rule);
+    padding: 8px 0;
+    border-top: 1px solid var(--line);
   }
-  .builds li:last-child { border-bottom: none; }
-  .builds b {
-    font-family: -apple-system, sans-serif;
-    font-size: 9pt;
-    font-weight: 600;
-    color: var(--ink);
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .builds span { color: var(--ink-2); }
-
-  /* Who it's for */
-  .who {
-    font-size: 10pt;
-    color: var(--ink-2);
-  }
-  .who .segs {
-    margin-top: 4px;
-    font-family: -apple-system, sans-serif;
-    font-size: 8.5pt;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ink);
-    line-height: 1.7;
-  }
-  .who .segs span {
-    display: inline-block;
-    border: 1px solid var(--rule);
-    padding: 2px 8px;
-    margin: 0 4px 4px 0;
-    background: #fff;
-  }
-  .who .size {
-    margin-top: 6px;
-    font-style: italic;
-    color: var(--muted);
-    font-size: 9.5pt;
-  }
-
-  /* Engagement box */
-  .engagement {
-    border: 1px solid var(--ink);
-    background: #fff;
-    padding: 12px 14px;
-  }
-  .engagement .row {
-    display: grid;
-    grid-template-columns: 0.85in 1fr;
-    gap: 10px;
-    padding: 6px 0;
-    border-top: 1px solid var(--rule);
-    align-items: baseline;
-  }
-  .engagement .row:first-of-type { border-top: none; }
-  .engagement .tag {
-    font-family: -apple-system, sans-serif;
-    font-size: 8.5pt;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .agents .num {
+    font-family: var(--mono);
+    font-size: 8pt;
     color: var(--accent);
+    letter-spacing: 0.04em;
+    padding-top: 2px;
   }
-  .engagement .price {
-    font-family: "Georgia", serif;
-    font-size: 12pt;
-    color: var(--ink);
-    margin-bottom: 2px;
+  .agents .name {
+    font-family: var(--sans);
+    font-size: 10.5pt;
+    font-weight: 500;
+    color: var(--text);
+    margin: 0 0 2px;
+    letter-spacing: -0.005em;
   }
-  .engagement .desc {
+  .agents .spec {
     font-size: 9.5pt;
-    color: var(--ink-2);
+    color: var(--text-2);
     line-height: 1.45;
   }
-  .engagement .footnote {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px solid var(--rule);
-    font-size: 8.5pt;
+
+  /* ---------- How it works (3 step cards in a row) ---------- */
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .step {
+    border: 1px solid var(--line-2);
+    background: var(--ink-1);
+    padding: 14px 14px 14px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+  .step.is-featured {
+    border-color: rgba(166, 200, 242, 0.45);
+    background:
+      linear-gradient(180deg, rgba(166, 200, 242, 0.06), transparent 60%),
+      var(--ink-1);
+  }
+  .step-head {
+    font-family: var(--mono);
+    font-size: 8pt;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
     color: var(--muted);
-    font-style: italic;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .step-head .price {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 9pt;
+    color: var(--accent);
+    letter-spacing: -0.005em;
+    text-transform: none;
+  }
+  .step-name {
+    font-family: var(--sans);
+    font-weight: 500;
+    font-size: 11.5pt;
+    color: var(--text);
+    margin: 0 0 6px;
+    letter-spacing: -0.005em;
+  }
+  .step-body {
+    font-size: 9.5pt;
+    color: var(--text-2);
+    line-height: 1.5;
+    margin: 0;
+  }
+  .step-foot {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 7.5pt;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .step-foot b { color: var(--text-2); font-weight: 500; }
+
+  /* ---------- Proof + Who it's for (single row) ---------- */
+  .row {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 26px;
+    align-items: start;
+  }
+  .who p {
+    margin: 0 0 8px;
+    font-size: 9.5pt;
+    color: var(--text-2);
+    line-height: 1.5;
+  }
+  .who-segs {
+    font-family: var(--mono);
+    font-size: 7.8pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    line-height: 1.9;
+  }
+  .who-segs span {
+    display: inline-block;
+    border: 1px solid var(--line-2);
+    padding: 2px 8px;
+    margin: 0 4px 4px 0;
+    border-radius: 3px;
   }
 
-  /* Proof */
-  .proof {
-    background: var(--accent-soft);
-    border-left: 3px solid var(--accent);
-    padding: 10px 14px;
-    margin-top: 4px;
-  }
-  .proof ul {
+  .proof-list {
     list-style: none;
     margin: 0;
     padding: 0;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+  .proof-list li {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 12px;
     font-size: 9.5pt;
-    color: var(--ink);
+    color: var(--text-2);
+    padding: 4px 0;
+    border-top: 1px solid var(--line);
+    align-items: baseline;
   }
-  .proof li {
-    padding: 3px 0;
-    border-bottom: 1px solid rgba(138, 106, 30, 0.18);
+  .proof-list li:first-child { border-top: none; }
+  .proof-list b {
+    font-family: var(--sans);
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.005em;
   }
-  .proof li:last-child { border-bottom: none; }
-  .proof b { font-family: -apple-system, sans-serif; font-weight: 600; }
 
-  /* ----- CTA footer ----- */
+  /* ---------- CTA footer ---------- */
   .cta {
     margin-top: auto;
-    border-top: 1.5px solid var(--ink);
-    padding-top: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-2);
     display: grid;
     grid-template-columns: 1.4fr 1fr;
-    gap: 18px;
+    gap: 24px;
     align-items: center;
   }
-  .cta .pitch {
-    font-family: "Georgia", serif;
+  .cta-pitch {
+    font-family: var(--sans);
     font-size: 13pt;
     line-height: 1.3;
-    color: var(--ink);
+    color: var(--text);
+    letter-spacing: -0.012em;
+    font-weight: 500;
+    margin: 0;
+    max-width: 4.6in;
   }
-  .cta .pitch em {
-    color: var(--accent);
-    font-style: italic;
-  }
-  .cta .contact {
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  .cta-pitch em { color: var(--accent); }
+
+  .cta-contact {
+    font-family: var(--sans);
     font-size: 9.5pt;
-    color: var(--ink-2);
+    color: var(--text-2);
     text-align: right;
-    line-height: 1.55;
+    line-height: 1.6;
   }
-  .cta .contact b {
+  .cta-contact .label {
     display: block;
-    font-size: 8.5pt;
+    font-family: var(--mono);
+    font-size: 7.8pt;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     color: var(--accent);
-    margin-bottom: 2px;
-    font-weight: 700;
+    margin-bottom: 4px;
   }
-  .cta .contact a {
-    color: var(--ink);
+  .cta-contact a {
+    color: var(--text);
     text-decoration: none;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--line-3);
   }
 
-  /* ----- Print rules ----- */
+  /* ---------- Print ---------- */
   @page {
     size: Letter;
     margin: 0;
@@ -330,120 +414,170 @@
 <body>
 
 <div class="ui">
-  <b>Export to PDF:</b> Press <b>Cmd+P</b> (Mac) or <b>Ctrl+P</b> (Windows) → set destination to
-  <b>Save as PDF</b> → <b>Margins: None</b> → <b>Background graphics: On</b>. This box won't appear in the PDF.
+  <b>Export to PDF:</b> Press <b>Cmd&nbsp;+&nbsp;P</b> (Mac) or <b>Ctrl&nbsp;+&nbsp;P</b> (Windows) → destination
+  <b>Save as PDF</b> → <b>Margins: None</b> → <b>Background graphics: On</b>. This banner won&rsquo;t appear in the PDF.
 </div>
 
 <article class="page">
 
   <header>
     <div class="brand">
-      <img class="brand-mark" src="public/brand-mark.svg" alt="" width="34" height="34" />
-      <span>Varholdt&nbsp;AI<small>Fractional AI Department</small></span>
+      <img class="brand-mark" src="public/brand-mark.svg" alt="" width="30" height="30" />
+      <span>Varholdt&nbsp;AI</span>
     </div>
     <div class="meta">
-      <b>One-pager · v2</b><br />
+      <b>One-pager · v3</b><br />
       varholdt.ai
     </div>
   </header>
 
-  <div class="hero">
-    <h1>Install AI workflow agents<br /><em>that live in your tools.</em></h1>
+  <!-- ---------- HERO ---------- -->
+  <section class="hero">
+    <span class="kicker">Fractional AI Department</span>
+    <h1>
+      <span class="line">We find the workflow.</span>
+      <span class="line line-2">We build the agent.</span>
+    </h1>
     <p>
-      Human-reviewed agents that read your documents, draft and route the predictable work,
-      and live in <b>Outlook, Slack, Teams, SharePoint, your CRM, your ATS</b> &mdash; not
-      another app your team has to log into. A senior AI operator embedded for six months to
-      find the workflow worth automating, ship it, train your team, and keep it running.
+      The free 30-minute audit picks the workflow your team does every week
+      with the highest combined <b>volume × repeatability × ROI</b>. Then the
+      sprint ships an agent that reads your source docs, drafts the next step,
+      and writes the output to the tools your team already uses &mdash;
+      <b>Outlook, Slack, Teams, SharePoint, your CRM, your ATS.</b>
+      Human review on every output.
     </p>
-  </div>
+  </section>
 
-  <div class="body">
+  <!-- ---------- AGENTS ---------- -->
+  <section class="section">
+    <div class="section-head">
+      <span class="kicker">The agents</span>
+      <span class="section-title">Four already running in <em>production.</em></span>
+    </div>
+    <ol class="agents">
+      <li>
+        <span class="num">01</span>
+        <div>
+          <div class="name">Document Intake</div>
+          <div class="spec">Inbound docs &rarr; classified, fields extracted with confidence scores, routed to CRM, ATS, or claims system.</div>
+        </div>
+      </li>
+      <li>
+        <span class="num">02</span>
+        <div>
+          <div class="name">RFP Response</div>
+          <div class="spec">RFPs + amendments &rarr; L/M/C requirements with citations, compliance matrix in Excel or SharePoint.</div>
+        </div>
+      </li>
+      <li>
+        <span class="num">03</span>
+        <div>
+          <div class="name">Resume Screening</div>
+          <div class="spec">Resumes + reqs &rarr; ranked shortlist with rationale, outreach drafts in your ATS or recruiter inbox.</div>
+        </div>
+      </li>
+      <li>
+        <span class="num">04</span>
+        <div>
+          <div class="name">Claims Prep</div>
+          <div class="spec">Claim + policy &rarr; loss event, coverage clauses, draft response summary in your claims system.</div>
+        </div>
+      </li>
+    </ol>
+  </section>
 
-    <div class="col-left">
+  <!-- ---------- HOW IT WORKS ---------- -->
+  <section class="section">
+    <div class="section-head">
+      <span class="kicker">How it works</span>
+      <span class="section-title">Free audit, paid sprint, then we get to <em>work.</em></span>
+    </div>
 
-      <section>
-        <h2>The agents</h2>
-        <ul class="builds">
-          <li><b>RFP Response</b><span>RFPs + amendments &rarr; requirements with citations, compliance matrix in Excel / SharePoint.</span></li>
-          <li><b>Document Intake</b><span>Inbound docs + emails &rarr; classified, extracted with confidence scores, routed to CRM / ATS / claims.</span></li>
-          <li><b>Resume Screening</b><span>Resumes + reqs &rarr; ranked shortlist with rationale, outreach drafts in your ATS / inbox.</span></li>
-          <li><b>Claims Prep</b><span>Claim + policy &rarr; loss event + coverage clauses, response summary draft in your claims system.</span></li>
-          <li><b>Drafting Workbench</b><span>Past work + new ask &rarr; first-draft proposal sections, vendor letters, RFI responses in Word.</span></li>
-          <li><b>Knowledge Search</b><span>SOPs, past performance, prior proposals &rarr; cited answers in Slack / Teams.</span></li>
-        </ul>
-      </section>
+    <div class="steps">
+      <div class="step">
+        <div class="step-head">
+          <span>Step 0</span>
+          <span class="price">Free</span>
+        </div>
+        <h3 class="step-name">30-min Audit</h3>
+        <p class="step-body">
+          One workflow, 30 minutes, verbal feedback. No deck, no deliverable.
+          Together we figure out whether there&rsquo;s a real opportunity worth
+          a paid sprint &mdash; or whether SaaS already solves it.
+        </p>
+      </div>
 
-      <section class="who">
-        <h2>Who it's for</h2>
-        <div class="segs">
-          <span>Federal-Adjacent Ops</span>
-          <span>Proposal &amp; Capture</span>
+      <div class="step">
+        <div class="step-head">
+          <span>Step 1 · 10 days</span>
+          <span class="price">$5,000</span>
+        </div>
+        <h3 class="step-name">AI Workflow Sprint</h3>
+        <p class="step-body">
+          Workflow mapped with your team, working prototype built, ROI memo,
+          60-min recorded training. Credit mechanic &mdash; 100% applies to
+          month 1 of the retainer if signed within 14 days.
+        </p>
+      </div>
+
+      <div class="step is-featured">
+        <div class="step-head">
+          <span>Step 2 · 6 mo</span>
+          <span class="price">$6,000 / mo</span>
+        </div>
+        <h3 class="step-name">Fractional AI Department</h3>
+        <p class="step-body">
+          One core workflow shipped to production, supporting automations,
+          monthly ROI report, quarterly roadmap reviews, ongoing tuning.
+        </p>
+        <div class="step-foot">
+          <b>Founding rate</b> &mdash; first two clients only ($10k standard)
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- WHO + PROOF ---------- -->
+  <section class="section">
+    <div class="row">
+      <div class="who">
+        <div class="section-head" style="margin-bottom: 8px;">
+          <span class="kicker">Built for</span>
+        </div>
+        <p>Teams of 20&ndash;250 with recurring document, form, and email volume.</p>
+        <div class="who-segs">
+          <span>Federal-adjacent ops</span>
+          <span>Proposal &amp; capture</span>
           <span>Staffing</span>
-          <span>Regional Insurance</span>
-          <span>CPA / Accounting</span>
-          <span>Construction Back-Office</span>
+          <span>Regional insurance</span>
+          <span>CPA / accounting</span>
+          <span>Construction back-office</span>
         </div>
-        <div class="size">Teams of 20&ndash;250 with recurring document, form, and email volume. Human review on every output.</div>
-      </section>
+      </div>
 
+      <div class="proof">
+        <div class="section-head" style="margin-bottom: 8px;">
+          <span class="kicker">Proof</span>
+        </div>
+        <ul class="proof-list">
+          <li><b>1st place</b><span>Convex Modern Stack Hackathon ($10K)</span></li>
+          <li><b>Active</b><span>U.S. Department of Labor federal contractor</span></li>
+          <li><b>8 systems</b><span>Production builds incl. OmniBid (federal RFP parser)</span></li>
+        </ul>
+      </div>
     </div>
+  </section>
 
-    <div class="col-right">
-
-      <section>
-        <h2>The engagement</h2>
-        <div class="engagement">
-          <div class="row">
-            <div class="tag">Step 0 · Free</div>
-            <div>
-              <div class="price">30-min AI Workflow Audit</div>
-              <div class="desc">Walk one workflow, get verbal feedback. No deck, no deliverable, no obligation. We figure out together whether there's a real opportunity worth a paid sprint.</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="tag">Step 1 · Month 1</div>
-            <div>
-              <div class="price">$5,000 · AI Workflow Sprint</div>
-              <div class="desc">Ten business days. One workflow mapped, one working prototype, 90-day roadmap, leadership training session.</div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="tag">Step 2 · Mo. 2&ndash;6</div>
-            <div>
-              <div class="price">$6,000 / month · Fractional AI Department</div>
-              <div class="desc">Senior AI strategy plus implementation. Core workflow shipped to production, supporting automations, training, monthly ROI reporting.</div>
-            </div>
-          </div>
-          <div class="footnote">
-            Founding rate &mdash; first two clients only. Sprint credits 100% toward retainer if signed within 14 days.
-          </div>
-        </div>
-      </section>
-
-      <section>
-        <h2>Proof</h2>
-        <div class="proof">
-          <ul>
-            <li><b>1st place</b> &middot; Convex Modern Stack Hackathon ($10K)</li>
-            <li><b>Active federal contractor</b> &middot; U.S. Department of Labor</li>
-            <li><b>Air Force veteran</b> &middot; Munitions Systems (2W0X1)</li>
-            <li><b>8 production systems</b> &middot; including OmniBid (federal RFP parser) and Civicly (legislative RAG)</li>
-          </ul>
-        </div>
-      </section>
-
-    </div>
-  </div>
-
+  <!-- ---------- CTA ---------- -->
   <div class="cta">
-    <div class="pitch">
-      If your team is drowning in documents, <em>let's spend thirty free minutes on the one workflow that costs you the most hours.</em>
-    </div>
-    <div class="contact">
-      <b>Book a free 30-min audit</b>
+    <p class="cta-pitch">
+      Bring one workflow your team does every week. <em>We&rsquo;ll spend
+      thirty free minutes on the one costing you the most hours.</em>
+    </p>
+    <div class="cta-contact">
+      <span class="label">Book the free audit</span>
       <a href="https://calendly.com/varholdt-ai">calendly.com/varholdt-ai</a><br />
-      <a href="mailto:layken@varholdt.ai">layken@varholdt.ai</a><br />
-      Youngsville, LA
+      <a href="mailto:layken@varholdt.ai">layken@varholdt.ai</a>
     </div>
   </div>
 
