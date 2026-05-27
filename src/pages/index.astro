@@ -92,65 +92,14 @@ const heroChips = [
 ];
 
 
-// Combined Find → Run card data.
-// Each workflow ties a "winner" candidate row to its execution feed + score.
-const findrunWorkflows = [
-  {
-    key: "rfp",
-    label: "RFP",
-    longLabel: "RFP intake",
-    tag: "Proposals",
-    cand: "rfp",
-    scores: { vol: 0.80, rep: 0.85, roi: 0.95 },
-    rows: [
-      { time: "10:02", kind: "in",    title: "Slack · #rfp-alerts",            meta: "SAM.gov · 47-page solicitation" },
-      { time: "10:03", kind: "step",  title: "Extracting requirements",        meta: "Section L · M · C · 14 items found" },
-      { time: "10:04", kind: "step",  title: "Drafting compliance matrix",     meta: "Every row cited back to source" },
-      { time: "10:05", kind: "human", title: "PM approved 12 of 14",           meta: "2 flagged for clarification" },
-      { time: "10:06", kind: "out",   title: "SharePoint · /proposals/2026-Q3", meta: "Excel matrix ready for review" },
-    ],
-  },
-  {
-    key: "claims",
-    label: "Claims",
-    longLabel: "Claims intake",
-    tag: "Insurance",
-    cand: "claims",
-    scores: { vol: 0.78, rep: 0.82, roi: 0.88 },
-    rows: [
-      { time: "14:11", kind: "in",    title: "Outlook · claims@",              meta: "First notice of loss · 6 attachments" },
-      { time: "14:12", kind: "step",  title: "Matching loss event to policy",  meta: "Section 4.b · 3 exclusions reviewed" },
-      { time: "14:13", kind: "step",  title: "Drafting coverage summary",      meta: "Covered · reserve $18,400" },
-      { time: "14:14", kind: "human", title: "Adjuster approved coverage",     meta: "Audit log written" },
-      { time: "14:15", kind: "out",   title: "Claims system · response sent",  meta: "Notification queued to insured" },
-    ],
-  },
-  {
-    key: "resume",
-    label: "Resume",
-    longLabel: "Resume match",
-    tag: "Hiring",
-    cand: "resume",
-    scores: { vol: 0.72, rep: 0.78, roi: 0.82 },
-    rows: [
-      { time: "08:47", kind: "in",    title: "Gmail · careers@",               meta: "24 resumes · Req-0421 Sr Backend" },
-      { time: "08:48", kind: "step",  title: "Scoring against rubric",         meta: "Top 3 surfaced with rationale" },
-      { time: "08:49", kind: "step",  title: "Drafting outreach",              meta: "House voice · subject A/B prepared" },
-      { time: "08:51", kind: "human", title: "Recruiter approved shortlist",   meta: "3 advanced · 21 declined with notes" },
-      { time: "08:52", kind: "out",   title: "ATS · #hiring-be channel",       meta: "Outreach queued · channel pinged" },
-    ],
-  },
-];
-
-// Candidate list for the Find pane. Two of these never win — they're the
-// always-loser rows that prove the triage actually rejects work. They hide
-// on mobile to keep the rail to three visible rows.
-const findrunCandidates = [
-  { key: "email",   name: "Email triage",           hideOnMobile: true  },
-  { key: "rfp",     name: "RFP intake",             hideOnMobile: false },
-  { key: "claims",  name: "Claims intake",          hideOnMobile: false },
-  { key: "resume",  name: "Resume screening",       hideOnMobile: false },
-  { key: "expense", name: "Expense classification", hideOnMobile: true  },
+// Sprint-selection scoreboard — five candidate workflows scored on
+// volume × repeatability × ROI; highest combined score wins the sprint.
+const pickCandidates = [
+  { name: "RFP intake",             vol: 0.80, rep: 0.85, roi: 0.95, score: 6.5, winner: true  },
+  { name: "Claims intake",          vol: 0.78, rep: 0.82, roi: 0.88, score: 5.6, winner: false },
+  { name: "Resume screening",       vol: 0.72, rep: 0.78, roi: 0.82, score: 4.6, winner: false },
+  { name: "Expense classification", vol: 0.50, rep: 0.60, roi: 0.50, score: 1.5, winner: false },
+  { name: "Email triage",           vol: 0.85, rep: 0.35, roi: 0.40, score: 1.2, winner: false },
 ];
 
 ---
@@ -222,14 +171,15 @@ const findrunCandidates = [
 
       <div class="container hero-inner">
         <h1 class="hero-headline">
-          Turn document-heavy workflows into <em>human-reviewed</em> AI agents.
+          We find the workflow. We <em>build the agent.</em>
         </h1>
 
         <p class="hero-sub">
-          We build agents that read RFPs, resumes, claims, emails, and source
-          documents, then draft, route, and prepare the next step inside the
-          <strong>tools your team already uses</strong>. Every important output
-          stays human-reviewed, cited, and auditable.
+          The audit picks the workflow your team does every week with the
+          highest combined volume, repeatability, and ROI. Then the sprint
+          ships an agent that reads your source docs, drafts the next step,
+          and writes the output to the
+          <strong>tools your team already uses</strong>.
         </p>
 
         <div class="hero-actions">
@@ -248,9 +198,9 @@ const findrunCandidates = [
               <svg viewBox="0 0 22 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3.5 1.5h11l4 4v18a1 1 0 0 1-1 1h-14a1 1 0 0 1-1-1V2.5a1 1 0 0 1 1-1z"/>
                 <path d="M14.5 1.5v4h4"/>
-                <path d="M6 12.5h10"/>
-                <path d="M6 16.5h8"/>
-                <path d="M6 20.5h6"/>
+                <path class="hero-flow-read-line hero-flow-read-line-1" d="M6 12.5h10"/>
+                <path class="hero-flow-read-line hero-flow-read-line-2" d="M6 16.5h8"/>
+                <path class="hero-flow-read-line hero-flow-read-line-3" d="M6 20.5h6"/>
               </svg>
             </span>
             <span class="hero-flow-label">Read</span>
@@ -267,7 +217,7 @@ const findrunCandidates = [
             <span class="hero-flow-icon">
               <svg viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M1.5 11s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7-9.5-7-9.5-7z"/>
-                <circle cx="11" cy="11" r="3"/>
+                <circle class="hero-flow-review-pupil" cx="11" cy="11" r="3"/>
               </svg>
             </span>
             <span class="hero-flow-label">Review</span>
@@ -292,9 +242,9 @@ const findrunCandidates = [
         <div class="section-head">
           <h2 class="section-title">Built for document-heavy teams.</h2>
           <p class="section-lede">
-            If your team is still reading PDFs, copying fields into spreadsheets,
-            rewriting the same responses, or hunting through shared drives for
-            source material, you probably don't need another AI app. You need one
+            If your team still reads PDFs by hand, copies fields into
+            spreadsheets, rewrites the same responses, and hunts shared drives
+            for source material — you don't need another AI app. You need one
             recurring workflow cleaned up, instrumented, and put under human
             control.
           </p>
@@ -320,9 +270,10 @@ const findrunCandidates = [
         <div class="section-head">
           <h2 class="section-title">Four agents already running in <em>production.</em></h2>
           <p class="section-lede">
-            Each agent reads what it should read, does what it should do, hands
-            the decision back to a human, and writes the result into the tool
-            you already use. We ship one in your sprint, then expand.
+            Each agent reads what it should read, drafts the next step, hands
+            the decision to a human, and writes the result into the tool your
+            team already uses. We ship one in your sprint, then expand from
+            there.
           </p>
         </div>
 
@@ -521,9 +472,9 @@ const findrunCandidates = [
         <div class="section-head">
           <h2 class="section-title">Watch an RFP become a <em>reviewable compliance matrix.</em></h2>
           <p class="section-lede">
-            A real public RFP from SAM.gov: ingested, extracted with citations,
-            compliance matrix generated. The same engine handles claims,
-            resumes, and intake workflows shown above.
+            A real public RFP from SAM.gov — ingested, extracted with
+            section-level citations, compliance matrix generated. Same engine
+            drives the claims, resume, and intake agents above.
           </p>
         </div>
 
@@ -555,10 +506,10 @@ const findrunCandidates = [
         <div class="section-head">
           <h2 class="section-title">No new app. <em>Your tools.</em></h2>
           <p class="section-lede">
-            We build the workflow around the tools your team already uses. One
-            primary interface. One export destination. Clear human approval
-            points. A lightweight review UI only where control specifically
-            requires one.
+            We build around the tools your team already uses. One primary
+            interface. One export destination. Clear human approval points. A
+            lightweight review screen only where control specifically requires
+            one.
           </p>
         </div>
 
@@ -579,10 +530,11 @@ const findrunCandidates = [
         <div class="section-head">
           <h2 class="section-title">Free audit, paid sprint, then we get to <em>work.</em></h2>
           <p class="section-lede">
-            Three steps. Start with a free 30-minute audit — we walk one workflow you actually do every
-            week and I tell you whether it's automatable, whether SaaS already solves it, or where the
-            real leverage is. If it's a fit, the paid sprint produces a real prototype. If it isn't, you
-            owe me nothing and you've still got a clearer head about the problem.
+            Three steps. Start free: a 30-minute audit on one workflow your
+            team does every week. I tell you whether it's automatable, whether
+            SaaS already solves it, or where the real leverage is. If it's a
+            fit, a paid sprint produces a working prototype. If it isn't, you
+            owe nothing — and walk away with a clearer head.
           </p>
         </div>
 
@@ -591,10 +543,10 @@ const findrunCandidates = [
             <div class="how-step"><span class="num">0</span> Free</div>
             <h3>30-minute AI Workflow Audit</h3>
             <p>
-              One workflow, 30 minutes, verbal feedback. No deck, no deliverable,
-              no obligation. We figure out together whether there's a real
-              opportunity worth a paid sprint — or whether the right answer is a
-              SaaS tool, a process change, or doing nothing.
+              One workflow, 30 minutes, verbal feedback. No deck, no
+              deliverable, no obligation. Together we figure out whether
+              there's a real opportunity worth a paid sprint — or whether the
+              right answer is a SaaS tool, a process change, or doing nothing.
             </p>
           </div>
           <a class="btn btn-primary how-audit-cta" href="#book">
@@ -684,119 +636,66 @@ const findrunCandidates = [
           </div>
         </div>
 
-        <!-- How we pick the workflow (findrun, demoted from intro) -->
+        <!-- How we pick the workflow -->
         <div class="how-find reveal">
           <header class="how-find-head">
             <span class="kicker">During the sprint</span>
             <h3>How we pick the workflow.</h3>
             <p>
-              The audit narrows the candidate list to one. The workflow with the
-              highest combined volume × repeatability × ROI wins the sprint —
-              then runs inside the tools your team already uses.
+              The audit narrows the candidate list. Highest combined volume ×
+              repeatability × ROI wins the sprint — then runs inside the tools
+              your team already uses.
             </p>
           </header>
 
-          <div class="findrun" data-findrun aria-label="How we pick the workflow and what the agent does next">
-            <header class="findrun-head">
-              <span class="findrun-head-status">
-                <span class="findrun-head-dot" aria-hidden="true"></span>
-                <span class="findrun-head-label">Live</span>
-                <span class="findrun-head-sep" aria-hidden="true"></span>
-                <span class="findrun-head-workflow" data-findrun-name>RFP intake</span>
-                <span class="findrun-head-tag" data-findrun-tag>Proposals</span>
+          <div class="pickboard reveal" aria-label="Sprint workflow scoring">
+            <header class="pickboard-head">
+              <span class="pickboard-head-status">
+                <span class="pickboard-head-dot" aria-hidden="true"></span>
+                <span class="pickboard-head-label">Sprint score</span>
               </span>
-              <nav class="findrun-tabs" aria-label="Swap workflow">
-                {findrunWorkflows.map((w, i) => (
-                  <button
-                    class={`findrun-pill ${i === 0 ? "active" : ""}`}
-                    type="button"
-                    data-workflow={w.key}
-                    data-tag={w.tag}
-                    data-long={w.longLabel}
-                    data-cand={w.cand}
-                    data-vol={w.scores.vol}
-                    data-rep={w.scores.rep}
-                    data-roi={w.scores.roi}
-                    aria-pressed={i === 0 ? "true" : "false"}
-                  >{w.label}</button>
-                ))}
-              </nav>
+              <span class="pickboard-formula">
+                score <em>=</em> volume <em>×</em> repeatability <em>×</em> ROI
+              </span>
             </header>
 
-            <div class="findrun-body">
-              <!-- FIND pane -->
-              <aside class="findrun-pane findrun-find">
-                <div class="findrun-pane-head">
-                  <span class="findrun-pane-eyebrow">Find</span>
-                  <p class="findrun-pane-line">Which workflow earns the sprint?</p>
-                </div>
-
-                <ul class="findrun-cands" role="list">
-                  {findrunCandidates.map((c) => (
-                    <li
-                      class={`findrun-cand ${c.hideOnMobile ? "is-mobile-hide" : ""}`}
-                      data-cand={c.key}
-                    >
-                      <span class="findrun-cand-mark" aria-hidden="true"></span>
-                      <span class="findrun-cand-name">{c.name}</span>
-                      <span class="findrun-cand-tag" aria-hidden="true">Selected</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div class="findrun-why">
-                  <span class="findrun-why-label">Why this one</span>
-                  <dl class="findrun-bars">
-                    <div class="findrun-bar-row">
-                      <dt>Vol</dt>
-                      <dd><span class="findrun-bar"><i data-bar="vol" style="--w:0.80"></i></span></dd>
-                    </div>
-                    <div class="findrun-bar-row">
-                      <dt>Rep</dt>
-                      <dd><span class="findrun-bar"><i data-bar="rep" style="--w:0.85"></i></span></dd>
-                    </div>
-                    <div class="findrun-bar-row">
-                      <dt>ROI</dt>
-                      <dd><span class="findrun-bar"><i data-bar="roi" style="--w:0.95"></i></span></dd>
-                    </div>
-                  </dl>
-                </div>
-              </aside>
-
-              <!-- RUN pane -->
-              <section class="findrun-pane findrun-run">
-                <div class="findrun-pane-head">
-                  <span class="findrun-pane-eyebrow">Run</span>
-                  <p class="findrun-pane-line">Then runs it inside the tools your team already uses</p>
-                </div>
-
-                <div class="findrun-feed-wrap">
-                  {findrunWorkflows.map((w, i) => (
-                    <ol
-                      class={`findrun-feed ${i === 0 ? "active" : ""}`}
-                      data-workflow-body={w.key}
-                      aria-hidden={i === 0 ? "false" : "true"}
-                    >
-                      {w.rows.map((r, ri) => (
-                        <li class={`feed-row feed-row-${r.kind}`} style={`--row-i: ${ri};`}>
-                          <span class="feed-row-time">{r.time}</span>
-                          <span class="feed-row-kind" aria-hidden="true">
-                            {r.kind === "in"    && "IN"}
-                            {r.kind === "step"  && "··"}
-                            {r.kind === "human" && "✓"}
-                            {r.kind === "out"   && "→"}
-                          </span>
-                          <span class="feed-row-body">
-                            <span class="feed-row-title">{r.title}</span>
-                            <span class="feed-row-meta">{r.meta}</span>
-                          </span>
-                        </li>
-                      ))}
-                    </ol>
-                  ))}
-                </div>
-              </section>
+            <div class="pickboard-cols" aria-hidden="true">
+              <span class="pickboard-col-name"></span>
+              <span>Vol</span>
+              <span>Rep</span>
+              <span>ROI</span>
+              <span class="pickboard-col-score">Score</span>
             </div>
+
+            <ul class="pickboard-rows" role="list">
+              {pickCandidates.map((c, i) => (
+                <li
+                  class={`pickboard-row ${c.winner ? "is-winner" : ""}`}
+                  style={`--row-i:${i};`}
+                >
+                  <span class="pickboard-name">{c.name}</span>
+                  <span class="pickboard-bar" data-axis="vol" aria-label={`Volume score ${c.vol}`}>
+                    <i style={`--w:${c.vol};`}></i>
+                  </span>
+                  <span class="pickboard-bar" data-axis="rep" aria-label={`Repeatability score ${c.rep}`}>
+                    <i style={`--w:${c.rep};`}></i>
+                  </span>
+                  <span class="pickboard-bar" data-axis="roi" aria-label={`ROI score ${c.roi}`}>
+                    <i style={`--w:${c.roi};`}></i>
+                  </span>
+                  <span class="pickboard-score">{c.score.toFixed(1)}</span>
+                </li>
+              ))}
+            </ul>
+
+            <footer class="pickboard-foot">
+              <svg class="pickboard-foot-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 8.5l3 3 7-7.5"/>
+              </svg>
+              <span class="pickboard-foot-text">
+                <strong>RFP intake</strong> wins the sprint — ten business days, one workflow, one owner.
+              </span>
+            </footer>
           </div>
         </div>
 
@@ -822,11 +721,11 @@ const findrunCandidates = [
     <section class="section" id="proof">
       <div class="container">
         <div class="section-head">
-          <h2 class="section-title">Proof from real systems.</h2>
+          <h2 class="section-title">Eight systems shipped. Client case studies <em>come next.</em></h2>
           <p class="section-lede">
-            The proof today is shipped software: production systems, federal
-            document workflows, and a live RFP parser. Founding engagements are
-            priced to turn that implementation proof into client ROI case
+            Today's proof is shipped software — production systems, federal
+            document workflows, a live RFP parser. Founding engagements are
+            priced to convert that implementation proof into client ROI case
             studies.
           </p>
         </div>
@@ -860,19 +759,22 @@ const findrunCandidates = [
           <div class="founder-body reveal" data-delay="1">
             <h3>Layken Varholdt — founder, sole operator.</h3>
             <p>
-              Air Force veteran (4 years active, 2W0X1 Munitions Systems). Currently a
-              <strong> full-stack engineer on a federal Department of Labor contract</strong>,
+              Air Force veteran (4 years active, 2W0X1 Munitions Systems).
+              Currently a
+              <strong>full-stack engineer on a federal Department of Labor contract</strong>,
               based in Youngsville, Louisiana.
             </p>
             <p>
-              Built OmniBid — a SAM.gov-integrated federal RFP parser with requirement
-              extraction and citation-grounded compliance matrices — and seven other
-              <strong>production systems built on the same stack you'll see in the sprint.</strong>
+              Built OmniBid — a SAM.gov-integrated federal RFP parser with
+              requirement extraction and citation-grounded compliance matrices
+              — plus seven other
+              <strong>production systems on the same stack you'll see in the sprint.</strong>
             </p>
             <p>
-              You hire one person. <strong>That person scopes, builds, demos, trains,
-              and supports.</strong> No account managers, no offshore subcontractors,
-              no handoffs. When the engagement ends, the source code is yours.
+              You hire one person. <strong>That person scopes, builds, demos,
+              trains, and supports.</strong> No account managers, no offshore
+              subs, no handoffs. When the engagement ends, the source code is
+              yours.
             </p>
 
             <div class="founder-stats">
@@ -902,11 +804,12 @@ const findrunCandidates = [
             <span class="cta-eyebrow">Founding spots — 2 of 2 open</span>
             <h2 class="cta-title">Bring one workflow your team does every week.</h2>
             <p>
-              In 30 minutes, we'll talk through what's automatable, what should
-              stay human-owned, and whether a paid sprint makes sense.
+              In 30 minutes we'll cover what's automatable, what should stay
+              human-owned, and whether a paid sprint makes sense.
             </p>
             <p>
-              If a SaaS tool is the right answer, I'll tell you which one.
+              If a SaaS tool is the right answer, I'll tell you which one and
+              step out of the way.
             </p>
             <div class="cta-actions">
               <a class="btn btn-primary" href="#">
@@ -987,17 +890,6 @@ const findrunCandidates = [
 </SiteLayout>
 
 <script>
-  // Nav scrolled state
-  const nav = document.getElementById("site-nav");
-  if (nav) {
-    const onScroll = () => {
-      if (window.scrollY > 20) nav.classList.add("scrolled");
-      else nav.classList.remove("scrolled");
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-  }
-
   // IntersectionObserver reveal
   const revealEls = document.querySelectorAll(".reveal");
   if ("IntersectionObserver" in window) {
@@ -1017,62 +909,4 @@ const findrunCandidates = [
     revealEls.forEach((el) => el.classList.add("in"));
   }
 
-  // Find → Run card: pills swap both the candidate winner (left pane) and
-  // the live execution feed (right pane) in sync.
-  const findrun = document.querySelector<HTMLElement>("[data-findrun]");
-  if (findrun) {
-    const pills = Array.from(findrun.querySelectorAll<HTMLButtonElement>(".findrun-pill"));
-    const feeds = Array.from(findrun.querySelectorAll<HTMLElement>("[data-workflow-body]"));
-    const cands = Array.from(findrun.querySelectorAll<HTMLElement>(".findrun-cand"));
-    const bars  = Array.from(findrun.querySelectorAll<HTMLElement>(".findrun-bar i"));
-    const nameEl = findrun.querySelector<HTMLElement>("[data-findrun-name]");
-    const tagEl  = findrun.querySelector<HTMLElement>("[data-findrun-tag]");
-
-    // Seed initial winner highlight + bar widths from the active pill.
-    const seed = pills.find((p) => p.classList.contains("active")) || pills[0];
-
-    const setActive = (pill: HTMLButtonElement) => {
-      const key   = pill.dataset.workflow || "";
-      const tag   = pill.dataset.tag || "";
-      const long  = pill.dataset.long || (pill.textContent || "").trim();
-      const cand  = pill.dataset.cand || key;
-      const vol   = pill.dataset.vol || "0.8";
-      const rep   = pill.dataset.rep || "0.8";
-      const roi   = pill.dataset.roi || "0.8";
-
-      pills.forEach((p) => {
-        const on = p === pill;
-        p.classList.toggle("active", on);
-        p.setAttribute("aria-pressed", on ? "true" : "false");
-      });
-
-      if (nameEl) nameEl.textContent = long;
-      if (tagEl && tag) tagEl.textContent = tag;
-
-      cands.forEach((c) => {
-        c.classList.toggle("is-winner", c.dataset.cand === cand);
-      });
-
-      bars.forEach((b) => {
-        const which = b.dataset.bar;
-        const w = which === "vol" ? vol : which === "rep" ? rep : roi;
-        b.style.setProperty("--w", w);
-      });
-
-      feeds.forEach((f) => {
-        const on = f.dataset.workflowBody === key;
-        f.classList.toggle("active", on);
-        f.setAttribute("aria-hidden", on ? "false" : "true");
-      });
-    };
-
-    if (seed) setActive(seed);
-
-    pills.forEach((p) => {
-      p.addEventListener("click", () => {
-        if (p.classList.contains("active")) return;
-        setActive(p);
-      });
-    });
-  }
 </script>
